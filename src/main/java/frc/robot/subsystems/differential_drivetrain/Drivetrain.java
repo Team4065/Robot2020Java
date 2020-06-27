@@ -20,7 +20,7 @@ public class Drivetrain extends SubsystemBase {
 
   protected double kP_velocity, kI_velocity, kD_velocity, kFF_velocity = 0;
   protected double kP_position, kI_position, kD_position, kFF_position = 0;
-  protected double kMaxVelocity, kMaxAcceleration = 0;
+
   protected double leftTarget, rightTarget = 0;
   protected Talon[] simulationMotors;
 
@@ -142,9 +142,4 @@ public class Drivetrain extends SubsystemBase {
   void SetD_position(double value){kD_position = value;}
   //Sets kF_position and updates the motor controllers
   void SetFF_position(double value){kFF_position = value;}
-
-  //Sets the max velocity of the motor controllers
-  void SetMaxVelocity(double value){kMaxVelocity = value;}
-  //Sets the max acceleration of the motor controllers
-  void SetMaxAcceleration(double value){kMaxAcceleration = value;}
 }

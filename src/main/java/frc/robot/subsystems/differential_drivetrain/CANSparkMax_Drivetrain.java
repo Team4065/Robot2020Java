@@ -18,6 +18,8 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
   private CANSparkMax leftMaster, rightMaster; //These are the motor controllers that act as masters for the drivetrain
   private CANPIDController leftPID, rightPID;  //These allow access to inbuilt closed loops in the motor controllers
   private CANSparkMax[] leftSlaves, rightSlaves;
+  protected double kMaxVelocity_velocity, kMaxAcceleration_velocity = 0;
+  protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
 
   /**
    * Creates a new CANSparkMax_Drivetrain.
@@ -133,5 +135,31 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     kFF_position = value;
     leftPID.setFF(value, 1);
     rightPID.setFF(value, 1);
+  }
+
+  //Sets the max velocity of the motor controllers
+  void SetMaxVelocity_velocity(double value){
+    kMaxVelocity_velocity = value;
+    leftPID.setSmartMotionMaxVelocity(value, 0);
+    rightPID.setSmartMotionMaxVelocity(value, 0);
+  }
+  //Sets the max acceleration of the motor controllers
+  void SetMaxAcceleration_velocity(double value){
+    kMaxAcceleration_velocity = value;
+    leftPID.setSmartMotionMaxAccel(value, 0);
+    rightPID.setSmartMotionMaxAccel(value, 0);
+  }
+
+  //Sets the max velocity of the motor controllers
+  void SetMaxVelocity_position(double value){
+    kMaxVelocity_position = value;
+    leftPID.setSmartMotionMaxVelocity(value, 1);
+    rightPID.setSmartMotionMaxVelocity(value, 1);
+  }
+  //Sets the max acceleration of the motor controllers
+  void SetMaxAcceleration_position(double value){
+    kMaxAcceleration_position = value;
+    leftPID.setSmartMotionMaxAccel(value, 1);
+    rightPID.setSmartMotionMaxAccel(value, 1);
   }
 }

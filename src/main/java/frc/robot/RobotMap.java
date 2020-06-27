@@ -14,7 +14,7 @@ package frc.robot;
 public class RobotMap {
 
     //Simulation control
-    public static final boolean IS_SIMULATION_RUNNING = false;
+    public static final boolean IS_SIMULATION_RUNNING = true;
 
     //Drivetrain
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MIN = 1;//CAN ID

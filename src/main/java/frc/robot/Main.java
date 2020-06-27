@@ -12,6 +12,12 @@ Any new differential drive subsystems should implement this feature (view TalonS
 New differential drive subsystems will need new code for motor creation, motor configuration, motor output, and PID configuration.
 */
 
+/**
+ * TODO
+ * Make more differential drivetrain commands 
+ *    -arcade drive
+ */
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;

@@ -8,13 +8,15 @@
 package frc.robot;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.differential_drivetrain.TankDrive;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.subsystems.differential_drivetrain.TalonSRX_Drivetrain;
 import frc.robot.subsystems.differential_drivetrain.CANSparkMax_Drivetrain;
+
+import frc.robot.commands.differential_drivetrain.TankDrive;
+import frc.robot.commands.differential_drivetrain.ArcadeDrive;
 
 
 
@@ -33,6 +35,7 @@ public class RobotContainer {
   //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(false, true);
 
   TankDrive tankdrive = new TankDrive(drivetrain);
+  ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);
 
   public static XboxController controller = new XboxController(RobotMap.CONTROLS_MAIN_CONTROLLER_ID);
 
@@ -40,7 +43,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(tankdrive);
+    drivetrain.setDefaultCommand(arcadedrive);
 
     // Configure the button bindings
     configureButtonBindings();
