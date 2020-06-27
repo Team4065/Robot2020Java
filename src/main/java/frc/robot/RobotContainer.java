@@ -7,11 +7,18 @@
 
 package frc.robot;
 
+import frc.robot.RobotMap;
+import frc.robot.commands.differential_drivetrain.TankDrive;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+
+import frc.robot.subsystems.differential_drivetrain.TalonSRX_Drivetrain;
+import frc.robot.subsystems.differential_drivetrain.CANSparkMax_Drivetrain;
+
+
+
+
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -21,16 +28,20 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false, false);
+  //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(false, true);
 
+  TankDrive tankdrive = new TankDrive(drivetrain);
 
+  public static XboxController controller = new XboxController(RobotMap.CONTROLS_MAIN_CONTROLLER_ID);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    drivetrain.setDefaultCommand(tankdrive);
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -52,6 +63,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
 }

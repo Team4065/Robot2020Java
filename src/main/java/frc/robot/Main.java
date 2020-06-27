@@ -5,6 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/*
+The differential drive subsystems have a simulation mode that disables motor output on CAN (it outputs on PWM).
+It is ment to be used to see motor output on the simulation GUI.
+Any new differential drive subsystems should implement this feature (view TalonSRX_Drivetrain to learn how).
+New differential drive subsystems will need new code for motor creation, motor configuration, motor output, and PID configuration.
+*/
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;

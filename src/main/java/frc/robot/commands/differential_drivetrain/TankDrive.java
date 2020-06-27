@@ -1,41 +1,44 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.differential_drivetrain;
 
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.RobotContainer;
+import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.differential_drivetrain.*;
 
-/**
- * An example command that uses an example subsystem.
- */
-public class ExampleCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
 
+public class TankDrive extends CommandBase {
   /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
+   * Creates a new TankDrive.
    */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  Drivetrain drivetrain;
+
+  public TankDrive(Drivetrain _drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(_drivetrain);
+    drivetrain = _drivetrain;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //drivetrain.setControlMode(Drivetrain.ControlMode.PERCENT);
+    drivetrain.setControlMode(Drivetrain.ControlMode.VELOCITY);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    drivetrain.setLeftTarget(RobotContainer.controller.getY(Hand.kLeft));
+    drivetrain.setRightTarget(RobotContainer.controller.getY(Hand.kRight));
   }
 
   // Called once the command ends or is interrupted.
