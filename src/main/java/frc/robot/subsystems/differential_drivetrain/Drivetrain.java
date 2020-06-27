@@ -20,6 +20,8 @@ public class Drivetrain extends SubsystemBase {
 
   protected double kP_velocity, kI_velocity, kD_velocity, kFF_velocity = 0;
   protected double kP_position, kI_position, kD_position, kFF_position = 0;
+  protected double kMaxVelocity_velocity, kMaxAcceleration_velocity = 0;
+  protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
 
   protected double leftTarget, rightTarget = 0;
   protected Talon[] simulationMotors;
@@ -126,20 +128,38 @@ public class Drivetrain extends SubsystemBase {
   }
 
   //Sets kP_velocity and updates the motor controllers
-  void SetP_velocity(double value){kP_velocity = value;}
+  public void SetP_velocity(double value){kP_velocity = value;}
   //Sets kD_velocity and updates the motor controllers
-  void SetI_velocity(double value){kI_velocity = value;}
+  public void SetI_velocity(double value){kI_velocity = value;}
   //Sets kD_velocity and updates the motor controllers
-  void SetD_velocity(double value){kD_velocity = value;}
+  public void SetD_velocity(double value){kD_velocity = value;}
   //Sets kFF_velocity and updates the motor controllers
-  void SetFF_velocity(double value){kFF_velocity = value;}
+  public void SetFF_velocity(double value){kFF_velocity = value;}
 
   //Sets kP_position and updates the motor controllers
-  void SetP_position(double value){kP_position = value;}
+  public void SetP_position(double value){kP_position = value;}
   //Sets kD_position and updates the motor controllers
-  void SetI_position(double value){kI_position = value;}
+  public void SetI_position(double value){kI_position = value;}
   //Sets kD_position and updates the motor controllers
-  void SetD_position(double value){kD_position = value;}
+  public void SetD_position(double value){kD_position = value;}
   //Sets kF_position and updates the motor controllers
-  void SetFF_position(double value){kFF_position = value;}
+  public void SetFF_position(double value){kFF_position = value;}
+
+  //Sets the max velocity of the motor controllers
+  public void SetMaxVelocity_velocity(double value){
+    kMaxVelocity_velocity = value;
+  }
+  //Sets the max acceleration of the motor controllers
+  public void SetMaxAcceleration_velocity(double value){
+    kMaxAcceleration_velocity = value;
+  }
+
+  //Sets the max velocity of the motor controllers
+  public void SetMaxVelocity_position(double value){
+    kMaxVelocity_position = value;
+  }
+  //Sets the max acceleration of the motor controllers
+  public void SetMaxAcceleration_position(double value){
+    kMaxAcceleration_position = value;
+  }
 }

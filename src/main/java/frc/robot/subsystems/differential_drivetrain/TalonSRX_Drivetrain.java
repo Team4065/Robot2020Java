@@ -143,28 +143,28 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
   //Sets kP_velocity and updates the motorcontrollers
   @Override
-  void SetP_velocity(double value){
+  public void SetP_velocity(double value){
     kP_velocity = value;
     leftMaster.config_kP(0/*The 0 selects the PID configuration for velocity to be altered.*/, value);
     rightMaster.config_kP(0, value);
   }
   //Sets kI_velocity and updates the motorcontrollers
   @Override
-  void SetI_velocity(double value){
+  public void SetI_velocity(double value){
     kI_velocity = value;
     leftMaster.config_kI(0, value);
     rightMaster.config_kI(0, value);
   }
   //Sets kD_velocity and updates the motorcontrollers
   @Override
-  void SetD_velocity(double value){
+  public void SetD_velocity(double value){
     kD_velocity = value;
     leftMaster.config_kD(0, value);
     rightMaster.config_kD(0, value);
   }
   //Sets kFF_velocity and updates the motorcontrollers
   @Override
-  void SetFF_velocity(double value){
+  public void SetFF_velocity(double value){
     kFF_velocity = value;
     leftMaster.config_kF(0, value);
     rightMaster.config_kF(0, value);
@@ -172,30 +172,56 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
   //Sets kP_position and updates the motorcontrollers
    @Override
-  void SetP_position(double value){
+  public void SetP_position(double value){
     kP_position = value;
     leftMaster.config_kP(1/*The 1 selects the PID configuration for position to be altered.*/, value);
     rightMaster.config_kP(1, value);
   }
   //Sets kI_velocity and updates the motorcontrollers
   @Override
-  void SetI_position(double value){
+  public void SetI_position(double value){
     kI_position = value;
     leftMaster.config_kI(1, value);
     rightMaster.config_kI(1, value);
   }
   //Sets kD_position and updates the motorcontrollers
   @Override
-  void SetD_position(double value){
+  public void SetD_position(double value){
     kD_position = value;
     leftMaster.config_kD(1, value);
     rightMaster.config_kD(1, value);
   }
   //Sets kF_position and updates the motorcontrollers
   @Override
-  void SetFF_position(double value){
+  public void SetFF_position(double value){
     kFF_position = value;
     leftMaster.config_kF(1, value);
     rightMaster.config_kF(1, value);
+  }
+
+  //Sets the max velocity of the motor controllers
+  @Override
+  public void SetMaxVelocity_velocity(double value){
+    kMaxVelocity_velocity = value;
+    throw new UnsupportedOperationException();
+  }
+  //Sets the max acceleration of the motor controllers
+  @Override
+  public void SetMaxAcceleration_velocity(double value){
+    kMaxAcceleration_velocity = value;
+    throw new UnsupportedOperationException();
+  }
+
+  //Sets the max velocity of the motor controllers
+  @Override
+  public void SetMaxVelocity_position(double value){
+    kMaxVelocity_position = value;
+    throw new UnsupportedOperationException();
+  }
+  //Sets the max acceleration of the motor controllers
+  @Override
+  public void SetMaxAcceleration_position(double value){
+    kMaxAcceleration_position = value;
+    throw new UnsupportedOperationException();
   }
 }

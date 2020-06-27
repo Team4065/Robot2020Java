@@ -8,6 +8,9 @@
 
 package frc.robot;
 
+import frc.robot.ExtraMath.*;
+import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -32,6 +35,29 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    ManipulatorMoverSegment segment = new ManipulatorMoverSegment(1, Vector3.forward, 0, 0);
+    ManipulatorMoverSegment segment2 = new ManipulatorMoverSegment(1, Vector3.right, 0, 0);
+    ManipulatorMoverSegment segment3 = new ManipulatorMoverSegment(1, Vector3.forward, 0, 0);
+    ManipulatorMoverSegment segment4 = new ManipulatorMoverSegment(1, Vector3.right, 0, 0);
+    ManipulatorMoverSegment segment5 = new ManipulatorMoverSegment(1, Vector3.forward, 0, 0);
+    
+    segment.setChildSegment(segment2);
+    segment2.setChildSegment(segment3);
+    segment3.setChildSegment(segment4);
+    segment4.setChildSegment(segment5);
+
+    segment.angle = Math.PI / 2;
+    segment2.angle = -Math.PI / 2;
+    segment3.angle = Math.PI / 2;
+    segment4.angle = Math.PI / 2;
+    segment5.angle = -Math.PI / 2;
+
+    segment.forwardKinematics();
+    System.out.println(segment.end_worldspace);
+    System.out.println(segment2.end_worldspace);
+    System.out.println(segment3.end_worldspace);
+    System.out.println(segment4.end_worldspace);
+    System.out.println(segment5.end_worldspace);
   }
 
   /**

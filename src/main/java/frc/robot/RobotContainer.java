@@ -31,8 +31,8 @@ import frc.robot.commands.differential_drivetrain.ArcadeDrive;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false, false);
-  //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(false, true);
+  //TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false, false);
+  CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(false, true);
 
   TankDrive tankdrive = new TankDrive(drivetrain);
   ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);

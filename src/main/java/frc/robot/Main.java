@@ -15,7 +15,11 @@ New differential drive subsystems will need new code for motor creation, motor c
 /**
  * TODO
  * Make more differential drivetrain commands 
- *    -arcade drive
+ *    -arcade drive- done
+ * Make manipulator Subsystem
+ * Make manipulator mover Subsystem
+ * Add support for max velocity and acceleration for TalonSRX_Drivetrain
+ * Ensure that no functions in Vector3 require unit vectors but do not have garunteed unit vector usage.
  */
 
 package frc.robot;
