@@ -15,7 +15,7 @@ import java.util.Properties;
  * Add your docs here.
  */
 public class Vector3 {
-    double x, y, z = 0;
+    public double x, y, z = 0;
 
     /**shorthand for new Vector3(0, 0, -1)*/
     public static Vector3 back = new Vector3(0, 0, -1);
@@ -89,8 +89,17 @@ public class Vector3 {
         return "x: " + x + " y: " + y + " z: " + z;
     }
 
+    public String toCSV(){
+        return x + "," + y + "," + z;
+    }
+
+
     public static double angle(Vector3 from, Vector3 to){
-        return Math.toDegrees(Math.acos(dot(from, to) / (from.magnitude() * to.magnitude())));
+        double angle = Math.toDegrees(Math.acos(dot(from, to) / (from.magnitude() * to.magnitude())));
+        if(Double.isNaN(angle)){
+            angle = 0;
+        }
+        return angle;
     }
 
     public static double angleInRadians(Vector3 from, Vector3 to){
@@ -218,9 +227,13 @@ public class Vector3 {
     }
 
     public static double signedAngle(Vector3 from, Vector3 to, Vector3 axis){
-        double angle = angle(Vector3.projectOnPlane(from, axis), Vector3.projectOnPlane(to, axis));
-        double sign = (axis.normalized().sub(Vector3.cross(Vector3.projectOnPlane(from, axis), Vector3.projectOnPlane(to, axis)).normalized()).magnitude() == 0) ? -1 : 1;
-        return angle * sign;
+        double angle = Math.acos(Vector3.dot(from.normalized(), to.normalized()));
+        Vector3 cross = Vector3.cross(from, to);
+        if (Vector3.dot(axis, cross) > 0) {
+            angle = -angle;
+        }
+
+        return Math.toDegrees(angle);
     }
 
     public static double signedAngleInRadians(Vector3 from, Vector3 to, Vector3 axis){
@@ -247,6 +260,6 @@ public class Vector3 {
 
     public static Vector3 rotate(Vector3 vector, Vector3 axis, double angle){
         Vector3 _axis = axis.normalized();
-        return vector.mult(Math.cos(angle)).add(Vector3.cross(vector, _axis).mult(Math.sin(angle))).add(_axis.mult(Vector3.dot(_axis, vector) * (1 - Math.cos(angle))));
+        return vector.mult(Math.cos(Math.toRadians(angle))).add(Vector3.cross(vector, _axis).mult(Math.sin(Math.toRadians(angle)))).add(_axis.mult(Vector3.dot(_axis, vector) * (1 - Math.cos(Math.toRadians(angle)))));
     }
 }
