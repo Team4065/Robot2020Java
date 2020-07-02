@@ -103,8 +103,11 @@ public class Vector3 {
     }
 
     public static double angleInRadians(Vector3 from, Vector3 to){
-        double output = Math.acos(dot(from, to) / (from.magnitude() * to.magnitude()));
-        return (Double.isNaN(output)) ? 0 : output;
+        double angle = Math.acos(dot(from, to) / (from.magnitude() * to.magnitude()));
+        if(Double.isNaN(angle)){
+            angle = 0;
+        }
+        return angle;
     }
 
     public static Vector3 clampMagnitude(Vector3 vector, double maxLength){
@@ -250,11 +253,17 @@ public class Vector3 {
             t = 0;
         }
         double angle = Vector3.angleInRadians(a, b);
+        if(angle == 0){
+            return a;
+        }
         return a.mult(Math.sin((1 - t) * angle) / Math.sin(angle)).add(b.mult(Math.sin(t * angle) / Math.sin(angle)));
     }
 
     public static Vector3 slerpUnclamped(Vector3 a, Vector3 b, double t){
         double angle = Vector3.angleInRadians(a, b);
+        if(angle == 0){
+            return a;
+        }
         return a.mult(Math.sin((1 - t) * angle) / Math.sin(angle)).add(b.mult(Math.sin(t * angle) / Math.sin(angle)));
     }
 

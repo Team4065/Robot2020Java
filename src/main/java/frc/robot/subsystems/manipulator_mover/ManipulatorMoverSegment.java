@@ -29,6 +29,7 @@ public class ManipulatorMoverSegment {
     private Vector3 axis_worldspace;
     protected ManipulatorMoverSegment childSegment;
     protected ManipulatorMoverSegment parentSegment;
+    public Vector3 anchor = Vector3.zero;//worldspace
     
     public ManipulatorMoverSegment(double _length, Vector3 _axis, double _minAngle, double _maxAngle){
         length = _length;
@@ -67,11 +68,11 @@ public class ManipulatorMoverSegment {
 
     public void forwardKinematics(){
         end = Vector3.rotate(initialOrientation, axis, angle).normalized().mult(length);
-        end_worldspace = end;//worldspace end is the localspace end for the first segment
+        end_worldspace = end.add(anchor);//worldspace end is the localspace end for the first segment
         axis_worldspace = axis;//worldspace axis is the localspace axis for the first segment
 
         if(childSegment != null){
-            childSegment.forwardKinematics(end, end_worldspace.sub(Vector3.zero), new Vector3[]{axis_worldspace}, new double[]{angle});
+            childSegment.forwardKinematics(end_worldspace, end, new Vector3[]{axis_worldspace}, new double[]{angle});
         }
     }
 
@@ -95,43 +96,26 @@ public class ManipulatorMoverSegment {
 
         //continues forward kinematics until complete
         if(childSegment != null){
-            childSegment.forwardKinematics(end_worldspace, end_worldspace.sub(base), nextAxis, nextAngle);
+            childSegment.forwardKinematics(end_worldspace, end, nextAxis, nextAngle);
         }
     }
 
-    public void inverseKinematics(Vector3 target){        
+    public void inverseKinematics(Vector3 target, Vector3 _anchor){ 
+        anchor = _anchor;       
         Vector3 nextTarget;
         if(parentSegment != null){
             nextTarget = parentSegment.end_worldspace.sub(target).normalized().mult(length).add(target);
             end = target.sub(parentSegment.end_worldspace).normalized().mult(length);
         }else{
-            nextTarget = Vector3.zero.sub(target).normalized().mult(length).add(target);
-            end = target.sub(Vector3.zero).normalized().mult(length);
+            nextTarget = anchor.sub(target).normalized().mult(length).add(target);
+            end = target.sub(anchor).normalized().mult(length);
         }
         
         end_worldspace = target;
 
         if(parentSegment != null){
-            parentSegment.inverseKinematics(nextTarget);
+            parentSegment.inverseKinematics(nextTarget, anchor);
         }
     }
-
-    public void inverseKinematics(Vector3 target, boolean no){        
-        Vector3 nextTarget;
-        if(parentSegment != null){
-            nextTarget = parentSegment.end_worldspace.sub(target).normalized().mult(length).add(target);
-            end = target.sub(parentSegment.end_worldspace).normalized().mult(length);
-        }else{
-            nextTarget = Vector3.zero.sub(target).normalized().mult(length).add(target);
-            end = target.sub(Vector3.zero).normalized().mult(length);
-        }
-        
-        end_worldspace = target;
-
-        if(parentSegment != null){
-            //parentSegment.inverseKinematics(nextTarget);
-        }
-    }
-
 
 }

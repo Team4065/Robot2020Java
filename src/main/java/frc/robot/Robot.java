@@ -48,6 +48,7 @@ public class Robot extends TimedRobot {
         PrintWriter out = new PrintWriter(bWriter)) {
 
       out.println();
+      out.println(segment.anchor.toCSV());
       out.println(segment.end_worldspace.toCSV());
       out.println(segment2.end_worldspace.toCSV());
       out.println(segment3.end_worldspace.toCSV());
@@ -70,7 +71,23 @@ public class Robot extends TimedRobot {
 
   void inverse(Vector3 target){
     //segment9.inverseKinematics(target);
-    segment4.inverseKinematics(target);
+    segment4.inverseKinematics(target, new Vector3(0, 0, 0));
+    segment.realign();
+    segment2.realign();
+    segment3.realign();
+    segment4.realign();
+    //segment5.realign();
+    //segment6.realign();
+    //segment7.realign();
+    //segment8.realign();
+    //segment9.realign();
+    segment.forwardKinematics();
+    makeFrame();
+  }
+
+  void inverse(Vector3 target, Vector3 anchor){
+    //segment9.inverseKinematics(target)
+    segment4.inverseKinematics(target, anchor);
     segment.realign();
     segment2.realign();
     segment3.realign();
@@ -93,6 +110,15 @@ public class Robot extends TimedRobot {
   void slerpInverse(Vector3 start, Vector3 end, int steps){
     for(int i = 0; i < steps; ++i){
       inverse(Vector3.slerp(start, end, (double)i / (double)steps));
+    }
+  }
+
+  void slerpInverse(Vector3 start, Vector3 end, Vector3 anchorStart, Vector3 anchorEnd, int steps){
+    for(int i = 0; i < steps; ++i){
+      inverse(
+        Vector3.slerp(start, end, (double)i / (double)steps),
+        Vector3.lerp(anchorStart, anchorEnd, (double)i / (double)steps)
+         );
     }
   }
 
@@ -129,6 +155,14 @@ public class Robot extends TimedRobot {
     segment.forwardKinematics();
     makeFrame();
 
+    slerpInverse(new Vector3(0, 2, 0), new Vector3(-1, 1, 1), 100);
+    slerpInverse(new Vector3(-1, 1, 1), new Vector3(-1, 1, 1), new Vector3(0, 0, 0), new Vector3(-1, 0, 0), 100);
+    slerpInverse(new Vector3(-1, 1, 1), new Vector3(1, 1, -1), new Vector3(-1, 0, 0), new Vector3(1, 0, 0), 100);
+    slerpInverse(new Vector3(1, 1, -1), new Vector3(1, 1.5, 0), new Vector3(1, 0, 0), new Vector3(0.5, 0, 0.5), 50);
+    slerpInverse(new Vector3(1, 1.5, 0), new Vector3(1, 1, 1), new Vector3(0.5, 0, 0.5), new Vector3(0, 0, 1), 50);
+    slerpInverse(new Vector3(1, 1, 1), new Vector3(0, 1.5, 1), new Vector3(0, 0, 1), new Vector3(0, 0, 0.5), 50);
+    slerpInverse(new Vector3(0, 1.5, 1), new Vector3(-1, 1, 1), new Vector3(0, 0, 0.5), new Vector3(0, 0, 0), 50);
+    /*
     slerpInverse(new Vector3(0, 2, 0), new Vector3(1, 0.5, 1), 100);
     slerpInverse(new Vector3(1, 0.5, 1), new Vector3(1, 1, -1), 100);
     slerpInverse(new Vector3(1, 1, -1), new Vector3(-1, 1, 1), 100);
@@ -137,11 +171,14 @@ public class Robot extends TimedRobot {
     slerpInverse(new Vector3(-1, 1, -1), new Vector3(0, 1, -2), 100);
     slerpInverse(new Vector3(0, 1, -2), new Vector3(1, 1, -1), 100);
     slerpInverse(new Vector3(1, 1, -1), new Vector3(1, 1.5, 1), 100);
+    */
+    /*
     //slerpInverse(new Vector3(0, 5, 0), new Vector3(3, 3, 0), 100);
     //slerpInverse(new Vector3(3, 3, 0), new Vector3(3, 0, 0), 100);
     //slerpInverse(new Vector3(3, 0, 0), new Vector3(3, 0, 3), 100);
     //slerpInverse(new Vector3(3, 0, 3), new Vector3(1, 3, 1), 100);
     //slerpInverse(new Vector3(1, 3, 1), new Vector3(1, 1, 1), 100);
+    */
   }
 
   /**
