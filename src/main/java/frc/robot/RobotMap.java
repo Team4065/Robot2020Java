@@ -24,4 +24,13 @@ public class RobotMap {
 
     //Controls
     public static final int CONTROLS_MAIN_CONTROLLER_ID = 0;
+
+    //Program info
+    /**
+     * The delay between updates in seconds (20ms)
+     */
+    public static final double DELTA_TIME = 0.02;
+
+    //Manipulator Mover
+    public static final double ACCURACY_TOLERANCE = 0.1;
 }

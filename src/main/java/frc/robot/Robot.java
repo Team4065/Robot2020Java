@@ -9,15 +9,16 @@
 package frc.robot;
 
 import frc.robot.ExtraMath.*;
+import frc.robot.Utility.FileOutput;
+import frc.robot.commands.manipulator_mover.GoToPosition;
+import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
-//for unity testing
-import java.io.*;
-//
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 
 
 /**
@@ -31,6 +32,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  /*
+  //for unity testing v1
   ManipulatorMoverSegment segment = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
   ManipulatorMoverSegment segment2 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
   ManipulatorMoverSegment segment3 = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
@@ -41,29 +44,7 @@ public class Robot extends TimedRobot {
   //ManipulatorMoverSegment segment8 = new ManipulatorMoverSegment(0.5, Vector3.right, -90, 90);
   //ManipulatorMoverSegment segment9 = new ManipulatorMoverSegment(0.5, Vector3.forward, -90, 90);
 
-  //for unity testing
-  void makeFrame(){
-    try (FileWriter outFile = new FileWriter("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt", true);
-        BufferedWriter bWriter = new BufferedWriter(outFile);
-        PrintWriter out = new PrintWriter(bWriter)) {
-
-      out.println();
-      out.println(segment.anchor.toCSV());
-      out.println(segment.end_worldspace.toCSV());
-      out.println(segment2.end_worldspace.toCSV());
-      out.println(segment3.end_worldspace.toCSV());
-      out.println(segment4.end_worldspace.toCSV());
-      //out.println(segment5.end_worldspace.toCSV());
-      //out.println(segment6.end_worldspace.toCSV());
-      //out.println(segment7.end_worldspace.toCSV());
-      //out.println(segment8.end_worldspace.toCSV());
-      //out.println(segment9.end_worldspace.toCSV());
-      
-
-    } catch (IOException e) {
-    e.printStackTrace();
-    }
-  }
+  
 
   void inverse(double x, double y, double z){
     inverse(new Vector3(x, y, z));
@@ -122,7 +103,34 @@ public class Robot extends TimedRobot {
     }
   }
 
-  //
+  */
+
+  /*
+  //for unity testing v2
+  ManipulatorMoverSegment segment = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
+  ManipulatorMoverSegment segment2 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
+  ManipulatorMoverSegment segment3 = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
+  ManipulatorMoverSegment segment4 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
+  ManipulatorMoverSegment[] segments = {segment, segment2, segment3, segment4};
+  ManipulatorMover manipulatorMover = new ManipulatorMover(segments);
+
+  void slerpInverse(Vector3 start, Vector3 end, int steps){
+    for(int i = 0; i < steps; ++i){
+      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
+      manipulatorMover.updateKinematics();
+    }
+  }
+
+  void slerpInverse(Vector3 start, Vector3 end, Vector3 anchorStart, Vector3 anchorEnd, int steps){
+    for(int i = 0; i < steps; ++i){
+      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
+      manipulatorMover.setAnchor(Vector3.lerp(anchorStart, anchorEnd, (double)i / (double)steps));
+      manipulatorMover.updateKinematics();
+    }
+  }
+  */
+
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -130,55 +138,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    
-
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
+    FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
+    /*
+    slerpInverse(new Vector3(0, 2, 0), new Vector3(1, 1, 0), 100);
+    slerpInverse(new Vector3(1, 1, 0), new Vector3(1, 1, 1), 100);
+    slerpInverse(new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(0, 0, 0), new Vector3(1, 0, 0), 100);
+    slerpInverse(new Vector3(1, 1, 1), new Vector3(-1, 1, 1), new Vector3(1, 0, 0), new Vector3(0, 0, 0), 100);
+    slerpInverse(new Vector3(-1, 1, 1), new Vector3(-1, 1, -1), new Vector3(0, 0, 0), new Vector3(0, 0, 0), 100);
+    */
     m_robotContainer = new RobotContainer();
-    
-    segment.setChildSegment(segment2);
-    segment2.setChildSegment(segment3);
-    segment3.setChildSegment(segment4);
-    //segment4.setChildSegment(segment5);
-    //segment5.setChildSegment(segment6);
-    //segment6.setChildSegment(segment7);
-    //segment7.setChildSegment(segment8);
-    //segment8.setChildSegment(segment9);
-
-    //clears the file
-    try (FileWriter outFile = new FileWriter("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt")) {
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    segment.forwardKinematics();
-    makeFrame();
-
-    slerpInverse(new Vector3(0, 2, 0), new Vector3(-1, 1, 1), 100);
-    slerpInverse(new Vector3(-1, 1, 1), new Vector3(-1, 1, 1), new Vector3(0, 0, 0), new Vector3(-1, 0, 0), 100);
-    slerpInverse(new Vector3(-1, 1, 1), new Vector3(1, 1, -1), new Vector3(-1, 0, 0), new Vector3(1, 0, 0), 100);
-    slerpInverse(new Vector3(1, 1, -1), new Vector3(1, 1.5, 0), new Vector3(1, 0, 0), new Vector3(0.5, 0, 0.5), 50);
-    slerpInverse(new Vector3(1, 1.5, 0), new Vector3(1, 1, 1), new Vector3(0.5, 0, 0.5), new Vector3(0, 0, 1), 50);
-    slerpInverse(new Vector3(1, 1, 1), new Vector3(0, 1.5, 1), new Vector3(0, 0, 1), new Vector3(0, 0, 0.5), 50);
-    slerpInverse(new Vector3(0, 1.5, 1), new Vector3(-1, 1, 1), new Vector3(0, 0, 0.5), new Vector3(0, 0, 0), 50);
-    /*
-    slerpInverse(new Vector3(0, 2, 0), new Vector3(1, 0.5, 1), 100);
-    slerpInverse(new Vector3(1, 0.5, 1), new Vector3(1, 1, -1), 100);
-    slerpInverse(new Vector3(1, 1, -1), new Vector3(-1, 1, 1), 100);
-    slerpInverse(new Vector3(-1, 1, 1), new Vector3(-2, 1, 0), 100);
-    slerpInverse(new Vector3(-2, 1, 0), new Vector3(-1, 1, -1), 100);
-    slerpInverse(new Vector3(-1, 1, -1), new Vector3(0, 1, -2), 100);
-    slerpInverse(new Vector3(0, 1, -2), new Vector3(1, 1, -1), 100);
-    slerpInverse(new Vector3(1, 1, -1), new Vector3(1, 1.5, 1), 100);
-    */
-    /*
-    //slerpInverse(new Vector3(0, 5, 0), new Vector3(3, 3, 0), 100);
-    //slerpInverse(new Vector3(3, 3, 0), new Vector3(3, 0, 0), 100);
-    //slerpInverse(new Vector3(3, 0, 0), new Vector3(3, 0, 3), 100);
-    //slerpInverse(new Vector3(3, 0, 3), new Vector3(1, 3, 1), 100);
-    //slerpInverse(new Vector3(1, 3, 1), new Vector3(1, 1, 1), 100);
-    */
   }
 
   /**
@@ -237,6 +205,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    m_robotContainer.path.schedule();
   }
 
   /**
@@ -244,6 +213,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
+    /*
+    Vector3 target = new Vector3(RobotContainer.controller.getX(Hand.kLeft), 1, -RobotContainer.controller.getY(Hand.kLeft));
+    target = target.normalized().mult(2);
+    m_robotContainer.goToPosition = new GoToPosition(m_robotContainer.manipulatorMover, target, 10);
+    m_robotContainer.goToPosition.schedule();
+    */
   }
 
   @Override

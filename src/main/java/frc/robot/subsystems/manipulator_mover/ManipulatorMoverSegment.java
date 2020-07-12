@@ -18,18 +18,18 @@ import frc.robot.ExtraMath.*;
  */
 public class ManipulatorMoverSegment {
     
-    static Vector3 initialOrientation = Vector3.up;
-    /*private*/public Vector3 end;//localspace offset worldspace orientation
-    public Vector3 end_worldspace = Vector3.zero;
-    /*private*/public double angle = 0;//localspace
+    static private Vector3 initialOrientation = Vector3.up;
+    private Vector3 end;//localspace offset, robotspace orientation
+    private Vector3 end_robotspace = Vector3.zero;
+    private double angle = 0;//localspace
     double maxAngle = 0;//localspace
     double minAngle = 0;//localspace
     double length = 0;
-    /*private*/public Vector3 axis;//localspace
+    private Vector3 axis;//localspace
     private Vector3 axis_worldspace;
+
     protected ManipulatorMoverSegment childSegment;
     protected ManipulatorMoverSegment parentSegment;
-    public Vector3 anchor = Vector3.zero;//worldspace
     
     public ManipulatorMoverSegment(double _length, Vector3 _axis, double _minAngle, double _maxAngle){
         length = _length;
@@ -39,17 +39,19 @@ public class ManipulatorMoverSegment {
     }
 
 
-    /*protected*/public void setChildSegment(ManipulatorMoverSegment segment){
+    protected void setChildSegment(ManipulatorMoverSegment segment){
         childSegment = segment;
         segment.parentSegment = this;
     }
-    /*protected*/public void setParentSegment(ManipulatorMoverSegment segment){
+    protected void setParentSegment(ManipulatorMoverSegment segment){
         parentSegment = segment;
         segment.childSegment = this;
     }
 
-    //removes rotation that occured off axis
-    public/*protected*/ void realign(){
+    /**
+     * removes rotation that occured off axis
+     */
+    protected void realign(){
         end = Vector3.projectOnPlane(end, axis_worldspace).normalized().mult(length);
 
         if(parentSegment == null){
@@ -66,16 +68,21 @@ public class ManipulatorMoverSegment {
         }
     }
 
-    public void forwardKinematics(){
+    /**
+     * Calculates the position of all child segments based on their angles and lengths.
+     * @param anchor the starting location of the first segment 
+     */
+    protected void forwardKinematics(Vector3 anchor){
         end = Vector3.rotate(initialOrientation, axis, angle).normalized().mult(length);
-        end_worldspace = end.add(anchor);//worldspace end is the localspace end for the first segment
+        end_robotspace = end.add(anchor);//worldspace end is the localspace end for the first segment
         axis_worldspace = axis;//worldspace axis is the localspace axis for the first segment
 
         if(childSegment != null){
-            childSegment.forwardKinematics(end_worldspace, end, new Vector3[]{axis_worldspace}, new double[]{angle});
+            childSegment.forwardKinematics(end_robotspace, end, new Vector3[]{axis_worldspace}, new double[]{angle});
         }
     }
 
+    //the recusive part of the forward kinematics algorithm
     private void forwardKinematics(Vector3 base, Vector3 baseDirection, Vector3[] baseAxis, double[] baseAngle){
         Vector3[] nextAxis = new Vector3[baseAxis.length + 1];
         double[] nextAngle = new double[baseAngle.length + 1];
@@ -92,30 +99,38 @@ public class ManipulatorMoverSegment {
         
         //calculates the end point
         end = Vector3.rotate(baseDirection, axis_worldspace, angle).normalized().mult(length);
-        end_worldspace = end.add(base);
+        end_robotspace = end.add(base);
 
         //continues forward kinematics until complete
         if(childSegment != null){
-            childSegment.forwardKinematics(end_worldspace, end, nextAxis, nextAngle);
+            childSegment.forwardKinematics(end_robotspace, end, nextAxis, nextAngle);
         }
     }
 
-    public void inverseKinematics(Vector3 target, Vector3 _anchor){ 
-        anchor = _anchor;       
+    /**
+     * A recursive inverse kinematics function
+     * It updates all parent segments of the segment this function is called from.
+     * @param target the desired end point
+     * @param anchor the starting location of the first segment
+     */
+    protected void inverseKinematics(Vector3 target, Vector3 anchor){      
         Vector3 nextTarget;
         if(parentSegment != null){
-            nextTarget = parentSegment.end_worldspace.sub(target).normalized().mult(length).add(target);
-            end = target.sub(parentSegment.end_worldspace).normalized().mult(length);
+            nextTarget = parentSegment.end_robotspace.sub(target).normalized().mult(length).add(target);
+            end = target.sub(parentSegment.end_robotspace).normalized().mult(length);
         }else{
             nextTarget = anchor.sub(target).normalized().mult(length).add(target);
             end = target.sub(anchor).normalized().mult(length);
         }
         
-        end_worldspace = target;
+        end_robotspace = target;
 
         if(parentSegment != null){
             parentSegment.inverseKinematics(nextTarget, anchor);
         }
     }
 
+    public Vector3 getRobotspaceEnd(){
+        return end_robotspace;
+    }
 }

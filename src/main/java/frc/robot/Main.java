@@ -27,6 +27,8 @@ New differential drive subsystems will need new code for motor creation, motor c
  *    -allow inverse kinematics targets for multiple segment
  *        -temporary targets for parent segments and the main target overall
  *        -these other targets are meant to control the path of the segments not the final position
+ *    -implement the getting of the measured state
+ *    -change all instances of worldspace to robotspace
  * 
  * Add support for max velocity and acceleration for TalonSRX_Drivetrain
  * 
@@ -40,6 +42,7 @@ New differential drive subsystems will need new code for motor creation, motor c
  * Add variable length to inverse kinematics
  * 
  * Add proper documentation for inverse kinematics
+ *    -change all instances of worldspace to robotspace
  * 
  * 
  */

@@ -24,7 +24,7 @@ public class Drivetrain extends SubsystemBase {
   protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
 
   protected double leftTarget, rightTarget = 0;
-  protected Talon[] simulationMotors;
+  public Talon[] simulationMotors;
 
   public static enum ControlMode {
     PERCENT,
@@ -50,7 +50,7 @@ public class Drivetrain extends SubsystemBase {
       simulationMotors[createdSimulationMotors] = new Talon(i);
       ++createdSimulationMotors;
     }
-
+    
   }
 
   @Override
