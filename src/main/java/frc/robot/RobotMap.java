@@ -32,5 +32,5 @@ public class RobotMap {
     public static final double DELTA_TIME = 0.02;
 
     //Manipulator Mover
-    public static final double ACCURACY_TOLERANCE = 0.1;
+    public static final double MANIPULATOR_MOVER_ACCURACY_TOLERANCE = 0.1;
 }

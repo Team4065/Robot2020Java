@@ -9,59 +9,74 @@ package frc.robot.commands.manipulator_mover;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
-import frc.robot.RobotMap;
 import frc.robot.ExtraMath.*;
+import frc.robot.RobotMap;
 
-public class GoToPosition extends CommandBase {
-  /**
-   * Creates a new GoToPosition.
-   */
+public class GoToState extends CommandBase {
   private ManipulatorMover manipulatorMover;
-  private Vector3 target;
+  private Vector3[] targets;
   private double speed;
 
   /**
    * Moves the target position at a set rate
    * @param _manipulatorMover the manipulator mover to be controlled
-   * @param _target the desired endpoint
+   * @param _targets the desired endpoint
    * @param _speed the speed in units per second
    */
-  public GoToPosition(ManipulatorMover _manipulatorMover, Vector3 _target, double _speed) {
+  public GoToState(ManipulatorMover _manipulatorMover, Vector3[] _targets, double _speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(_manipulatorMover);
     manipulatorMover = _manipulatorMover;
-    target = _target;
+    targets = _targets;
     speed = _speed;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //enables all subtargets
+    for(int i = 0; i < manipulatorMover.getSegments().length - 1; ++i){
+      manipulatorMover.enableSubTarget(i);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Vector3 tempTarget = Vector3.moveTowards(manipulatorMover.getMeasuredFinalEndpoint(), target, speed * RobotMap.DELTA_TIME);
-    /*
-    double timeJump = 1;
-    Vector3 tempTarget = Vector3.slerp(manipulatorMover.getMeasuredEndpoint(), target, timeJump);
-    while(tempTarget.sub(manipulatorMover.getMeasuredEndpoint()).magnitude() >  speed * RobotMap.DELTA_TIME){
-      timeJump *= 0.75;
-      tempTarget = Vector3.slerp(manipulatorMover.getMeasuredEndpoint(), target, timeJump);
+    //changes all the subtargets and the target
+    Vector3[] currentState = manipulatorMover.getMeasuredEndpoints();
+    Vector3[] tempTargets = new Vector3[currentState.length];
+    for(int i = 0; i < tempTargets.length; ++i){
+      tempTargets[i] = Vector3.moveTowards(currentState[i], targets[i], speed * RobotMap.DELTA_TIME);
+     
+      if(i < tempTargets.length - 1){
+        manipulatorMover.setSubTarget(i, tempTargets[i]);//for all but the last segment
+      }else{
+        manipulatorMover.setTarget(tempTargets[i]);
+      }
+      
     }
-    */
-    manipulatorMover.setTarget(tempTarget);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //disables all subtargets
+    for(int i = 0; i < manipulatorMover.getSegments().length - 1; ++i){
+      manipulatorMover.disableSubTarget(i);
+    }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return manipulatorMover.getMeasuredFinalEndpoint().sub(target).magnitude() < RobotMap.MANIPULATOR_MOVER_ACCURACY_TOLERANCE;
+    Vector3[] currentState = manipulatorMover.getMeasuredEndpoints();
+    double offset = 0;
+    for(int i = 0; i < currentState.length; ++i){
+      offset += currentState[i].sub(targets[i]).magnitude();
+    }
+    offset /= currentState.length;
+    return offset < RobotMap.MANIPULATOR_MOVER_ACCURACY_TOLERANCE;
   }
 }

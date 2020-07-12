@@ -47,11 +47,11 @@ public class RobotContainer {
   ManipulatorMoverSegment segment2 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
   ManipulatorMoverSegment segment3 = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
   ManipulatorMoverSegment segment4 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
-  //ManipulatorMoverSegment segment5 = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
-  ManipulatorMoverSegment[] segments = {segment, segment2, segment3, segment4};//, segment5};
+  ManipulatorMoverSegment[] segments = {segment, segment2, segment3, segment4};
   ManipulatorMover manipulatorMover = new ManipulatorMover(segments);
 
   //GoToPosition goToPosition = new GoToPosition(manipulatorMover, new Vector3(1, 1, 1), 1);
+  Path2 path2 = new Path2(manipulatorMover);
   Path path = new Path(manipulatorMover);
 
   /**

@@ -23,7 +23,7 @@ public class ManipulatorMover extends SubsystemBase {
   private boolean isInverseKinematicsEnabled = true/*false*/;
 
   private Vector3[] subTargets;//the desired end point of each segment (robot space) ([0] = base segment. [last] = second to last segment)
-  private boolean areSubTargetsEnabled = true;
+  private boolean[] enabledSubTargets;//the subtargets that are enabled
 
   public ManipulatorMover(ManipulatorMoverSegment[] _segments) {
     segments = _segments;
@@ -33,7 +33,15 @@ public class ManipulatorMover extends SubsystemBase {
 
     segments[0].forwardKinematics(anchor);//calculates robotspace variables which prevents null pointer errors
     
+    //setup for sub targets
     subTargets = new Vector3[segments.length - 1];
+    enabledSubTargets = new boolean[segments.length - 1];
+    for(int i = 0; i < subTargets.length; ++i){
+      subTargets[i] = segments[i].getRobotspaceEnd();
+    }
+    for(boolean b : enabledSubTargets){
+      b = false;
+    }
 
     target = segments[segments.length - 1].getRobotspaceEnd();
   }
@@ -42,8 +50,9 @@ public class ManipulatorMover extends SubsystemBase {
   public void periodic() {
     
     if(isInverseKinematicsEnabled){
-      inverseKinematics();
 
+      inverseKinematics();
+      subInverseKinematics();
       //for testing
       FileOutput.printManipulatorMoverState("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt", this);
     }
@@ -54,6 +63,7 @@ public class ManipulatorMover extends SubsystemBase {
   public void gotoInitialTeleopState(){}
 
   public void gotoInitialAutonomusState(){}
+
 
   public void setTarget(Vector3 _target){
     target = _target;
@@ -66,6 +76,25 @@ public class ManipulatorMover extends SubsystemBase {
   public Vector3 getTarget(){
     return target;
   }
+
+
+  public void setSubTarget(int targetIndex, Vector3 _target){
+    subTargets[targetIndex] = _target;
+  }
+
+  public Vector3 getSubTarget(int targetIndex){
+    return subTargets[targetIndex];
+  }
+
+  public void enableSubTarget(int targetIndex){
+    enabledSubTargets[targetIndex] = true;
+  }
+
+  public void disableSubTarget(int targetIndex){
+    enabledSubTargets[targetIndex] = false;
+  }
+
+
 
   public void setAnchor(Vector3 _anchor){
     anchor = _anchor;
@@ -92,12 +121,16 @@ public class ManipulatorMover extends SubsystemBase {
   }
   
   private void subInverseKinematics(){
-    for(int i = 0; i < subTargets.length; ++i){
-      segments[i].inverseKinematics(subTargets[i], anchor);
-      for(ManipulatorMoverSegment segment : segments){
-        segment.realign();
+    for(int i = subTargets.length - 1; i >= 0; --i){
+      if(enabledSubTargets[i]){
+
+        segments[i].inverseKinematics(subTargets[i], anchor);
+        for(ManipulatorMoverSegment segment : segments){
+          segment.realign();
+        }
+        segments[0].forwardKinematics(anchor);
+
       }
-      segments[0].forwardKinematics(anchor);
     }
   }
 
@@ -105,13 +138,26 @@ public class ManipulatorMover extends SubsystemBase {
    * incomplete
    * @return
    */
-  public Vector3 getMeasuredEndpoint(){
+  public Vector3 getMeasuredFinalEndpoint(){
     return target;
   }
+  
+  /**
+   * incomplete
+   * @return
+   */
+  public Vector3[] getMeasuredEndpoints(){
+    Vector3[] endpoints = new Vector3[segments.length];
+    for(int i = 0; i < segments.length; ++i){
+      endpoints[i] = segments[i].getRobotspaceEnd();
+    }
+    return endpoints;
+  }
+  
   /*for testing*/
   public void updateKinematics(){
-    segments[0].forwardKinematics(anchor);
     inverseKinematics();
+    subInverseKinematics();
     FileOutput.printManipulatorMoverState("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt", this);
   }
 

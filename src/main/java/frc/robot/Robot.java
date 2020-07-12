@@ -130,7 +130,23 @@ public class Robot extends TimedRobot {
   }
   */
 
-  
+  /*
+  //for unity testing v4
+  void slerpInverse(ManipulatorMover manipulatorMover, Vector3 start, Vector3 end, Vector3 subStart, Vector3 subEnd, int steps){
+    for(int i = 0; i < steps; ++i){
+      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
+      manipulatorMover.setSubTarget(0, Vector3.slerp(subStart, subEnd, (double)i / (double)steps));
+      manipulatorMover.updateKinematics();
+    }
+  }
+
+  void slerpInverse(ManipulatorMover manipulatorMover, Vector3 start, Vector3 end, int steps){
+    for(int i = 0; i < steps; ++i){
+      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
+      manipulatorMover.updateKinematics();
+    }
+  }
+  */
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -139,14 +155,17 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
-    /*
-    slerpInverse(new Vector3(0, 2, 0), new Vector3(1, 1, 0), 100);
-    slerpInverse(new Vector3(1, 1, 0), new Vector3(1, 1, 1), 100);
-    slerpInverse(new Vector3(1, 1, 1), new Vector3(1, 1, 1), new Vector3(0, 0, 0), new Vector3(1, 0, 0), 100);
-    slerpInverse(new Vector3(1, 1, 1), new Vector3(-1, 1, 1), new Vector3(1, 0, 0), new Vector3(0, 0, 0), 100);
-    slerpInverse(new Vector3(-1, 1, 1), new Vector3(-1, 1, -1), new Vector3(0, 0, 0), new Vector3(0, 0, 0), 100);
-    */
     m_robotContainer = new RobotContainer();
+    /*
+    ManipulatorMover manipulatorMover = m_robotContainer.manipulatorMover;
+    manipulatorMover.enableSubTarget(0);
+    slerpInverse(manipulatorMover, new Vector3(0, 2, 0), new Vector3(0, 1, 1), new Vector3(0, 1, 0), new Vector3(-0.5, 0.5, 0), 100);
+    slerpInverse(manipulatorMover, new Vector3(0, 1, 1), new Vector3(-1, 1, -1), new Vector3(-0.5, 0.5, 0), new Vector3(-0.5, 0.5, 0), 100);
+    slerpInverse(manipulatorMover, new Vector3(-1, 1, -1), new Vector3(-1, 1, -1), new Vector3(-0.5, 0.5, 0), new Vector3(0, 0.5, 0), 100);
+    slerpInverse(manipulatorMover, new Vector3(-1, 1, -1), new Vector3(-1, 1, -1), new Vector3(0, 0.5, 0), new Vector3(0.5, 0.5, 0), 100);
+    slerpInverse(manipulatorMover, new Vector3(-1, 1, -1), new Vector3(1, 1, -1), new Vector3(0.5, 0.5, 0), new Vector3(0.5, 0.5, 0), 100);
+    slerpInverse(manipulatorMover, new Vector3(1, 1, -1), new Vector3(1, 1, 0), new Vector3(0.5, 0.5, 0), new Vector3(, 0.5, 0), 100);
+    */
   }
 
   /**
@@ -205,7 +224,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.path.schedule();
+    m_robotContainer.path2.schedule();
+    //m_robotContainer.path.schedule();
   }
 
   /**
