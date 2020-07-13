@@ -29,6 +29,7 @@ New differential drive subsystems will need new code for motor creation, motor c
  *        -these other targets are meant to control the path of the segments not the final position
  *    -implement the getting of the measured state
  *    -change all instances of worldspace to robotspace
+ *    -documentation
  * 
  * Add support for max velocity and acceleration for TalonSRX_Drivetrain
  * 

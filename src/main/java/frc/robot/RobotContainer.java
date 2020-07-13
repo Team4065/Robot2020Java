@@ -43,12 +43,22 @@ public class RobotContainer {
   ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);
 
   //for unity testing v3
+  /*
   ManipulatorMoverSegment segment = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
   ManipulatorMoverSegment segment2 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
   ManipulatorMoverSegment segment3 = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
   ManipulatorMoverSegment segment4 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
-  ManipulatorMoverSegment[] segments = {segment, segment2, segment3, segment4};
+  */
+  /*
+  PWM_ManipulatorMoverSegment segment = new PWM_ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90, new int[]{7}, new boolean[]{false}, new int[]{0, 1});
+  PWM_ManipulatorMoverSegment segment2 = new PWM_ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90, new int[]{8}, new boolean[]{false}, new int[]{2, 3});
+  PWM_ManipulatorMoverSegment segment3 = new PWM_ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90, new int[]{9}, new boolean[]{false}, new int[]{4, 5});
+  PWM_ManipulatorMoverSegment segment4 = new PWM_ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90, new int[]{10}, new boolean[]{false}, new int[]{6, 7});
+  PWM_ManipulatorMoverSegment[] segments = {segment, segment2, segment3, segment4};
   ManipulatorMover manipulatorMover = new ManipulatorMover(segments);
+  */
+  
+  ManipulatorMover manipulatorMover = new ManipulatorMover();
 
   //GoToPosition goToPosition = new GoToPosition(manipulatorMover, new Vector3(1, 1, 1), 1);
   Path2 path2 = new Path2(manipulatorMover);

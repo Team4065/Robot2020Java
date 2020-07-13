@@ -24,8 +24,8 @@ public class Path extends SequentialCommandGroup {
     super(
       new GoToPosition(manipulatorMover, new Vector3(1, 1, 1), 1),//location, speed
       new GoToPosition(manipulatorMover, new Vector3(-1, 1, 1), 2),
-      new GoToPosition(manipulatorMover, new Vector3(0, 2, 1), 1),
-      new GoToPosition(manipulatorMover, new Vector3(0, 1, 1), 1)
+      new GoToPosition(manipulatorMover, new Vector3(0, 2, 0), 1),
+      new GoToPosition(manipulatorMover, new Vector3(0, 1, -1), 1)
       );
   }
 }

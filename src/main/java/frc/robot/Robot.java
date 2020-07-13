@@ -156,16 +156,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
     m_robotContainer = new RobotContainer();
-    /*
-    ManipulatorMover manipulatorMover = m_robotContainer.manipulatorMover;
-    manipulatorMover.enableSubTarget(0);
-    slerpInverse(manipulatorMover, new Vector3(0, 2, 0), new Vector3(0, 1, 1), new Vector3(0, 1, 0), new Vector3(-0.5, 0.5, 0), 100);
-    slerpInverse(manipulatorMover, new Vector3(0, 1, 1), new Vector3(-1, 1, -1), new Vector3(-0.5, 0.5, 0), new Vector3(-0.5, 0.5, 0), 100);
-    slerpInverse(manipulatorMover, new Vector3(-1, 1, -1), new Vector3(-1, 1, -1), new Vector3(-0.5, 0.5, 0), new Vector3(0, 0.5, 0), 100);
-    slerpInverse(manipulatorMover, new Vector3(-1, 1, -1), new Vector3(-1, 1, -1), new Vector3(0, 0.5, 0), new Vector3(0.5, 0.5, 0), 100);
-    slerpInverse(manipulatorMover, new Vector3(-1, 1, -1), new Vector3(1, 1, -1), new Vector3(0.5, 0.5, 0), new Vector3(0.5, 0.5, 0), 100);
-    slerpInverse(manipulatorMover, new Vector3(1, 1, -1), new Vector3(1, 1, 0), new Vector3(0.5, 0.5, 0), new Vector3(, 0.5, 0), 100);
-    */
   }
 
   /**
@@ -224,8 +214,9 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    m_robotContainer.path2.schedule();
-    //m_robotContainer.path.schedule();
+    //m_robotContainer.path2.schedule();
+    //m_robotContainer.manipulatorMover.setTarget(new Vector3(1, 1, 1));
+    m_robotContainer.path.schedule();
   }
 
   /**

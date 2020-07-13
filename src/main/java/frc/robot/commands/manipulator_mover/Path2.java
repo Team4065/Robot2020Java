@@ -23,7 +23,9 @@ public class Path2 extends SequentialCommandGroup {
     // super(new FooCommand(), new BarCommand());
     super(
       new GoToState(manipulatorMover, new Vector3[]{new Vector3(0, 0.5, 0), new Vector3(0, 1, 0), new Vector3(0, 1.5, 0), new Vector3(0, 2, 0)}, 1),
-      new GoToState(manipulatorMover, new Vector3[]{new Vector3(0, 0.5, 0), new Vector3(0, 1, 1), new Vector3(1, 1.5, 1), new Vector3(1, 2, 1)}, 1)
+      new GoToState(manipulatorMover, new Vector3[]{new Vector3(0, 0.5, 0), new Vector3(0, 0.7, 0.4), new Vector3(0.4, 0.8, 0.6), new Vector3(0.7, 1.25, 0.6)}, 1),
+      new GoToState(manipulatorMover, new Vector3[]{new Vector3(0.3, 0.4, 0), new Vector3(0.55, 0.8, 0), new Vector3(0.6, 1.3, 0), new Vector3(0.6, 1.8, 0)}, 1),
+      new GoToState(manipulatorMover, new Vector3[]{new Vector3(0, 0.5, 0), new Vector3(0, 1, 0), new Vector3(0, 1.5, 0), new Vector3(0, 2, 0)}, 1)
     );
   }
 }

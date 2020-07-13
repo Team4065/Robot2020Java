@@ -72,11 +72,13 @@ public class GoToState extends CommandBase {
   @Override
   public boolean isFinished() {
     Vector3[] currentState = manipulatorMover.getMeasuredEndpoints();
-    double offset = 0;
+    boolean isDone = true;
     for(int i = 0; i < currentState.length; ++i){
-      offset += currentState[i].sub(targets[i]).magnitude();
+      if(currentState[i].sub(targets[i]).magnitude() > RobotMap.MANIPULATOR_MOVER_ACCURACY_TOLERANCE){
+        isDone = false;
+        break;
+      }
     }
-    offset /= currentState.length;
-    return offset < RobotMap.MANIPULATOR_MOVER_ACCURACY_TOLERANCE;
+    return isDone;
   }
 }

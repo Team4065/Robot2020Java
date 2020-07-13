@@ -37,18 +37,23 @@ public class GoToPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //disables all subtargets
+    for(int i = 0; i < manipulatorMover.getSegments().length - 1; ++i){
+      manipulatorMover.disableSubTarget(i);
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Vector3 tempTarget = Vector3.moveTowards(manipulatorMover.getMeasuredFinalEndpoint(), target, speed * RobotMap.DELTA_TIME);
+    //get target prevents the system from stopping due to temporary reverse motion
+    Vector3 tempTarget = Vector3.moveTowards(manipulatorMover.getTarget(), target, speed * RobotMap.DELTA_TIME);
     /*
     double timeJump = 1;
-    Vector3 tempTarget = Vector3.slerp(manipulatorMover.getMeasuredEndpoint(), target, timeJump);
-    while(tempTarget.sub(manipulatorMover.getMeasuredEndpoint()).magnitude() >  speed * RobotMap.DELTA_TIME){
+    Vector3 tempTarget = Vector3.slerp(manipulatorMover.getTarget(), target, timeJump);
+    while(tempTarget.sub(manipulatorMover.getTarget()).magnitude() >  speed * RobotMap.DELTA_TIME){
       timeJump *= 0.75;
-      tempTarget = Vector3.slerp(manipulatorMover.getMeasuredEndpoint(), target, timeJump);
+      tempTarget = Vector3.slerp(manipulatorMover.getTarget(), target, timeJump);
     }
     */
     manipulatorMover.setTarget(tempTarget);
