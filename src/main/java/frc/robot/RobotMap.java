@@ -9,6 +9,11 @@ package frc.robot;
 
 import frc.robot.ExtraMath.Vector3;
 
+import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Utility.Motors.*;
+import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
+
 /**
  * This is where the robot and the controller inputs are configured
  * CAN IDs must not repeat or else it will result in unexpected behaviors
@@ -40,26 +45,10 @@ public class RobotMap {
 
     //Manipulator Mover
     public static final double MANIPULATOR_MOVER_ACCURACY_TOLERANCE = 0.1;
-    public static final MotorType MANIPULATOR_MOVER_MOTOR_TYPE = MotorType.PWM;
-    public static final int[][] MANIPULATOR_MOVER_MOTOR_IDS = new int[][]{//ID type depends on motor type (PWM)
-        {7}, {8}, {9}, {10}, {11}
-    };// ^    ^    ^    ^^  each sub array is a segment the numbers in the subarrays are the motor IDs for each segment
-    public static final int[][] MANIPULATOR_MOVER_ENCODER_CHANNELS = new int[][]{//This variable is not needed with CAN based encoders (Digital Input)
-        {0, 1}, {2, 3}, {4, 5}, {6, 7}, {8, 9}
-    };
-    public static final double[] MANIPULATOR_MOVER_LENGTHS = new double[]{
-        2.0/5, 2.0/5, 2.0/5, 2.0/5, 2.0/5
-    };
-    public static final Vector3[] MANIPULATOR_MOVER_AXES = new Vector3[]{
-        Vector3.forward, Vector3.right, Vector3.forward, Vector3.right, Vector3.forward
-    };
-    public static final double[] MANIPULATOR_MOVER_MIN_ANGLES = new double[]{
-        -90, -90, -90, -90, -90
-    };
-    public static final double[] MANIPULATOR_MOVER_MAX_ANGLES = new double[]{
-        90, 90, 90, 90, 90
-    };
-    public static final boolean[][] MANIPULATOR_MOVER_MOTOR_INVERSIONS = new boolean[][]{
-        {false}, {false}, {false}, {false}, {false}
+    public static final ManipulatorMoverSegment[] MANIPULATOR_MOVER_SEGMENTS = new ManipulatorMoverSegment[]{
+        //new ManipulatorMoverSegment(1, Vector3.forward, -90, 90, new Motor[]{new CANSparkMax_Motor(10, CANSparkMaxLowLevel.MotorType.kBrushless)}, Motor.ControlMode.Percent)//,
+        new ManipulatorMoverSegment(2.0/3, Vector3.forward, -90, 90, new Motor[]{new PWM_Motor(10, 0, 1, 360)}, Motor.ControlMode.Percent),
+        new ManipulatorMoverSegment(2.0/3, Vector3.right, -90, 90, new Motor[]{new PWM_Motor(11, 2, 3, 360)}, Motor.ControlMode.Percent),
+        new ManipulatorMoverSegment(2.0/3, Vector3.forward, -90, 90, new Motor[]{new PWM_Motor(12, 4, 5, 360)}, Motor.ControlMode.Percent),
     };
 }

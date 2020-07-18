@@ -8,6 +8,8 @@
 package frc.robot.subsystems.manipulator_mover;
 
 import frc.robot.ExtraMath.*;
+import frc.robot.Utility.Motors.*;
+import frc.robot.Utility.Motors.Motor.ControlMode;
 
 
 /**
@@ -46,12 +48,25 @@ public class ManipulatorMoverSegment {
     private double sumError = 0;
     private double deltaError = 0;
     private double integralActivationThreshold = 0;//when the error is smaller than this threshold the i component is active
-    
-    public ManipulatorMoverSegment(double _length, Vector3 _axis, double _minAngle, double _maxAngle){
+    private Motor[] motors;
+    private Motor.ControlMode motorControlMode = ControlMode.Percent;
+
+    /**
+     * 
+     * @param _length
+     * @param _axis
+     * @param _minAngle
+     * @param _maxAngle
+     * @param _motors
+     * @param _motorControlMode
+     */
+    public ManipulatorMoverSegment(double _length, Vector3 _axis, double _minAngle, double _maxAngle, Motor[] _motors, Motor.ControlMode _motorControlMode){
         length = _length;
         axis = _axis;
         maxAngle = _maxAngle;
         minAngle = _minAngle;
+        motors = _motors;
+        motorControlMode = _motorControlMode;
     }
 
 
@@ -77,23 +92,25 @@ public class ManipulatorMoverSegment {
         }
 
         motorOutput = (kP * error) + (kI * sumError) + (kD * deltaError) + (Math.signum(error) * kFF);
-        updateMotor();
+        updateMotors();
     }
 
     protected void disabledUpdate(){
         updateEncoder();
         motorOutput = 0;
-        updateMotor();
+        updateMotors();
     }
     /**
      * Needs to be remade for different motors and encoders
      */
     protected void updateEncoder(){
-        encoderAngle = 0;
+        encoderAngle = motors[0].getRotations() * 360;//conversion of rotations to degrees
     }
 
-    protected void updateMotor(){
-
+    protected void updateMotors(){
+        for(Motor motor : motors){
+            motor.set(motorOutput, motorControlMode);
+        }
     }
 
     /*protected?*/public void setP(double value){

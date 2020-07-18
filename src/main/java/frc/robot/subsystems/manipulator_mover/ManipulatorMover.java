@@ -12,6 +12,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.ExtraMath.*;
 import frc.robot.Utility.FileOutput;
+import frc.robot.Utility.Motors.*;
 
 
 public class ManipulatorMover extends SubsystemBase {
@@ -28,47 +29,19 @@ public class ManipulatorMover extends SubsystemBase {
   private boolean[] enabledSubTargets;//the subtargets that are enabled
 
 
-  public ManipulatorMover() {
-    switch(RobotMap.MANIPULATOR_MOVER_MOTOR_TYPE){
-      case PWM:
-        segments = new PWM_ManipulatorMoverSegment[RobotMap.MANIPULATOR_MOVER_MOTOR_IDS.length];
-        for(int i = 0; i < segments.length; ++i){
-          segments[i] = new PWM_ManipulatorMoverSegment(
-            RobotMap.MANIPULATOR_MOVER_LENGTHS[i],
-            RobotMap.MANIPULATOR_MOVER_AXES[i],
-            RobotMap.MANIPULATOR_MOVER_MIN_ANGLES[i],
-            RobotMap.MANIPULATOR_MOVER_MAX_ANGLES[i],
-            RobotMap.MANIPULATOR_MOVER_MOTOR_IDS[i],
-            RobotMap.MANIPULATOR_MOVER_MOTOR_INVERSIONS[i],
-            RobotMap.MANIPULATOR_MOVER_ENCODER_CHANNELS[i]
-            );
-        }
-        break;
-      case CANSparkMax:
-        segments = new PWM_ManipulatorMoverSegment[RobotMap.MANIPULATOR_MOVER_MOTOR_IDS.length];
-        for(int i = 0; i < segments.length; ++i){
-
-        }
-        break;
-      case TalonSRX:
-        segments = new PWM_ManipulatorMoverSegment[RobotMap.MANIPULATOR_MOVER_MOTOR_IDS.length];
-        for(int i = 0; i < segments.length; ++i){
-          
-        }
-        break;
-    }
-      
-
-
-    for(int i = 0; i < segments.length - 1; ++i){
+  public ManipulatorMover() {     
+    segments = RobotMap.MANIPULATOR_MOVER_SEGMENTS;
+    
+    //sets up segments so that they know how they relate to the other segments
+    for(int i = 0; i < RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1; ++i){
       segments[i].setChildSegment(segments[i + 1]);
     }
 
     segments[0].forwardKinematics(anchor);//calculates robotspace variables which prevents null pointer errors
     
     //setup for sub targets
-    subTargets = new Vector3[segments.length - 1];
-    enabledSubTargets = new boolean[segments.length - 1];
+    subTargets = new Vector3[RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1];
+    enabledSubTargets = new boolean[RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1];
     for(int i = 0; i < subTargets.length; ++i){
       subTargets[i] = segments[i].getRobotspaceEnd();
     }
@@ -76,7 +49,7 @@ public class ManipulatorMover extends SubsystemBase {
       b = false;
     }
 
-    target = segments[segments.length - 1].getRobotspaceEnd();
+    target = segments[RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1].getRobotspaceEnd();
   }
 
   /*

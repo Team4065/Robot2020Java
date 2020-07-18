@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.ScheduleCommand;
 
+import frc.robot.Utility.Motors.*;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -156,6 +158,9 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
     m_robotContainer = new RobotContainer();
+
+    //PWM_Motor hi = new PWM_Motor(1, 0, 1, 360);
+    //hi.set(1, Motor.ControlMode.Percent);
   }
 
   /**

@@ -20,32 +20,22 @@ New differential drive subsystems will need new code for motor creation, motor c
  * Make manipulator Subsystem
  * 
  * Make manipulator mover Subsystem
- *    -implement motors
- *    -better organize variables
- *        -anchor should not be part of the segments
- *        -target should not be part of the segments
- *    -allow inverse kinematics targets for multiple segment
- *        -temporary targets for parent segments and the main target overall
- *        -these other targets are meant to control the path of the segments not the final position
- *    -implement the getting of the measured state
  *    -change all instances of worldspace to robotspace
  *    -documentation
  * 
  * Add support for max velocity and acceleration for TalonSRX_Drivetrain
- * 
- * Ensure that no functions in Vector3 require unit vectors but do not have garunteed unit vector usage.
  * 
  * Make a unity testing branch for github
  * 
  * Make unity testing tools
  *  -it is no longer random bits of code
  * 
- * Add variable length to inverse kinematics
- * 
  * Add proper documentation for inverse kinematics
  *    -change all instances of worldspace to robotspace
  * 
+ * Make tests to ensure the code actually works on a robot
  * 
+ * Make TalonSRX Motor
  */
 
 package frc.robot;
