@@ -29,6 +29,9 @@ New differential drive subsystems will need new code for motor creation, motor c
  * 
  * Make tests to ensure the code actually works on a robot
  * 
+ * Ramsete might spin because setting the voltage might be affected by the motor controller inversion setting
+ * 
+ * test drivetrain commands to ensure everything is inverted properly
  */
 
 package frc.robot;

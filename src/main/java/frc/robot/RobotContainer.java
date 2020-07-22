@@ -38,8 +38,8 @@ public class RobotContainer {
 
   public static XboxController controller = new XboxController(RobotMap.CONTROLS_MAIN_CONTROLLER_ID);
 
-  //TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false, false);
-  CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(false, true);
+  //TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
+  CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);
 
   TankDrive tankdrive = new TankDrive(drivetrain);
   ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);

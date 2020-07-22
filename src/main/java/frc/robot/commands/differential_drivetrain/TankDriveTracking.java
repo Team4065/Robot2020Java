@@ -7,18 +7,20 @@
 
 package frc.robot.commands.differential_drivetrain;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotMap;
-import frc.robot.Utility.Limelight;
 import frc.robot.subsystems.differential_drivetrain.Drivetrain;
+import frc.robot.Utility.Limelight;
+import frc.robot.RobotContainer;
+import frc.robot.RobotMap;
 
-public class StationaryTracking extends CommandBase {
+public class TankDriveTracking extends CommandBase {
   
   Drivetrain drivetrain;
   double pastError = 0;
   double deltaError = 0;
 
-  public StationaryTracking(Drivetrain _drivetrain) {
+  public TankDriveTracking(Drivetrain _drivetrain) {
     addRequirements(_drivetrain);
     drivetrain = _drivetrain;
   }
@@ -26,7 +28,6 @@ public class StationaryTracking extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    pastError = Limelight.getHorizontalOffset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,8 +37,8 @@ public class StationaryTracking extends CommandBase {
     deltaError = error - pastError;
 
     double output = (RobotMap.DRIVETRAIN_TRACKING_KP * error) + (RobotMap.DRIVETRAIN_TRACKING_KD * deltaError);
-    drivetrain.setLeftTarget(output);
-    drivetrain.setRightTarget(-output);
+    drivetrain.setLeftTarget(output + RobotContainer.controller.getY(Hand.kLeft));
+    drivetrain.setRightTarget(-output + RobotContainer.controller.getY(Hand.kRight));
 
     pastError = error;
   }

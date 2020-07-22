@@ -40,7 +40,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   WPI_TalonSRX leftMaster, rightMaster;
   BaseMotorController[] leftSlaves, rightSlaves;
 
-  public TalonSRX_Drivetrain(boolean invertForward, boolean areSlavesVictorSPX) {
+  public TalonSRX_Drivetrain(boolean areSlavesVictorSPX) {
     
     int leftMotorCount = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1;
     int rightMotorCount = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1;
@@ -93,14 +93,11 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       }
     }
 
-    leftMaster.setInverted(!invertForward);
-    rightMaster.setInverted(!invertForward);
-  }
-  public TalonSRX_Drivetrain(boolean invertForward){
-    this(invertForward, false);
+    leftMaster.setInverted(RobotMap.DRIVETRAIN_INVERT_FORWARD);
+    rightMaster.setInverted(!RobotMap.DRIVETRAIN_INVERT_FORWARD);
   }
   public TalonSRX_Drivetrain(){
-    this(false, false);
+    this(false);
   }
 
   @Override
