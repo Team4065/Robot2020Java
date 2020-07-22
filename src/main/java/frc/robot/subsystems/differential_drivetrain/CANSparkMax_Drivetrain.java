@@ -13,10 +13,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+
 public class CANSparkMax_Drivetrain extends Drivetrain {
 
   private CANSparkMax leftMaster, rightMaster; //These are the motor controllers that act as masters for the drivetrain
   private CANPIDController leftPID, rightPID;  //These allow access to inbuilt closed loops in the motor controllers
+  private CANEncoder leftEncoder, rightEncoder;//These allow the encoders to be read
   private CANSparkMax[] leftSlaves, rightSlaves;
 
 
@@ -29,6 +33,9 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
 
     leftMaster = new CANSparkMax(RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN, motorType);
     rightMaster = new CANSparkMax(RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN, motorType);
+
+    leftEncoder = leftMaster.getEncoder();
+    rightEncoder = rightMaster.getEncoder();
 
     leftPID = leftMaster.getPIDController();
     rightPID = rightMaster.getPIDController();
@@ -54,6 +61,12 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    odometry.update(
+      Rotation2d.fromDegrees(getHeading()),
+      leftEncoder.getPosition() * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,
+      rightEncoder.getPosition() * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+    );
+
     if(RobotMap.IS_SIMULATION_RUNNING){
       simulationPeriodic();
     }else{
@@ -167,5 +180,21 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     kMaxAcceleration_position = value;
     leftPID.setSmartMotionMaxAccel(value, 1);
     rightPID.setSmartMotionMaxAccel(value, 1);
+  }
+
+
+  //Ramsete code
+  @Override
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds(
+      leftEncoder.getVelocity() / 60 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,
+      rightEncoder.getVelocity() / 60 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+    );
+  }
+
+  @Override
+  public void tankDriveVolts(double leftVolts, double rightVolts){
+    leftMaster.setVoltage(leftVolts);
+    rightMaster.setVoltage(-rightVolts);
   }
 }

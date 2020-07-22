@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems.differential_drivetrain;
 
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,6 +17,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 
 /**
  * A drivetrain subsystem that uses TalonSRX as the motor controller. VictorSPX
@@ -102,6 +106,13 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    odometry.update(
+      Rotation2d.fromDegrees(getHeading()),
+      leftMaster.getSelectedSensorPosition() / 4096 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,
+      rightMaster.getSelectedSensorPosition() / 4096 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+    );
+
     //this if statement and its contents are needed to implement simulation mode
     if(RobotMap.IS_SIMULATION_RUNNING){
       simulationPeriodic();
@@ -223,5 +234,21 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public void SetMaxAcceleration_position(double value){
     kMaxAcceleration_position = value;
     throw new UnsupportedOperationException();
+  }
+
+
+  //Ramsete code
+  @Override
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds(
+      (double)leftMaster.getSelectedSensorVelocity() / 4096 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,
+      (double)rightMaster.getSelectedSensorVelocity() / 4096 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+     );
+  }
+
+  @Override
+  public void tankDriveVolts(double leftVolts, double rightVolts){
+    leftMaster.setVoltage(leftVolts);
+    rightMaster.setVoltage(-rightVolts);
   }
 }

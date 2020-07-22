@@ -14,7 +14,11 @@ package frc.robot.subsystems.differential_drivetrain;
 
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import com.kauailabs.navx.frc.AHRS;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -22,6 +26,10 @@ public class Drivetrain extends SubsystemBase {
   protected double kP_position, kI_position, kD_position, kFF_position = 0;
   protected double kMaxVelocity_velocity, kMaxAcceleration_velocity = 0;
   protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
+
+  protected AHRS gyro;
+
+  protected final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(null);;
 
   protected double leftTarget, rightTarget = 0;
   public Talon[] simulationMotors;
@@ -51,6 +59,7 @@ public class Drivetrain extends SubsystemBase {
       ++createdSimulationMotors;
     }
     
+    gyro = RobotMap.DRIVETRAIN_GYRO;
   }
 
   @Override
@@ -161,5 +170,23 @@ public class Drivetrain extends SubsystemBase {
   //Sets the max acceleration of the motor controllers
   public void SetMaxAcceleration_position(double value){
     kMaxAcceleration_position = value;
+  }
+
+  //Ramsete code
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds();
+  }
+
+  public double getHeading(){
+    return Math.IEEEremainder(gyro.getAngle(), 360) * (RobotMap.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
+  }
+
+  public Pose2d getPose(){
+    return odometry.getPoseMeters();
+  }
+
+  public void tankDriveVolts(double leftVolts, double rightVolts){
+
   }
 }

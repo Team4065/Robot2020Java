@@ -11,8 +11,10 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.ExtraMath.*;
-
+import frc.robot.Utility.PathLoader;
+import frc.robot.Utility.RamseteCommandBuilder;
 import frc.robot.subsystems.differential_drivetrain.TalonSRX_Drivetrain;
 import frc.robot.subsystems.differential_drivetrain.CANSparkMax_Drivetrain;
 
@@ -64,6 +66,7 @@ public class RobotContainer {
   Path2 path2 = new Path2(manipulatorMover);
   Path path = new Path(manipulatorMover);
 
+  RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("Somewhere over the rainbow.")).getCommand();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
