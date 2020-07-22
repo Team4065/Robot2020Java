@@ -32,6 +32,9 @@ New differential drive subsystems will need new code for motor creation, motor c
  * Ramsete might spin because setting the voltage might be affected by the motor controller inversion setting
  * 
  * test drivetrain commands to ensure everything is inverted properly
+ * 
+ * Make the gyro a utility
+ *    -move it out of the drivetrain and into its own utility class
  */
 
 package frc.robot;
