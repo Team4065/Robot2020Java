@@ -19,39 +19,39 @@ public class Limelight {
 
     //getters
 
-    static boolean hasTarget(){
+    public static boolean hasTarget(){
         return (limelight.getEntry("tv").getDouble(Double.NaN) > 0) ? true : false;
     }
 
-    static double getHorizontalOffset(){
+    public static double getHorizontalOffset(){
         return limelight.getEntry("tx").getDouble(Double.NaN);
     }
 
-    static double getVerticalOffset(){
+    public static double getVerticalOffset(){
         return limelight.getEntry("ty").getDouble(Double.NaN);
     }
 
-    static double getArea(){
+    public static double getArea(){
         return limelight.getEntry("ta").getDouble(Double.NaN);
     }
 
-    static double getRotation(){
+    public static double getRotation(){
         return limelight.getEntry("ts").getDouble(Double.NaN);
     }
 
-    static double getShortLength(){
+    public static double getShortLength(){
         return limelight.getEntry("tshort").getDouble(Double.NaN);
     }
 
-    static double getLongLength(){
+    public static double getLongLength(){
         return limelight.getEntry("tlong").getDouble(Double.NaN);
     }
 
-    static double getHorizontalLength(){
+    public static double getHorizontalLength(){
         return limelight.getEntry("thor").getDouble(Double.NaN);
     }
 
-    static double getVerticalLength(){
+    public static double getVerticalLength(){
         return limelight.getEntry("tvert").getDouble(Double.NaN);
     }
 
@@ -63,15 +63,15 @@ public class Limelight {
      * 
      * @param mode 0: pipeline setting, 1: force off, 2: force blink, 3: force on
      */
-    static void setLEDMode(int mode){
+    public static void setLEDMode(int mode){
         limelight.getEntry("ledMode").setNumber(mode);
     }
 
-    static void enableVisionProcessing(){
+    public static void enableVisionProcessing(){
         limelight.getEntry("camMode").setNumber(0.0);
     }
 
-    static void disableVisionProcessing(){
+    public static void disableVisionProcessing(){
         limelight.getEntry("camMode").setNumber(1.0);
     }
 
@@ -79,7 +79,7 @@ public class Limelight {
      * 
      * @param pipeline Selects which pipeline to use. Ranges from 0-9.
      */
-    static void setPipeline(int pipeline){
+    public static void setPipeline(int pipeline){
         limelight.getEntry("pipeline").setNumber(pipeline);
     }
 }
