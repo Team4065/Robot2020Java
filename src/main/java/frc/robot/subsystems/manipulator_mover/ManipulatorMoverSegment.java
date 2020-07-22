@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems.manipulator_mover;
 
+import frc.robot.RobotMap;
 import frc.robot.ExtraMath.*;
 import frc.robot.Utility.Motors.*;
 import frc.robot.Utility.Motors.Motor.ControlMode;
@@ -68,6 +69,28 @@ public class ManipulatorMoverSegment {
         motors = _motors;
         motorControlMode = _motorControlMode;
     }
+    
+    /**
+     * 
+     * @param _length
+     * @param _axis
+     * @param _minAngle
+     * @param _maxAngle
+     * @param _motors
+     * @param _motorControlMode
+     */
+    public ManipulatorMoverSegment(double _length, Vector3 _axis, double _minAngle, double _maxAngle, Motor[] _motors, Motor.ControlMode _motorControlMode, double _kP, double _kI, double _kD, double _kFF){
+        length = _length;
+        axis = _axis;
+        maxAngle = _maxAngle;
+        minAngle = _minAngle;
+        motors = _motors;
+        motorControlMode = _motorControlMode;
+        kP = _kP;
+        kI = _kI;
+        kD = _kD;
+        kFF = _kFF;
+    }
 
 
     protected void setChildSegment(ManipulatorMoverSegment segment){
@@ -82,8 +105,13 @@ public class ManipulatorMoverSegment {
 
     protected void update(){
         updateEncoder();
+
+        //PID stuff
         pastError = error;
         error = angle - encoderAngle;
+        if(Math.abs(error) > RobotMap.MANIPULATOR_MOVER_MAXIMUM_ERROR){//prevents the robot from breaking if tuned properly
+            error = RobotMap.MANIPULATOR_MOVER_MAXIMUM_ERROR * Math.signum(error);
+        }
         deltaError = error - pastError;
         if(Math.abs(error) < integralActivationThreshold){
             sumError += error;
@@ -92,6 +120,7 @@ public class ManipulatorMoverSegment {
         }
 
         motorOutput = (kP * error) + (kI * sumError) + (kD * deltaError) + (Math.signum(error) * kFF);
+
         updateMotors();
     }
 
@@ -138,7 +167,7 @@ public class ManipulatorMoverSegment {
      * removes rotation that occured off axis
      */
     protected void realign(){
-        end = Vector3.projectOnPlane(end, axis_robotspace).normalized().mult(length);
+        end = Vector3.projectOnPlane(end, axis_robotspace).normalized().mult(length);//this constrains the end point to be aligned perpendicular the axis of rotation
 
         if(parentSegment == null){
             angle = Vector3.signedAngle(initialOrientation, end, axis_robotspace);
@@ -160,8 +189,8 @@ public class ManipulatorMoverSegment {
      */
     protected void forwardKinematics(Vector3 anchor){
         end = Vector3.rotate(initialOrientation, axis, angle).normalized().mult(length);
-        end_robotspace = end.add(anchor);//worldspace end is the localspace end for the first segment
-        axis_robotspace = axis;//worldspace axis is the localspace axis for the first segment
+        end_robotspace = end.add(anchor);//robotspace end is the localspace end for the first segment
+        axis_robotspace = axis;//robotspace axis is the localspace axis for the first segment
 
         if(childSegment != null){
             childSegment.forwardKinematics(end_robotspace, end, new Vector3[]{axis_robotspace}, new double[]{angle});
@@ -173,7 +202,7 @@ public class ManipulatorMoverSegment {
         Vector3[] nextAxis = new Vector3[baseAxis.length + 1];
         double[] nextAngle = new double[baseAngle.length + 1];
 
-        //applies all previous rotations to determine the worldspace axis
+        //applies all previous rotations to determine the robotspace axis
         axis_robotspace = axis;
         for(int i = 0; i < baseAxis.length; ++i){
             axis_robotspace = Vector3.rotate(axis_robotspace, baseAxis[i], baseAngle[i]);
@@ -208,7 +237,7 @@ public class ManipulatorMoverSegment {
         Vector3[] nextAxis = new Vector3[baseAxis.length + 1];
         double[] nextAngle = new double[baseAngle.length + 1];
 
-        //applies all previous rotations to determine the worldspace axis
+        //applies all previous rotations to determine the robotspace axis
         realAxis_robotspace = axis;
         for(int i = 0; i < baseAxis.length; ++i){
             realAxis_robotspace = Vector3.rotate(realAxis_robotspace, baseAxis[i], baseAngle[i]);
@@ -238,17 +267,17 @@ public class ManipulatorMoverSegment {
     protected void inverseKinematics(Vector3 target, Vector3 anchor){   
         Vector3 nextTarget;
         if(parentSegment != null){
-            nextTarget = parentSegment.end_robotspace.sub(target).normalized().mult(length).add(target);
-            end = target.sub(parentSegment.end_robotspace).normalized().mult(length);
+            nextTarget = parentSegment.end_robotspace.sub(target).normalized().mult(length).add(target);//calculates the location of the start of this segment in robotspace
+            end = target.sub(parentSegment.end_robotspace).normalized().mult(length);//calculates the end of the segement in localspace
         }else{
-            nextTarget = anchor.sub(target).normalized().mult(length).add(target);
-            end = target.sub(anchor).normalized().mult(length);
+            nextTarget = anchor.sub(target).normalized().mult(length).add(target);//calculates the location of the start of this segment in robotspace
+            end = target.sub(anchor).normalized().mult(length);//calculates the end of the segement in localspace
         }
         
         end_robotspace = target;
 
         if(parentSegment != null){
-            parentSegment.inverseKinematics(nextTarget, anchor);
+            parentSegment.inverseKinematics(nextTarget, anchor);//goes through the child segments recursively until complete.
         }
     }
 
@@ -260,5 +289,12 @@ public class ManipulatorMoverSegment {
         return realEnd_robotspace;
     }
 
+    /*protected?*/public double getAngle(){
+        return angle;
+    }
+
+    /*protected?*/public double getMeasuredAngle(){
+        return motors[0].getRotations() * 360;
+    }
 
 }

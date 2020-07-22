@@ -38,6 +38,8 @@ public class GoToState extends CommandBase {
     for(int i = 0; i < manipulatorMover.getSegments().length - 1; ++i){
       manipulatorMover.enableSubTarget(i);
     }
+    //enables inverse kinematics
+    manipulatorMover.enableInverseKinematics();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -66,6 +68,8 @@ public class GoToState extends CommandBase {
     for(int i = 0; i < manipulatorMover.getSegments().length - 1; ++i){
       manipulatorMover.disableSubTarget(i);
     }
+    //disables inverse kinematics to prevent unwanted moving
+    manipulatorMover.disableInverseKinematics();
   }
 
   // Returns true when the command should end.

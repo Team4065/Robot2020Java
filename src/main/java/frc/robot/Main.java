@@ -19,9 +19,6 @@ New differential drive subsystems will need new code for motor creation, motor c
  * 
  * Make manipulator Subsystem
  * 
- * Make manipulator mover Subsystem
- *    -change all instances of worldspace to robotspace
- *    -documentation
  * 
  * Add support for max velocity and acceleration for TalonSRX_Drivetrain
  * 
@@ -30,12 +27,8 @@ New differential drive subsystems will need new code for motor creation, motor c
  * Make unity testing tools
  *  -it is no longer random bits of code
  * 
- * Add proper documentation for inverse kinematics
- *    -change all instances of worldspace to robotspace
- * 
  * Make tests to ensure the code actually works on a robot
  * 
- * Make TalonSRX Motor
  */
 
 package frc.robot;

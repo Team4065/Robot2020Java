@@ -45,6 +45,13 @@ public class RobotMap {
 
     //Manipulator Mover
     public static final double MANIPULATOR_MOVER_ACCURACY_TOLERANCE = 0.1;
+    /**
+     * This is the maximum PID error.
+     * It can influence the speed of the robot's movements.
+     * This is not how the speed of the robot's movements is supposed to be controlled.
+     * This is a limiter to prevent the robot from breaking.
+     */
+    public static final double MANIPULATOR_MOVER_MAXIMUM_ERROR = 1;
     public static final ManipulatorMoverSegment[] MANIPULATOR_MOVER_SEGMENTS = new ManipulatorMoverSegment[]{
         //new ManipulatorMoverSegment(1, Vector3.forward, -90, 90, new Motor[]{new CANSparkMax_Motor(10, CANSparkMaxLowLevel.MotorType.kBrushless)}, Motor.ControlMode.Percent)//,
         new ManipulatorMoverSegment(2.0/3, Vector3.forward, -90, 90, new Motor[]{new PWM_Motor(10, 0, 1, 360)}, Motor.ControlMode.Percent),

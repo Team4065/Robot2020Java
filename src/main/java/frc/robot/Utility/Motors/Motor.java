@@ -17,7 +17,6 @@ public class Motor {
         Position
     };
 
-    double target;
     /**
      * 
      * @param value
@@ -41,6 +40,14 @@ public class Motor {
      * @return
      */
     public double getRotations(){
+        return Double.NaN;
+    }
+
+    /**
+     * Returns the rotations per second the motor.
+     * @return
+     */
+    public double getSpeed(){
         return Double.NaN;
     }
 }

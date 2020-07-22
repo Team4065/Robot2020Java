@@ -32,6 +32,7 @@ public class PWM_Motor extends Motor {
         motor = new PWM(PWM_Port);
         encoder = new Encoder(encoderPort1, encoderPort2);
         cpm = countsPerRevolution;
+        encoder.setDistancePerPulse(1);
     }
 
     /**
@@ -49,13 +50,13 @@ public class PWM_Motor extends Motor {
      */
     @Override
     public void set(double value, ControlMode controlMode){
-        
         if(controlMode == ControlMode.Percent){
             set(value);
         }else{
-            System.out.println("A PWM motor only accepts percent output control.");
+            System.out.println("A PWM motor only accepts percent output control. Setting output to 0.");
             set(0);//safety
         }
+
         
     }
 
@@ -70,6 +71,20 @@ public class PWM_Motor extends Motor {
             return Double.NaN;
         }else{
             return (double)encoder.get() / cpm;
+        }
+    }
+
+    /**
+     * Returns the rotations per second the motor.
+     * PWM version might not work.
+     * @return
+     */
+    @Override
+    public double getSpeed(){
+        if(encoder == null){
+            return Double.NaN;
+        }else{
+            return encoder.getRate() / cpm;
         }
     }
 }

@@ -7,14 +7,27 @@
 
 package frc.robot.Utility.Motors;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.*;
+
 /**
  * Add your docs here.
  */
 public class TalonSRX_Motor extends Motor {
 
+    WPI_TalonSRX motor;
+    boolean hasEncoder = false;
 
     public TalonSRX_Motor(int CAN_ID){
+        motor = new WPI_TalonSRX(CAN_ID);
+    }
 
+    public TalonSRX_Motor(int CAN_ID, boolean _hasEncoder){
+        motor = new WPI_TalonSRX(CAN_ID);
+        if(_hasEncoder){
+            hasEncoder = true;
+            motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 20);
+        }
     }
 
     /**
@@ -26,12 +39,15 @@ public class TalonSRX_Motor extends Motor {
     public void set(double value, ControlMode controlMode){
         switch(controlMode){
             case Percent:
+                motor.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, value);
                 break;
 
             case Velocity:
+                motor.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, value);
                 break;
             
             case Position:
+                motor.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, value);
                 break;
         }
         
@@ -39,15 +55,24 @@ public class TalonSRX_Motor extends Motor {
 
     @Override
     public void set(double value){
-        motor.setSpeed(value);
+        motor.set(com.ctre.phoenix.motorcontrol.ControlMode.PercentOutput, value);
     }
 
     @Override
     public double getRotations(){
-        if(encoder == null){
-            return Double.NaN;
+        if(hasEncoder){
+            return (double)motor.getSelectedSensorPosition() / 4096;//4096 is the counts per revolution of the magnetic encoder
         }else{
-            return (double)encoder.get() / cpm;
+            return Double.NaN;
+        }
+    }
+
+    @Override
+    public double getSpeed(){
+        if(hasEncoder){
+            return (double)motor.getSelectedSensorVelocity() / 4096 * 10;//4096 is the counts per revolution of the magnetic encoder. The 10 converts the measurement to rotations per second.
+        }else{
+            return Double.NaN;
         }
     }
 }

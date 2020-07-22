@@ -70,4 +70,9 @@ public class CANSparkMax_Motor extends Motor {
     public double getRotations(){
         return encoder.getPosition();
     }
+
+    @Override
+    public double getSpeed(){
+        return encoder.getVelocity() / 60;
+    }
 }
