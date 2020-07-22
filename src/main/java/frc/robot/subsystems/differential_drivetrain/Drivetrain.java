@@ -13,8 +13,10 @@ The number of motors per side is determined in RobotMap using the min and max id
 package frc.robot.subsystems.differential_drivetrain;
 
 import frc.robot.RobotMap;
+//import sun.jvm.hotspot.oops.Oop;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
 
   protected AHRS gyro = new AHRS(SPI.Port.kMXP); ;
 
-  protected final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(null);;
+  protected  DifferentialDriveOdometry odometry;
 
   protected double leftTarget, rightTarget = 0;
   public Talon[] simulationMotors;
@@ -60,6 +62,7 @@ public class Drivetrain extends SubsystemBase {
       ++createdSimulationMotors;
     }
 
+    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
 
   @Override

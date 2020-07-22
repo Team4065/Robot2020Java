@@ -9,6 +9,7 @@ package frc.robot.Utility;
 
 import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
+import frc.robot.ExtraMath.*;
 
 import java.io.*;
 
@@ -27,6 +28,26 @@ public class FileOutput {
             out.println(segmentSystem.getAnchor().toCSV());
             for(ManipulatorMoverSegment segment : segments){
                 out.println(segment.getRobotspaceEnd().toCSV());
+            }        
+
+        } catch (IOException e) {
+        e.printStackTrace();
+        }
+        //System.out.println("printing");
+    }
+
+    static public void printManipulatorMoverMeasuredState(String filePath, ManipulatorMover segmentSystem){
+        
+
+        try (FileWriter outFile = new FileWriter(filePath, true);
+            BufferedWriter bWriter = new BufferedWriter(outFile);
+            PrintWriter out = new PrintWriter(bWriter)) {
+
+            out.println();
+            out.println(segmentSystem.getAnchor().toCSV());
+            Vector3[] endpoints = segmentSystem.getMeasuredEndpoints();
+            for(Vector3 endpoint : endpoints){
+                out.println(endpoint.toCSV());
             }        
 
         } catch (IOException e) {

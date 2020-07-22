@@ -51,6 +51,7 @@ public class ManipulatorMover extends SubsystemBase {
     }
 
     target = segments[RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1].getRobotspaceEnd();//Sets the initial target to the natural end position of the segment system.
+    segments[0].measuredForwardKinematics(anchor);
   }
 
   @Override

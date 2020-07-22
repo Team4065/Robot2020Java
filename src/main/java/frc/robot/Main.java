@@ -19,6 +19,8 @@ New differential drive subsystems will need new code for motor creation, motor c
  * 
  * Make manipulator Subsystem
  * 
+ * Make a recording mode for the manipulator mover
+ * 
  * 
  * Add support for max velocity and acceleration for TalonSRX_Drivetrain
  * 

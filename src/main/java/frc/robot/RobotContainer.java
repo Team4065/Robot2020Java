@@ -65,8 +65,9 @@ public class RobotContainer {
   //GoToPosition goToPosition = new GoToPosition(manipulatorMover, new Vector3(1, 1, 1), 1);
   Path2 path2 = new Path2(manipulatorMover);
   Path path = new Path(manipulatorMover);
+  RecordManipulatorMover rec = new RecordManipulatorMover(manipulatorMover, "ManipulatorMoverRecording.txt");
 
-  RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("Somewhere over the rainbow.")).getCommand();
+  //RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("Somewhere over the rainbow.")).getCommand();
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
