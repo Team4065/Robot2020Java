@@ -20,7 +20,11 @@ import frc.robot.subsystems.differential_drivetrain.Drivetrain;
 public class RamseteCommandBuilder {
 
     private RamseteCommand command;
-
+    /**
+     * 
+     * @param drivetrain
+     * @param path
+     */
     public RamseteCommandBuilder(Drivetrain drivetrain, PathLoader path){
         command = new RamseteCommand(
             path.getTrajectory(), 

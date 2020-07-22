@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -27,7 +28,7 @@ public class Drivetrain extends SubsystemBase {
   protected double kMaxVelocity_velocity, kMaxAcceleration_velocity = 0;
   protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
 
-  protected AHRS gyro;
+  protected AHRS gyro = new AHRS(SPI.Port.kMXP); ;
 
   protected final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(null);;
 
@@ -58,8 +59,7 @@ public class Drivetrain extends SubsystemBase {
       simulationMotors[createdSimulationMotors] = new Talon(i);
       ++createdSimulationMotors;
     }
-    
-    gyro = RobotMap.DRIVETRAIN_GYRO;
+
   }
 
   @Override

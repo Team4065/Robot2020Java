@@ -12,15 +12,12 @@ import frc.robot.ExtraMath.Vector3;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import frc.robot.Utility.PathLoader;
 import frc.robot.Utility.Motors.*;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
-import com.kauailabs.navx.frc.AHRS;
 
 /**
  * This is where the robot and the controller inputs are configured CAN IDs must
@@ -77,8 +74,7 @@ public class RobotMap {
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 3;//CAN ID
     public static final int DRIVETRAIN_RIGHT_MOTOR_IDS_MIN = 4;//CAN ID
     public static final int DRIVETRAIN_RIGHT_MOTOR_IDS_MAX = 6;//CAN ID
-    public static final AHRS DRIVETRAIN_GYRO = new AHRS(SPI.Port.kMXP); 
-    public static final boolean DRIVETRAIN_GYRO_REVERSED = false;
+    public static final boolean DRIVETRAIN_GYRO_REVERSED = false;//This does not change anything about the gyro's output it only changes how ramsete gets the gyro's reading
 
     //Controls
     public static final int CONTROLS_MAIN_CONTROLLER_ID = 0;
