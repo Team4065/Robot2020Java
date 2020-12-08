@@ -38,8 +38,8 @@ public class RobotContainer {
 
   public static XboxController controller = new XboxController(RobotMap.CONTROLS_MAIN_CONTROLLER_ID);
 
-  //TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
-  CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);
+  TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
+  //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);
 
   TankDrive tankdrive = new TankDrive(drivetrain);
   ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);
@@ -60,12 +60,12 @@ public class RobotContainer {
   ManipulatorMover manipulatorMover = new ManipulatorMover(segments);
   */
   
-  ManipulatorMover manipulatorMover = new ManipulatorMover();
+  //ManipulatorMover manipulatorMover = new ManipulatorMover();
 
   //GoToPosition goToPosition = new GoToPosition(manipulatorMover, new Vector3(1, 1, 1), 1);
-  Path2 path2 = new Path2(manipulatorMover);
-  Path path = new Path(manipulatorMover);
-  RecordManipulatorMover rec = new RecordManipulatorMover(manipulatorMover, "ManipulatorMoverRecording.txt");
+  //Path2 path2 = new Path2(manipulatorMover);
+  //Path path = new Path(manipulatorMover);
+  //RecordManipulatorMover rec = new RecordManipulatorMover(manipulatorMover, "ManipulatorMoverRecording.txt");
 
   //RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("Somewhere over the rainbow.")).getCommand();
   /**

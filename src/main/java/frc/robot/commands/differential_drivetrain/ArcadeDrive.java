@@ -29,7 +29,7 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void initialize() {
     drivetrain.setControlMode(Drivetrain.ControlMode.PERCENT);
-    drivetrain.SetMaxVelocity_velocity(1);
+    //drivetrain.SetMaxVelocity_velocity(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

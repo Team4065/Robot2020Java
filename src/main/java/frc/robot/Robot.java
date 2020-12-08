@@ -156,7 +156,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
+    //FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
     m_robotContainer = new RobotContainer();
 
     //PWM_Motor hi = new PWM_Motor(1, 0, 1, 360);
@@ -221,7 +221,7 @@ public class Robot extends TimedRobot {
     }
     //m_robotContainer.path2.schedule();
     //m_robotContainer.manipulatorMover.setTarget(new Vector3(1, 1, 1));
-    m_robotContainer.path.schedule();
+    //m_robotContainer.path.schedule();
     //m_robotContainer.rec.schedule();
   }
 

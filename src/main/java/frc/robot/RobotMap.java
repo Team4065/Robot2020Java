@@ -72,9 +72,9 @@ public class RobotMap {
     //Drivetrain
     public static final boolean DRIVETRAIN_INVERT_FORWARD = false;
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MIN = 1;//CAN ID
-    public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 3;//CAN ID
+    public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 2;//CAN ID
     public static final int DRIVETRAIN_RIGHT_MOTOR_IDS_MIN = 4;//CAN ID
-    public static final int DRIVETRAIN_RIGHT_MOTOR_IDS_MAX = 6;//CAN ID
+    public static final int DRIVETRAIN_RIGHT_MOTOR_IDS_MAX = 5;//CAN ID
     public static final boolean DRIVETRAIN_GYRO_REVERSED = false;//This does not change anything about the gyro's output it only changes how ramsete gets the gyro's reading
     public static final double DRIVETRAIN_TRACKING_KP = 0;
     public static final double DRIVETRAIN_TRACKING_KD = 0;
