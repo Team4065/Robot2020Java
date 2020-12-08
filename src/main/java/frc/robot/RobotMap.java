@@ -67,7 +67,7 @@ public class RobotMap {
     
 
     //Simulation control
-    public static final boolean IS_SIMULATION_RUNNING = true;//when simulation is on all CAN motors should get a PWM counterpart with the same ID
+    public static final boolean IS_SIMULATION_RUNNING = false;//when simulation is on all CAN motors should get a PWM counterpart with the same ID
 
     //Drivetrain
     public static final boolean DRIVETRAIN_INVERT_FORWARD = false;
