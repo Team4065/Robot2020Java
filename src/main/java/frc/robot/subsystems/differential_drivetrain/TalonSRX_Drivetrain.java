@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FollowerType;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -47,6 +49,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
 
     leftMaster = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN);//this makes the master motors that the slaves follow(mimic).
+    
 
     //Adds slaves of the appropriate type
     if(areSlavesVictorSPX){
@@ -55,7 +58,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       int leftSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
       for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
         leftSlaves[leftSlaveCount] = new WPI_VictorSPX(i);
-        leftSlaves[leftSlaveCount].follow(leftMaster);//this makes the slaves follow the master.
+        leftSlaves[leftSlaveCount].follow(leftMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
+        leftSlaves[leftSlaveCount].setInverted(InvertType.FollowMaster);
         ++leftSlaveCount;
       }
     }else{
@@ -64,13 +68,15 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       int leftSlaveCount = 0;//this exists so that the correct address in the rightSlaves array is accessed.
       for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
         leftSlaves[leftSlaveCount] = new WPI_TalonSRX(i);
-        leftSlaves[leftSlaveCount].follow(leftMaster);//this makes the slaves follow the master.
+        leftSlaves[leftSlaveCount].follow(leftMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
+        leftSlaves[leftSlaveCount].setInverted(InvertType.FollowMaster);
         ++leftSlaveCount;
       }
     }
     
 
     rightMaster = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN);
+    
 
     //Adds slaves of the appropriate type
     if(areSlavesVictorSPX){
@@ -79,7 +85,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       int rightSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
       for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
         rightSlaves[rightSlaveCount] = new WPI_VictorSPX(i);
-        rightSlaves[rightSlaveCount].follow(rightMaster);//this makes the slaves follow the master.
+        rightSlaves[rightSlaveCount].follow(rightMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
+        rightSlaves[rightSlaveCount].setInverted(InvertType.FollowMaster);
         ++rightSlaveCount;
       }
     }else{
@@ -88,13 +95,15 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       int rightSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
       for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
         rightSlaves[rightSlaveCount] = new WPI_TalonSRX(i);
-        rightSlaves[rightSlaveCount].follow(rightMaster);//this makes the slaves follow the master.
+        rightSlaves[rightSlaveCount].follow(rightMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
+        rightSlaves[rightSlaveCount].setInverted(InvertType.FollowMaster);
         ++rightSlaveCount;
       }
     }
 
     leftMaster.setInverted(RobotMap.DRIVETRAIN_INVERT_FORWARD);
     rightMaster.setInverted(!RobotMap.DRIVETRAIN_INVERT_FORWARD);
+
   }
   public TalonSRX_Drivetrain(){
     this(false);

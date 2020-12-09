@@ -35,10 +35,10 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = RobotContainer.controller.getY(Hand.kLeft);
-    double rotation = RobotContainer.controller.getRawAxis(4);
-    drivetrain.setLeftTarget(speed + rotation);
-    drivetrain.setRightTarget(speed - rotation);
+    double speed = -RobotContainer.controller.getY(Hand.kLeft);
+    double rotation = -RobotContainer.controller.getRawAxis(4);
+    drivetrain.setLeftTarget(speed - rotation);
+    drivetrain.setRightTarget(speed + rotation);
   }
 
   // Called once the command ends or is interrupted.

@@ -30,15 +30,15 @@ public class TankDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //drivetrain.setControlMode(Drivetrain.ControlMode.PERCENT);
-    drivetrain.setControlMode(Drivetrain.ControlMode.VELOCITY);
+    drivetrain.setControlMode(Drivetrain.ControlMode.PERCENT);
+    //drivetrain.setControlMode(Drivetrain.ControlMode.VELOCITY);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.setLeftTarget(RobotContainer.controller.getY(Hand.kLeft));
-    drivetrain.setRightTarget(RobotContainer.controller.getY(Hand.kRight));
+    drivetrain.setLeftTarget(-RobotContainer.controller.getRawAxis(1));
+    drivetrain.setRightTarget(-RobotContainer.controller.getRawAxis(5));
   }
 
   // Called once the command ends or is interrupted.
