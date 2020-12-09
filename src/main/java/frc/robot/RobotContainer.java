@@ -9,6 +9,7 @@ package frc.robot;
 
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -36,17 +37,15 @@ import frc.robot.commands.manipulator_mover.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  public static XboxController controller = new XboxController(RobotMap.CONTROLS_MAIN_CONTROLLER_ID);
+  public static Joystick controller = new Joystick(RobotMap.CONTROLS_MAIN_CONTROLLER_ID);
 
-  //TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
-  CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);
+  TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
+  //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);
 
   TankDrive tankdrive = new TankDrive(drivetrain);
   ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);
   
-  ManipulatorMover manipulatorMover = new ManipulatorMover();
-
-  RecordManipulatorMover rec = new RecordManipulatorMover(manipulatorMover, "ManipulatorMoverRecording.txt");
+  //ManipulatorMover manipulatorMover = new ManipulatorMover();
 
   //RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("Somewhere over the rainbow.")).getCommand();
 
