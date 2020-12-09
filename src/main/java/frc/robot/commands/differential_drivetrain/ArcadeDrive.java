@@ -36,9 +36,9 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void execute() {
     double speed = RobotContainer.controller.getY(Hand.kLeft);
-    double rotation = RobotContainer.controller.getX(Hand.kRight);
-    drivetrain.setLeftTarget(speed - rotation);
-    drivetrain.setRightTarget(speed + rotation);
+    double rotation = RobotContainer.controller.getRawAxis(4);
+    drivetrain.setLeftTarget(speed + rotation);
+    drivetrain.setRightTarget(speed - rotation);
   }
 
   // Called once the command ends or is interrupted.
