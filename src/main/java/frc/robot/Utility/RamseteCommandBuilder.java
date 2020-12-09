@@ -15,15 +15,15 @@ import frc.robot.RobotMap;
 import frc.robot.subsystems.differential_drivetrain.Drivetrain;
 
 /**
- * Add your docs here.
+ * Makes the Ramsete command that is to be run.
  */
 public class RamseteCommandBuilder {
 
     private RamseteCommand command;
     /**
-     * 
-     * @param drivetrain
-     * @param path
+     * Makes the Ramsete command that is to be run.
+     * @param drivetrain The drivetrain subsystem.
+     * @param path The PathLoader with the desired Ramsete path.
      */
     public RamseteCommandBuilder(Drivetrain drivetrain, PathLoader path){
         command = new RamseteCommand(

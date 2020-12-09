@@ -233,6 +233,30 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     throw new UnsupportedOperationException();
   }
 
+  @Override
+  public double[] getLeftOutputs() {
+    double[] output = new double[leftSlaves.length + 1];
+
+    output[0] = leftMaster.get();
+    for(int i = 1; i < output.length; ++i){
+      output[i] = leftSlaves[i].getBusVoltage() / 12;//hopefully this is correct
+    }
+
+    return output;
+  }
+
+  @Override
+  public double[] getRightOutputs() {
+    double[] output = new double[rightSlaves.length + 1];
+
+    output[0] = rightMaster.get();
+    for(int i = 1; i < output.length; ++i){
+      output[i] = rightSlaves[i].getBusVoltage() / 12;//hopefully this is correct
+    }
+
+    return output;
+  }
+
 
   //Ramsete code
   @Override

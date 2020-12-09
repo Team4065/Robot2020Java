@@ -13,15 +13,13 @@ The number of motors per side is determined in RobotMap using the min and max id
 package frc.robot.subsystems.differential_drivetrain;
 
 import frc.robot.RobotMap;
-//import sun.jvm.hotspot.oops.Oop;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.SPI;
+import frc.robot.Utility.Gyro;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -30,7 +28,6 @@ public class Drivetrain extends SubsystemBase {
   protected double kMaxVelocity_velocity, kMaxAcceleration_velocity = 0;
   protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
 
-  protected AHRS gyro = new AHRS(SPI.Port.kMXP); ;
 
   protected  DifferentialDriveOdometry odometry;
 
@@ -139,6 +136,14 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
+  public double[] getLeftOutputs(){
+    return new double[]{};
+  }
+
+  public double[] getRightOutputs(){
+    return new double[]{};
+  }
+
   //Sets kP_velocity and updates the motor controllers
   public void SetP_velocity(double value){kP_velocity = value;}
   //Sets kD_velocity and updates the motor controllers
@@ -182,7 +187,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getHeading(){
-    return Math.IEEEremainder(gyro.getAngle(), 360) * (RobotMap.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
+    return Math.IEEEremainder(Gyro.getRawAngle(), 360) * (RobotMap.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
   }
 
   public Pose2d getPose(){

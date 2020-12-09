@@ -5,26 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.manipulator_mover;
+package frc.robot.commands.Tests.differential_drivetrain;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Utility.FileOutput;
-import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
+import frc.robot.subsystems.differential_drivetrain.Drivetrain;
+import frc.robot.Utility.Spy;
 
-public class RecordManipulatorMover extends CommandBase {
-  
-  ManipulatorMover manipulatorMover;
-  String file;
-  
-  /**
-   * 
-   * @param _manipulatorMover
-   * @param _file
-   */
-  public RecordManipulatorMover(ManipulatorMover _manipulatorMover, String _file) {
-    addRequirements(_manipulatorMover);
-    manipulatorMover = _manipulatorMover;
-    file = _file;
+public class DisplayDrivetrainOutputs extends CommandBase {
+
+  Drivetrain drivetrain;
+
+  public DisplayDrivetrainOutputs(Drivetrain _drivetrain) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    drivetrain = _drivetrain;
+    addRequirements(Spy.getSpy());
   }
 
   // Called when the command is initially scheduled.
@@ -35,12 +30,17 @@ public class RecordManipulatorMover extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    FileOutput.printManipulatorMoverMeasuredState(file, manipulatorMover);
+    //SmartDashboard.putNumberArray("Left motors", drivetrain.getLeftOutputs());
+    //SmartDashboard.putNumberArray("Right motors", drivetrain.getRightOutputs());
+    //SmartDashboard.putNumber("hi", 2);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //SmartDashboard.delete("Left motors");
+    //SmartDashboard.delete("Right motors");
+    //SmartDashboard.delete("hi");
   }
 
   // Returns true when the command should end.
