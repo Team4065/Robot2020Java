@@ -185,6 +185,29 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     rightPID.setSmartMotionMaxAccel(value, 1);
   }
 
+  @Override
+  public double[] getLeftOutputs() {
+    double[] output = new double[leftSlaves.length + 1];
+
+    output[0] = leftMaster.get();
+    for(int i = 1; i < output.length; ++i){
+      output[i] = leftSlaves[i].get();
+    }
+
+    return output;
+  }
+
+  @Override
+  public double[] getRightOutputs() {
+    double[] output = new double[rightSlaves.length + 1];
+
+    output[0] = rightMaster.get();
+    for(int i = 1; i < output.length; ++i){
+      output[i] = rightSlaves[i].get();
+    }
+
+    return output;
+  }
 
   //Ramsete code
   @Override

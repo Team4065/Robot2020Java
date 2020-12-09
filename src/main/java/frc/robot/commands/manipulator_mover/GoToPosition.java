@@ -12,10 +12,11 @@ import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
 import frc.robot.RobotMap;
 import frc.robot.ExtraMath.*;
 
+/**
+ * Sets the target position of the last segement
+ */
 public class GoToPosition extends CommandBase {
-  /**
-   * Creates a new GoToPosition.
-   */
+
   private ManipulatorMover manipulatorMover;
   private Vector3 target;
   private double speed;

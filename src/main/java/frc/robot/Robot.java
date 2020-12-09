@@ -5,22 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+//this is an example of code that was not fully thought out before creation
+//features that were not intended were added later in the process
+//which made the code more convoluted
 
 package frc.robot;
 
-import frc.robot.ExtraMath.*;
-import frc.robot.Utility.FileOutput;
-import frc.robot.commands.manipulator_mover.GoToPosition;
-import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
-import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
+import java.util.Map;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.ScheduleCommand;
-
-import frc.robot.Utility.Motors.*;
+import frc.robot.Utility.Limelight;
+import frc.robot.Utility.Spy;
+import frc.robot.commands.Tests.Utility.LimelightOutputTest;
+import frc.robot.commands.Tests.differential_drivetrain.DisplayDrivetrainOutputs;
+import frc.robot.commands.Tests.differential_drivetrain.DrivetrainManualControl;
+import frc.robot.commands.Tests.manipulator_mover.ManipulatorMover_OutputAngles;
+import frc.robot.commands.differential_drivetrain.ArcadeDrive;
+import frc.robot.commands.differential_drivetrain.TankDrive;
+import frc.robot.commands.manipulator_mover.RecordManipulatorMover;
 
 
 /**
@@ -34,122 +44,6 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
-  /*
-  //for unity testing v1
-  ManipulatorMoverSegment segment = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
-  ManipulatorMoverSegment segment2 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
-  ManipulatorMoverSegment segment3 = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
-  ManipulatorMoverSegment segment4 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
-  //ManipulatorMoverSegment segment5 = new ManipulatorMoverSegment(0.5, Vector3.forward, -90, 90);
-  //ManipulatorMoverSegment segment6 = new ManipulatorMoverSegment(0.5, Vector3.right, -90, 90);
-  //ManipulatorMoverSegment segment7 = new ManipulatorMoverSegment(0.5, Vector3.forward, -90, 90);
-  //ManipulatorMoverSegment segment8 = new ManipulatorMoverSegment(0.5, Vector3.right, -90, 90);
-  //ManipulatorMoverSegment segment9 = new ManipulatorMoverSegment(0.5, Vector3.forward, -90, 90);
-
-  
-
-  void inverse(double x, double y, double z){
-    inverse(new Vector3(x, y, z));
-  }
-
-  void inverse(Vector3 target){
-    //segment9.inverseKinematics(target);
-    segment4.inverseKinematics(target, new Vector3(0, 0, 0));
-    segment.realign();
-    segment2.realign();
-    segment3.realign();
-    segment4.realign();
-    //segment5.realign();
-    //segment6.realign();
-    //segment7.realign();
-    //segment8.realign();
-    //segment9.realign();
-    segment.forwardKinematics();
-    makeFrame();
-  }
-
-  void inverse(Vector3 target, Vector3 anchor){
-    //segment9.inverseKinematics(target)
-    segment4.inverseKinematics(target, anchor);
-    segment.realign();
-    segment2.realign();
-    segment3.realign();
-    segment4.realign();
-    //segment5.realign();
-    //segment6.realign();
-    //segment7.realign();
-    //segment8.realign();
-    //segment9.realign();
-    segment.forwardKinematics();
-    makeFrame();
-  }
-
-  void lerpInverse(Vector3 start, Vector3 end, int steps){
-    for(int i = 0; i < steps; ++i){
-      inverse(Vector3.lerp(start, end, (double)i / (double)steps));
-    }
-  }
-
-  void slerpInverse(Vector3 start, Vector3 end, int steps){
-    for(int i = 0; i < steps; ++i){
-      inverse(Vector3.slerp(start, end, (double)i / (double)steps));
-    }
-  }
-
-  void slerpInverse(Vector3 start, Vector3 end, Vector3 anchorStart, Vector3 anchorEnd, int steps){
-    for(int i = 0; i < steps; ++i){
-      inverse(
-        Vector3.slerp(start, end, (double)i / (double)steps),
-        Vector3.lerp(anchorStart, anchorEnd, (double)i / (double)steps)
-         );
-    }
-  }
-
-  */
-
-  /*
-  //for unity testing v2
-  ManipulatorMoverSegment segment = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
-  ManipulatorMoverSegment segment2 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
-  ManipulatorMoverSegment segment3 = new ManipulatorMoverSegment(2/4.0, Vector3.forward, -90, 90);
-  ManipulatorMoverSegment segment4 = new ManipulatorMoverSegment(2/4.0, Vector3.right, -90, 90);
-  ManipulatorMoverSegment[] segments = {segment, segment2, segment3, segment4};
-  ManipulatorMover manipulatorMover = new ManipulatorMover(segments);
-
-  void slerpInverse(Vector3 start, Vector3 end, int steps){
-    for(int i = 0; i < steps; ++i){
-      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
-      manipulatorMover.updateKinematics();
-    }
-  }
-
-  void slerpInverse(Vector3 start, Vector3 end, Vector3 anchorStart, Vector3 anchorEnd, int steps){
-    for(int i = 0; i < steps; ++i){
-      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
-      manipulatorMover.setAnchor(Vector3.lerp(anchorStart, anchorEnd, (double)i / (double)steps));
-      manipulatorMover.updateKinematics();
-    }
-  }
-  */
-
-  /*
-  //for unity testing v4
-  void slerpInverse(ManipulatorMover manipulatorMover, Vector3 start, Vector3 end, Vector3 subStart, Vector3 subEnd, int steps){
-    for(int i = 0; i < steps; ++i){
-      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
-      manipulatorMover.setSubTarget(0, Vector3.slerp(subStart, subEnd, (double)i / (double)steps));
-      manipulatorMover.updateKinematics();
-    }
-  }
-
-  void slerpInverse(ManipulatorMover manipulatorMover, Vector3 start, Vector3 end, int steps){
-    for(int i = 0; i < steps; ++i){
-      manipulatorMover.setTarget(Vector3.slerp(start, end, (double)i / (double)steps));
-      manipulatorMover.updateKinematics();
-    }
-  }
-  */
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -159,8 +53,24 @@ public class Robot extends TimedRobot {
     //FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
     m_robotContainer = new RobotContainer();
 
-    //PWM_Motor hi = new PWM_Motor(1, 0, 1, 360);
-    //hi.set(1, Motor.ControlMode.Percent);
+    /*
+    ShuffleboardLayout spyCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Spy", BuiltInLayouts.kList)
+      .withSize(2, 2)
+      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
+
+    spyCommands.add(new LimelightOutputTest());
+    spyCommands.add(new DisplayDrivetrainOutputs(m_robotContainer.drivetrain));
+    
+    ShuffleboardLayout drivetrainCommands = Shuffleboard.getTab("Commands")
+      .getLayout("Drivetrain", BuiltInLayouts.kList)
+      .withSize(2, 2)
+      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
+
+    drivetrainCommands.add(new DrivetrainManualControl(m_robotContainer.drivetrain));
+    drivetrainCommands.add(new ArcadeDrive(m_robotContainer.drivetrain));
+    drivetrainCommands.add(new TankDrive(m_robotContainer.drivetrain));
+    */
   }
 
   /**
@@ -177,6 +87,9 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    
+    
   }
 
   /**
@@ -219,10 +132,6 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-    //m_robotContainer.path2.schedule();
-    //m_robotContainer.manipulatorMover.setTarget(new Vector3(1, 1, 1));
-    //m_robotContainer.path.schedule();
-    //m_robotContainer.rec.schedule();
   }
 
   /**
@@ -230,18 +139,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    /*
-    Vector3 target = new Vector3(RobotContainer.controller.getX(Hand.kLeft), 1, -RobotContainer.controller.getY(Hand.kLeft));
-    target = target.normalized().mult(2);
-    m_robotContainer.goToPosition = new GoToPosition(m_robotContainer.manipulatorMover, target, 10);
-    m_robotContainer.goToPosition.schedule();
-    */
+
   }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+
   }
 
   /**
@@ -249,5 +154,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
   }
 }

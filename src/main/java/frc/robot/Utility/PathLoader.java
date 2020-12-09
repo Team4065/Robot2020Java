@@ -22,6 +22,10 @@ public class PathLoader {
 
     private Trajectory trajectory;
 
+    /**
+     * Loads the data from a path weaver file.
+     * @param pathDirectory The directory of the file with the desired Ramsete path.
+     */
     public PathLoader(String pathDirectory){
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(pathDirectory);

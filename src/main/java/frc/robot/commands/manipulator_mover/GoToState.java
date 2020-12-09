@@ -12,6 +12,9 @@ import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
 import frc.robot.ExtraMath.*;
 import frc.robot.RobotMap;
 
+/**
+ * Sets the target positions of every segment
+ */
 public class GoToState extends CommandBase {
   private ManipulatorMover manipulatorMover;
   private Vector3[] targets;

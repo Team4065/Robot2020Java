@@ -14,12 +14,16 @@ New differential drive subsystems will need new code for motor creation, motor c
 
 /**
  * TODO
+ * 
+ * Make a shuffle board interface
+ * 
  * Make more differential drivetrain commands 
  *    -arcade drive- done
  * 
  * Make manipulator Subsystem
  * 
  * Make a recording mode for the manipulator mover
+ *    -test
  * 
  * 
  * Add support for max velocity and acceleration for TalonSRX_Drivetrain
@@ -27,7 +31,7 @@ New differential drive subsystems will need new code for motor creation, motor c
  * Make a unity testing branch for github
  * 
  * Make unity testing tools
- *  -it is no longer random bits of code
+ *  -make a dedicated utility class
  * 
  * Make tests to ensure the code actually works on a robot
  * 
@@ -35,8 +39,6 @@ New differential drive subsystems will need new code for motor creation, motor c
  * 
  * test drivetrain commands to ensure everything is inverted properly
  * 
- * Make the gyro a utility
- *    -move it out of the drivetrain and into its own utility class
  */
 
 package frc.robot;
