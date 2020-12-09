@@ -53,6 +53,7 @@ public class Robot extends TimedRobot {
     //FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
     m_robotContainer = new RobotContainer();
 
+    /*
     ShuffleboardLayout spyCommands = Shuffleboard.getTab("Commands")
       .getLayout("Spy", BuiltInLayouts.kList)
       .withSize(2, 2)
@@ -69,6 +70,7 @@ public class Robot extends TimedRobot {
     drivetrainCommands.add(new DrivetrainManualControl(m_robotContainer.drivetrain));
     drivetrainCommands.add(new ArcadeDrive(m_robotContainer.drivetrain));
     drivetrainCommands.add(new TankDrive(m_robotContainer.drivetrain));
+    */
   }
 
   /**
