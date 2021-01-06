@@ -7,106 +7,50 @@
 
 package frc.robot.subsystems.differential_drivetrain;
 
-import frc.robot.Robot;
-import frc.robot.RobotMap;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+import com.ctre.phoenix.motorcontrol.InvertType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 
-/**
- * A drivetrain subsystem that uses TalonSRX as the motor controller. VictorSPX
- * can be used as slave controllers. CAN IDs range from 1 to 6. IDs 1 - 3: left
- * motors IDs 4 - 6: right motors
- * 
- * @param leftMotorCount     The number of motors on the left side of the
- *                           drivetrain.
- * @param rightMotorCount    The number of motors on the right side of the
- *                           drivetrain.
- * @param areSlavesVictorSPX True if the slaves are VictorSPXs.
- * @param invertForward      Inverts the forward direction of the drivetrain and
- *                           inverts encoders accordingly.
- * 
- */
-public class TalonSRX_Drivetrain extends Drivetrain {
+import frc.robot.RobotMap;
 
-  WPI_TalonSRX leftMaster, rightMaster;
-  BaseMotorController[] leftSlaves, rightSlaves;
+public class TalonFX_Drivetrain extends Drivetrain {
+  
+  WPI_VictorSPX leftMaster, rightMaster;
+  WPI_VictorSPX[] leftSlaves, rightSlaves;
 
-  public TalonSRX_Drivetrain(boolean areSlavesVictorSPX) {
-    
+  public TalonFX_Drivetrain() {
     int leftMotorCount = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1;
     int rightMotorCount = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1;
 
+    leftMaster = new WPI_VictorSPX(RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN);//this makes the master motors that the slaves follow(mimic).
 
-    leftMaster = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN);//this makes the master motors that the slaves follow(mimic).
-    
+    leftSlaves = new WPI_VictorSPX[leftMotorCount - 1];
 
-    //Adds slaves of the appropriate type
-    if(areSlavesVictorSPX){
-      leftSlaves = new WPI_VictorSPX[leftMotorCount - 1];
-
-      int leftSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
-        leftSlaves[leftSlaveCount] = new WPI_VictorSPX(i);
-        leftSlaves[leftSlaveCount].follow(leftMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
-        leftSlaves[leftSlaveCount].setInverted(InvertType.FollowMaster);
-        ++leftSlaveCount;
-      }
-    }else{
-      leftSlaves = new WPI_TalonSRX[leftMotorCount - 1];
-
-      int leftSlaveCount = 0;//this exists so that the correct address in the rightSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
-        leftSlaves[leftSlaveCount] = new WPI_TalonSRX(i);
-        leftSlaves[leftSlaveCount].follow(leftMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
-        leftSlaves[leftSlaveCount].setInverted(InvertType.FollowMaster);
-        ++leftSlaveCount;
-      }
-    }
-    
-
-    rightMaster = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN);
-    
-
-    //Adds slaves of the appropriate type
-    if(areSlavesVictorSPX){
-      rightSlaves = new WPI_VictorSPX[rightMotorCount - 1];
-
-      int rightSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
-        rightSlaves[rightSlaveCount] = new WPI_VictorSPX(i);
-        rightSlaves[rightSlaveCount].follow(rightMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
-        rightSlaves[rightSlaveCount].setInverted(InvertType.FollowMaster);
-        ++rightSlaveCount;
-      }
-    }else{
-      rightSlaves = new WPI_TalonSRX[rightMotorCount - 1];
-
-      int rightSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
-        rightSlaves[rightSlaveCount] = new WPI_TalonSRX(i);
-        rightSlaves[rightSlaveCount].follow(rightMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
-        rightSlaves[rightSlaveCount].setInverted(InvertType.FollowMaster);
-        ++rightSlaveCount;
-      }
+    int leftSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
+    for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
+      leftSlaves[leftSlaveCount] = new WPI_VictorSPX(i);
+      leftSlaves[leftSlaveCount].follow(leftMaster);//this makes the slaves follow the master.
+      leftSlaves[leftSlaveCount].setInverted(InvertType.FollowMaster);
+      ++leftSlaveCount;
     }
 
+    rightMaster = new WPI_VictorSPX(RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN);
+
+    rightSlaves = new WPI_VictorSPX[rightMotorCount - 1];
+
+    int rightSlaveCount = 0;//this exists so that the correct address in the rightSlaves array is accessed.
+    for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
+      rightSlaves[rightSlaveCount] = new WPI_VictorSPX(i);
+      rightSlaves[rightSlaveCount].follow(rightMaster);//this makes the slaves follow the master.
+      rightSlaves[rightSlaveCount].setInverted(InvertType.FollowMaster);
+      ++rightSlaveCount;
+    }
+  
     leftMaster.setInverted(RobotMap.DRIVETRAIN_INVERT_FORWARD);
     rightMaster.setInverted(!RobotMap.DRIVETRAIN_INVERT_FORWARD);
-
-  }
-  public TalonSRX_Drivetrain(){
-    this(false);
   }
 
   @Override
@@ -216,32 +160,34 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     rightMaster.config_kF(1, value);
   }
 
-  //Sets the max velocity of the motor controllers
-  @Override
-  public void SetMaxVelocity_velocity(double value){
-    kMaxVelocity_velocity = value;
-    throw new UnsupportedOperationException();
-  }
-  //Sets the max acceleration of the motor controllers
-  @Override
-  public void SetMaxAcceleration_velocity(double value){
-    kMaxAcceleration_velocity = value;
-    throw new UnsupportedOperationException();
-  }
 
-  //Sets the max velocity of the motor controllers
-  @Override
-  public void SetMaxVelocity_position(double value){
-    kMaxVelocity_position = value;
-    throw new UnsupportedOperationException();
-  }
-  //Sets the max acceleration of the motor controllers
-  @Override
-  public void SetMaxAcceleration_position(double value){
-    kMaxAcceleration_position = value;
-    throw new UnsupportedOperationException();
-  }
+   //Sets the max velocity of the motor controllers
+   @Override
+   public void SetMaxVelocity_velocity(double value){
+     kMaxVelocity_velocity = value;
+     throw new UnsupportedOperationException();
+   }
+   //Sets the max acceleration of the motor controllers
+   @Override
+   public void SetMaxAcceleration_velocity(double value){
+     kMaxAcceleration_velocity = value;
+     throw new UnsupportedOperationException();
+   }
+ 
+   //Sets the max velocity of the motor controllers
+   @Override
+   public void SetMaxVelocity_position(double value){
+     kMaxVelocity_position = value;
+     throw new UnsupportedOperationException();
+   }
+   //Sets the max acceleration of the motor controllers
+   @Override
+   public void SetMaxAcceleration_position(double value){
+     kMaxAcceleration_position = value;
+     throw new UnsupportedOperationException();
+   }
 
+   
   @Override
   public double[] getLeftOutputs() {
     double[] output = new double[leftSlaves.length + 1];
@@ -266,13 +212,13 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     return output;
   }
 
-
+  
   //Ramsete code
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(
-      (double)leftMaster.getSelectedSensorVelocity() / 4096 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,//the times 10 brings it from per 100ms to 1000ms
-      (double)rightMaster.getSelectedSensorVelocity() / 4096 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+      (double)leftMaster.getSelectedSensorVelocity() / 2048 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,//the times 10 brings it from per 100ms to 1000ms
+      (double)rightMaster.getSelectedSensorVelocity() / 2048 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
      );
   }
 
