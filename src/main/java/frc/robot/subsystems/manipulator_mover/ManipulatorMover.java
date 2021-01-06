@@ -63,7 +63,7 @@ public class ManipulatorMover extends SubsystemBase {
       
 
       //for testing
-      FileOutput.printManipulatorMoverState("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt", this);
+      //FileOutput.printManipulatorMoverState("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt", this);
     }
 
     if(areMotorsEnabled){
