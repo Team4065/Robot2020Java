@@ -71,7 +71,7 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     );
 
     if(RobotMap.IS_SIMULATION_RUNNING){
-      simulationPeriodic();
+      mySimulationPeriodic();
     }else{
       switch(controlMode){
         case PERCENT:

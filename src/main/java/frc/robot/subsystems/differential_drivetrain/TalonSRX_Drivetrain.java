@@ -121,7 +121,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
     //this if statement and its contents are needed to implement simulation mode
     if(RobotMap.IS_SIMULATION_RUNNING){
-      simulationPeriodic();
+      mySimulationPeriodic();
     }else{
       //this is the normal code to be run
       switch(controlMode){

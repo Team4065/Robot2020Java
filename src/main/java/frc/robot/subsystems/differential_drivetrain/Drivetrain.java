@@ -91,7 +91,7 @@ public class Drivetrain extends SubsystemBase {
     return controlMode;
   }
 
-  protected void simulationPeriodic(){
+  protected void mySimulationPeriodic(){
     int updatedMotors = 0;//this exists so that the correct address in the simulationMotors array is accessed.
     //updates the left motors
     for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
