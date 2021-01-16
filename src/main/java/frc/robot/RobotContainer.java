@@ -37,7 +37,7 @@ import frc.robot.commands.manipulator_mover.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  public static Joystick controller = new Joystick(Constants.CONTROLS_MAIN_CONTROLLER_ID);
+  
 
   TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
   //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);

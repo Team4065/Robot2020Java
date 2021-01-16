@@ -7,6 +7,7 @@
 
 package frc.robot.commands.differential_drivetrain;
 
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -35,8 +36,8 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = -RobotContainer.controller.getY(Hand.kLeft);
-    double rotation = -RobotContainer.controller.getRawAxis(4);
+    double speed = -Constants.controller.getY(Hand.kLeft);
+    double rotation = -Constants.controller.getRawAxis(4);
     drivetrain.setLeftTarget(speed - rotation);
     drivetrain.setRightTarget(speed + rotation);
   }

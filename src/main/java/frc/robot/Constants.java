@@ -12,6 +12,7 @@ import frc.robot.Utility.Vector3;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
@@ -24,6 +25,8 @@ import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
  * not repeat or else it will result in unexpected behaviors
  */
 public class Constants {
+    public static final Joystick controller = new Joystick(Constants.CONTROLS_MAIN_CONTROLLER_ID);
+
     public enum MotorType {
         PWM, CANSparkMax, TalonSRX
     };

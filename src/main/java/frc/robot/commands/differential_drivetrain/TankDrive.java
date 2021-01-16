@@ -37,8 +37,8 @@ public class TankDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drivetrain.setLeftTarget(-RobotContainer.controller.getRawAxis(1));
-    drivetrain.setRightTarget(-RobotContainer.controller.getRawAxis(5));
+    drivetrain.setLeftTarget(-Constants.controller.getRawAxis(1));
+    drivetrain.setRightTarget(-Constants.controller.getRawAxis(5));
   }
 
   // Called once the command ends or is interrupted.
