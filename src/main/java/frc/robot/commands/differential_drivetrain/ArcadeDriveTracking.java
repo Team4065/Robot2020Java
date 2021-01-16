@@ -28,6 +28,8 @@ public class ArcadeDriveTracking extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    this.pastError = 0;//safety
+    this.deltaError = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.

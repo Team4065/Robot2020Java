@@ -6,10 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.Utility.PathLoader;
+import frc.robot.Utility.RamseteCommandBuilder;
+import frc.robot.commands.differential_drivetrain.ArcadeDrive;
+import frc.robot.commands.differential_drivetrain.ArcadeDriveTracking;
 import frc.robot.subsystems.differential_drivetrain.TalonFX_Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -19,16 +24,25 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-
   private final TalonFX_Drivetrain m_drivetrain = new TalonFX_Drivetrain();
+
+  private final JoystickButton m_TrackTape = new JoystickButton(Constants.mainController, 0);
+
+  private int autoChoice = 0;
+  private final PathLoader m_leftAutoPath = new PathLoader("LeftAuto.JSON");
+  private final RamseteCommand m_leftAuto = (new RamseteCommandBuilder(m_drivetrain, m_leftAutoPath)).getCommand();
+
+  private final PathLoader m_rightAutoPath = new PathLoader("RightAuto.JSON");
+  private final RamseteCommand m_rightAuto = (new RamseteCommandBuilder(m_drivetrain, m_rightAutoPath)).getCommand();
+
+  private final PathLoader m_trenchAutoPath = new PathLoader("TrenchAuto.JSON");
+  private final RamseteCommand m_trenchAuto = (new RamseteCommandBuilder(m_drivetrain, m_trenchAutoPath)).getCommand();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain));
   }
 
   /**
@@ -37,7 +51,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    m_TrackTape.whileHeld(new ArcadeDriveTracking(m_drivetrain), true);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -46,6 +62,16 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    switch(autoChoice){
+      case 0:
+        return m_leftAuto;
+      case 1:
+        return m_rightAuto;
+      case 2:
+        return m_trenchAuto;
+      default:
+        return new SequentialCommandGroup();//do nothing
+    }
+    
   }
 }
