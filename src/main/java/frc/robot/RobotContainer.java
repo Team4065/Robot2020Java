@@ -30,7 +30,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final static CANSparkMax_Drivetrain m_drivetrain = new CANSparkMax_Drivetrain();
 
-  private final JoystickButton m_TrackTape = new JoystickButton(Constants.mainController, 0);
+  private final JoystickButton m_TrackReflectiveTape = new JoystickButton(Constants.mainController, 0);
 
   private int autoChoice = 0;
 
@@ -53,7 +53,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    m_TrackTape.whileHeld(new ArcadeDriveTracking(m_drivetrain), true);
+    m_TrackReflectiveTape.whileHeld(new ArcadeDriveTracking(m_drivetrain), true);
   }
 
   /**
