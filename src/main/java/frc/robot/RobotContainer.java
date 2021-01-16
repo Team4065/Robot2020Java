@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Utility.PathLoader;
 import frc.robot.Utility.RamseteCommandBuilder;
+import frc.robot.commands.auto.LeftAuto;
+import frc.robot.commands.auto.RightAuto;
+import frc.robot.commands.auto.TrenchAuto;
 import frc.robot.commands.differential_drivetrain.ArcadeDrive;
 import frc.robot.commands.differential_drivetrain.ArcadeDriveTracking;
 import frc.robot.subsystems.differential_drivetrain.TalonFX_Drivetrain;
@@ -24,19 +27,16 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final TalonFX_Drivetrain m_drivetrain = new TalonFX_Drivetrain();
+  public final static TalonFX_Drivetrain m_drivetrain = new TalonFX_Drivetrain();
 
   private final JoystickButton m_TrackTape = new JoystickButton(Constants.mainController, 0);
 
   private int autoChoice = 0;
-  private final PathLoader m_leftAutoPath = new PathLoader("LeftAuto.JSON");
-  private final RamseteCommand m_leftAuto = (new RamseteCommandBuilder(m_drivetrain, m_leftAutoPath)).getCommand();
 
-  private final PathLoader m_rightAutoPath = new PathLoader("RightAuto.JSON");
-  private final RamseteCommand m_rightAuto = (new RamseteCommandBuilder(m_drivetrain, m_rightAutoPath)).getCommand();
 
-  private final PathLoader m_trenchAutoPath = new PathLoader("TrenchAuto.JSON");
-  private final RamseteCommand m_trenchAuto = (new RamseteCommandBuilder(m_drivetrain, m_trenchAutoPath)).getCommand();
+  public final LeftAuto m_leftAuto = new LeftAuto();
+  public final RightAuto m_rightAuto = new RightAuto();
+  public final TrenchAuto m_trenchAuto = new TrenchAuto();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
