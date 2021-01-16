@@ -37,8 +37,8 @@ public class ArcadeDriveTracking extends CommandBase {
     deltaError = error - pastError;
 
     double output = (Constants.DRIVETRAIN_TRACKING_KP * error) + (Constants.DRIVETRAIN_TRACKING_KD * deltaError);
-    double speed = Constants.controller.getY(Hand.kLeft);
-    double rotation = Constants.controller.getX(Hand.kRight);
+    double speed = Constants.mainController.getY(Hand.kLeft);
+    double rotation = Constants.mainController.getX(Hand.kRight);
     drivetrain.setLeftTarget(output + speed - rotation);
     drivetrain.setRightTarget(-output + speed + rotation);
 

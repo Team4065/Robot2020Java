@@ -25,7 +25,8 @@ import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
  * not repeat or else it will result in unexpected behaviors
  */
 public class Constants {
-    public static final Joystick controller = new Joystick(Constants.CONTROLS_MAIN_CONTROLLER_ID);
+    //Controls
+    public static final Joystick mainController = new Joystick(0);
 
     public enum MotorType {
         PWM, CANSparkMax, TalonSRX
@@ -83,8 +84,7 @@ public class Constants {
     public static final double DRIVETRAIN_TRACKING_KD = 0;
 
 
-    //Controls
-    public static final int CONTROLS_MAIN_CONTROLLER_ID = 0;
+    
 
     //Program info
     public static final double DELTA_TIME = 0.02;//The delay between updates in seconds (20ms)
