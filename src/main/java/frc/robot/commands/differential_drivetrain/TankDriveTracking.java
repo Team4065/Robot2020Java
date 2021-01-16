@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.differential_drivetrain.Drivetrain;
 import frc.robot.Utility.Limelight;
 import frc.robot.RobotContainer;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 
 public class TankDriveTracking extends CommandBase {
   
@@ -36,7 +36,7 @@ public class TankDriveTracking extends CommandBase {
     double error = Limelight.getHorizontalOffset();
     deltaError = error - pastError;
 
-    double output = (RobotMap.DRIVETRAIN_TRACKING_KP * error) + (RobotMap.DRIVETRAIN_TRACKING_KD * deltaError);
+    double output = (Constants.DRIVETRAIN_TRACKING_KP * error) + (Constants.DRIVETRAIN_TRACKING_KD * deltaError);
     drivetrain.setLeftTarget(output + RobotContainer.controller.getY(Hand.kLeft));
     drivetrain.setRightTarget(-output + RobotContainer.controller.getY(Hand.kRight));
 

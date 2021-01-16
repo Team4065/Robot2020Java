@@ -7,7 +7,7 @@
 
 package frc.robot.Utility;
 
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 
@@ -18,15 +18,15 @@ public class Gyro {
     private static AHRS gyro = new AHRS(SPI.Port.kMXP);
 
     /**
-     * Returns the z-axis angle (heading) reported by the gyroscope with alterations from RobotMap settings.
+     * Returns the z-axis angle (heading) reported by the gyroscope with alterations from Constants settings.
      * @return
      */
     public static double getAngle(){
-        return gyro.getAngle() * (RobotMap.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
+        return gyro.getAngle() * (Constants.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
     }
 
     /**
-     * Returns the z-axis angle (heading) reported by the gyroscope without alterations from RobotMap settings.
+     * Returns the z-axis angle (heading) reported by the gyroscope without alterations from Constants settings.
      * @return
      */
     public static double getRawAngle(){

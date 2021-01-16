@@ -9,7 +9,7 @@ package frc.robot.commands.manipulator_mover;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
-import frc.robot.ExtraMath.*;
+import frc.robot.Utility.Vector3;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

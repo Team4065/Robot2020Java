@@ -8,7 +8,7 @@
 package frc.robot.subsystems.differential_drivetrain;
 
 import frc.robot.Robot;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -44,11 +44,11 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
   public TalonSRX_Drivetrain(boolean areSlavesVictorSPX) {
     
-    int leftMotorCount = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1;
-    int rightMotorCount = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1;
+    int leftMotorCount = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1;
+    int rightMotorCount = Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1;
 
 
-    leftMaster = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN);//this makes the master motors that the slaves follow(mimic).
+    leftMaster = new WPI_TalonSRX(Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN);//this makes the master motors that the slaves follow(mimic).
     
 
     //Adds slaves of the appropriate type
@@ -56,7 +56,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       leftSlaves = new WPI_VictorSPX[leftMotorCount - 1];
 
       int leftSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
+      for(int i = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
         leftSlaves[leftSlaveCount] = new WPI_VictorSPX(i);
         leftSlaves[leftSlaveCount].follow(leftMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
         leftSlaves[leftSlaveCount].setInverted(InvertType.FollowMaster);
@@ -66,7 +66,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       leftSlaves = new WPI_TalonSRX[leftMotorCount - 1];
 
       int leftSlaveCount = 0;//this exists so that the correct address in the rightSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
+      for(int i = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
         leftSlaves[leftSlaveCount] = new WPI_TalonSRX(i);
         leftSlaves[leftSlaveCount].follow(leftMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
         leftSlaves[leftSlaveCount].setInverted(InvertType.FollowMaster);
@@ -75,7 +75,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     }
     
 
-    rightMaster = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN);
+    rightMaster = new WPI_TalonSRX(Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN);
     
 
     //Adds slaves of the appropriate type
@@ -83,7 +83,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       rightSlaves = new WPI_VictorSPX[rightMotorCount - 1];
 
       int rightSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
+      for(int i = Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
         rightSlaves[rightSlaveCount] = new WPI_VictorSPX(i);
         rightSlaves[rightSlaveCount].follow(rightMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
         rightSlaves[rightSlaveCount].setInverted(InvertType.FollowMaster);
@@ -93,7 +93,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       rightSlaves = new WPI_TalonSRX[rightMotorCount - 1];
 
       int rightSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
-      for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
+      for(int i = Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
         rightSlaves[rightSlaveCount] = new WPI_TalonSRX(i);
         rightSlaves[rightSlaveCount].follow(rightMaster, FollowerType.PercentOutput);//this makes the slaves follow the master.
         rightSlaves[rightSlaveCount].setInverted(InvertType.FollowMaster);
@@ -101,8 +101,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       }
     }
 
-    leftMaster.setInverted(RobotMap.DRIVETRAIN_INVERT_FORWARD);
-    rightMaster.setInverted(!RobotMap.DRIVETRAIN_INVERT_FORWARD);
+    leftMaster.setInverted(Constants.DRIVETRAIN_INVERT_FORWARD);
+    rightMaster.setInverted(!Constants.DRIVETRAIN_INVERT_FORWARD);
 
   }
   public TalonSRX_Drivetrain(){
@@ -115,12 +115,12 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
     odometry.update(
       Rotation2d.fromDegrees(getHeading()),
-      leftMaster.getSelectedSensorPosition() / 4096 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,
-      rightMaster.getSelectedSensorPosition() / 4096 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+      leftMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,
+      rightMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
     );
 
     //this if statement and its contents are needed to implement simulation mode
-    if(RobotMap.IS_SIMULATION_RUNNING){
+    if(Constants.IS_SIMULATION_RUNNING){
       mySimulationPeriodic();
     }else{
       //this is the normal code to be run
@@ -271,8 +271,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(
-      (double)leftMaster.getSelectedSensorVelocity() / 4096 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,//the times 10 brings it from per 100ms to 1000ms
-      (double)rightMaster.getSelectedSensorVelocity() / 4096 * 10 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+      (double)leftMaster.getSelectedSensorVelocity() / 4096 * 10 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,//the times 10 brings it from per 100ms to 1000ms
+      (double)rightMaster.getSelectedSensorVelocity() / 4096 * 10 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
      );
   }
 

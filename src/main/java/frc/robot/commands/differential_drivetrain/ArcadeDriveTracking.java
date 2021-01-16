@@ -10,7 +10,7 @@ package frc.robot.commands.differential_drivetrain;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.differential_drivetrain.Drivetrain;
 import frc.robot.Utility.Limelight;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 
@@ -36,7 +36,7 @@ public class ArcadeDriveTracking extends CommandBase {
     double error = Limelight.getHorizontalOffset();
     deltaError = error - pastError;
 
-    double output = (RobotMap.DRIVETRAIN_TRACKING_KP * error) + (RobotMap.DRIVETRAIN_TRACKING_KD * deltaError);
+    double output = (Constants.DRIVETRAIN_TRACKING_KP * error) + (Constants.DRIVETRAIN_TRACKING_KD * deltaError);
     double speed = RobotContainer.controller.getY(Hand.kLeft);
     double rotation = RobotContainer.controller.getX(Hand.kRight);
     drivetrain.setLeftTarget(output + speed - rotation);

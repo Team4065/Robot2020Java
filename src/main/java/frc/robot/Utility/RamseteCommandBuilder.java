@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import frc.robot.subsystems.differential_drivetrain.Drivetrain;
 
 /**
@@ -29,12 +29,12 @@ public class RamseteCommandBuilder {
         command = new RamseteCommand(
             path.getTrajectory(), 
             drivetrain::getPose,
-            new RamseteController(RobotMap.RAMSETE_B, RobotMap.RAMSETE_ZETA),
-            new SimpleMotorFeedforward(RobotMap.KS_VOLTS, RobotMap.KV_VOLT_SECONDS_PER_METER, RobotMap.KA_VOLT_SECONDS_SQUARED_PER_METER),
-            RobotMap.DIFFERENTIAL_DRIVE_KINEMATICS,
+            new RamseteController(Constants.RAMSETE_B, Constants.RAMSETE_ZETA),
+            new SimpleMotorFeedforward(Constants.KS_VOLTS, Constants.KV_VOLT_SECONDS_PER_METER, Constants.KA_VOLT_SECONDS_SQUARED_PER_METER),
+            Constants.DIFFERENTIAL_DRIVE_KINEMATICS,
             drivetrain::getWheelSpeeds,
-            new PIDController(RobotMap.KP_DRIVE_VEL, 0, 0),
-            new PIDController(RobotMap.KP_DRIVE_VEL, 0, 0),
+            new PIDController(Constants.KP_DRIVE_VEL, 0, 0),
+            new PIDController(Constants.KP_DRIVE_VEL, 0, 0),
             drivetrain::tankDriveVolts,
             drivetrain);
     }

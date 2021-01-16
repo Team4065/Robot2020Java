@@ -9,7 +9,7 @@ package frc.robot.Utility;
 
 import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
-import frc.robot.ExtraMath.*;
+import frc.robot.Utility.Vector3;
 
 import java.io.*;
 

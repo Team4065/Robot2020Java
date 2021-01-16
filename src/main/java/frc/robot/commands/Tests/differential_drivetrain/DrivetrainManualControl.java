@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import frc.robot.subsystems.differential_drivetrain.Drivetrain;
 
 public class DrivetrainManualControl extends CommandBase {

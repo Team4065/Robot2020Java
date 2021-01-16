@@ -9,8 +9,8 @@ package frc.robot.commands.manipulator_mover;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
-import frc.robot.RobotMap;
-import frc.robot.ExtraMath.*;
+import frc.robot.Constants;
+import frc.robot.Utility.Vector3;
 
 /**
  * Sets the target position of the last segement
@@ -51,12 +51,12 @@ public class GoToPosition extends CommandBase {
   public void execute() {
 
     //get target prevents the system from stopping due to temporary reverse motion
-    Vector3 tempTarget = Vector3.moveTowards(manipulatorMover.getTarget(), target, speed * RobotMap.DELTA_TIME);
+    Vector3 tempTarget = Vector3.moveTowards(manipulatorMover.getTarget(), target, speed * Constants.DELTA_TIME);
 
     /*
     double timeJump = 1;
     Vector3 tempTarget = Vector3.slerp(manipulatorMover.getTarget(), target, timeJump);
-    while(tempTarget.sub(manipulatorMover.getTarget()).magnitude() >  speed * RobotMap.DELTA_TIME){
+    while(tempTarget.sub(manipulatorMover.getTarget()).magnitude() >  speed * Constants.DELTA_TIME){
       timeJump *= 0.75;
       tempTarget = Vector3.slerp(manipulatorMover.getTarget(), target, timeJump);
     }
@@ -74,6 +74,6 @@ public class GoToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return manipulatorMover.getMeasuredFinalEndpoint().sub(target).magnitude() < RobotMap.MANIPULATOR_MOVER_ACCURACY_TOLERANCE;
+    return manipulatorMover.getMeasuredFinalEndpoint().sub(target).magnitude() < Constants.MANIPULATOR_MOVER_ACCURACY_TOLERANCE;
   }
 }

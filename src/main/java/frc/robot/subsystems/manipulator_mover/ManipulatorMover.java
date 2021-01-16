@@ -9,8 +9,8 @@ package frc.robot.subsystems.manipulator_mover;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.ExtraMath.*;
+import frc.robot.Constants;
+import frc.robot.Utility.Vector3;
 import frc.robot.Utility.FileOutput;
 import frc.robot.Utility.Motors.*;
 
@@ -31,18 +31,18 @@ public class ManipulatorMover extends SubsystemBase {
 
 
   public ManipulatorMover() {     
-    segments = RobotMap.MANIPULATOR_MOVER_SEGMENTS;//gets the data for the segments
+    segments = Constants.MANIPULATOR_MOVER_SEGMENTS;//gets the data for the segments
     
     //sets up segments so that they know how they relate to the other segments
-    for(int i = 0; i < RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1; ++i){
+    for(int i = 0; i < Constants.MANIPULATOR_MOVER_SEGMENTS.length - 1; ++i){
       segments[i].setChildSegment(segments[i + 1]);
     }
 
     segments[0].forwardKinematics(anchor);//calculates robotspace variables which prevents null pointer errors
     
     //setup for sub targets
-    subTargets = new Vector3[RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1];
-    enabledSubTargets = new boolean[RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1];
+    subTargets = new Vector3[Constants.MANIPULATOR_MOVER_SEGMENTS.length - 1];
+    enabledSubTargets = new boolean[Constants.MANIPULATOR_MOVER_SEGMENTS.length - 1];
     for(int i = 0; i < subTargets.length; ++i){
       subTargets[i] = segments[i].getRobotspaceEnd();
     }
@@ -50,7 +50,7 @@ public class ManipulatorMover extends SubsystemBase {
       b = false;
     }
 
-    target = segments[RobotMap.MANIPULATOR_MOVER_SEGMENTS.length - 1].getRobotspaceEnd();//Sets the initial target to the natural end position of the segment system.
+    target = segments[Constants.MANIPULATOR_MOVER_SEGMENTS.length - 1].getRobotspaceEnd();//Sets the initial target to the natural end position of the segment system.
     segments[0].measuredForwardKinematics(anchor);
   }
 
@@ -203,7 +203,7 @@ public class ManipulatorMover extends SubsystemBase {
    * @return The endpoint of the last segment in robotspace.
    */
   public Vector3 getMeasuredFinalEndpoint(){
-    if(RobotMap.IS_SIMULATION_RUNNING){
+    if(Constants.IS_SIMULATION_RUNNING){
       return segments[segments.length - 1].getRobotspaceEnd();//if simulation is running there are no encoders to measure from
     }else{
       segments[0].measuredForwardKinematics(anchor);//calulates the actual endpoints of each segment
@@ -217,7 +217,7 @@ public class ManipulatorMover extends SubsystemBase {
    */
   public Vector3[] getMeasuredEndpoints(){
     Vector3[] endpoints = new Vector3[segments.length]; 
-    if(RobotMap.IS_SIMULATION_RUNNING){
+    if(Constants.IS_SIMULATION_RUNNING){
       for(int i = 0; i < segments.length; ++i){
         endpoints[i] = segments[i].getRobotspaceEnd();//if simulation is running there are no encoders to measure from
       }
@@ -233,7 +233,7 @@ public class ManipulatorMover extends SubsystemBase {
 
   public double[] getMeasuredAngles(){
     double[] angles = new double[segments.length]; 
-    if(RobotMap.IS_SIMULATION_RUNNING){
+    if(Constants.IS_SIMULATION_RUNNING){
       for(int i = 0; i < segments.length; ++i){
         angles[i] = segments[i].getAngle();//if simulation is running there are no encoders to measure from
       }

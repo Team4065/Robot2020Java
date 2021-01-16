@@ -8,7 +8,7 @@
 package frc.robot.commands.differential_drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import frc.robot.Utility.Limelight;
 import frc.robot.subsystems.differential_drivetrain.Drivetrain;
 
@@ -35,7 +35,7 @@ public class StationaryTracking extends CommandBase {
     double error = Limelight.getHorizontalOffset();
     deltaError = error - pastError;
 
-    double output = (RobotMap.DRIVETRAIN_TRACKING_KP * error) + (RobotMap.DRIVETRAIN_TRACKING_KD * deltaError);
+    double output = (Constants.DRIVETRAIN_TRACKING_KP * error) + (Constants.DRIVETRAIN_TRACKING_KD * deltaError);
     drivetrain.setLeftTarget(output);
     drivetrain.setRightTarget(-output);
 

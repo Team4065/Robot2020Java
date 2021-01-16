@@ -9,8 +9,8 @@ package frc.robot.commands.manipulator_mover;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.manipulator_mover.ManipulatorMover;
-import frc.robot.ExtraMath.*;
-import frc.robot.RobotMap;
+import frc.robot.Utility.Vector3;
+import frc.robot.Constants;
 
 /**
  * Sets the target positions of every segment
@@ -52,7 +52,7 @@ public class GoToState extends CommandBase {
     Vector3[] currentState = manipulatorMover.getMeasuredEndpoints();
     Vector3[] tempTargets = new Vector3[currentState.length];
     for(int i = 0; i < tempTargets.length; ++i){
-      tempTargets[i] = Vector3.moveTowards(currentState[i], targets[i], speed * RobotMap.DELTA_TIME);
+      tempTargets[i] = Vector3.moveTowards(currentState[i], targets[i], speed * Constants.DELTA_TIME);
      
       if(i < tempTargets.length - 1){
         manipulatorMover.setSubTarget(i, tempTargets[i]);//for all but the last segment
@@ -81,7 +81,7 @@ public class GoToState extends CommandBase {
     Vector3[] currentState = manipulatorMover.getMeasuredEndpoints();
     boolean isDone = true;
     for(int i = 0; i < currentState.length; ++i){
-      if(currentState[i].sub(targets[i]).magnitude() > RobotMap.MANIPULATOR_MOVER_ACCURACY_TOLERANCE){
+      if(currentState[i].sub(targets[i]).magnitude() > Constants.MANIPULATOR_MOVER_ACCURACY_TOLERANCE){
         isDone = false;
         break;
       }

@@ -7,8 +7,8 @@
 
 package frc.robot.subsystems.manipulator_mover;
 
-import frc.robot.RobotMap;
-import frc.robot.ExtraMath.*;
+import frc.robot.Constants;
+import frc.robot.Utility.Vector3;
 import frc.robot.Utility.Motors.*;
 import frc.robot.Utility.Motors.Motor.ControlMode;
 
@@ -109,8 +109,8 @@ public class ManipulatorMoverSegment {
         //PID stuff
         pastError = error;
         error = angle - encoderAngle;
-        if(Math.abs(error) > RobotMap.MANIPULATOR_MOVER_MAXIMUM_ERROR){//prevents the robot from breaking if tuned properly
-            error = RobotMap.MANIPULATOR_MOVER_MAXIMUM_ERROR * Math.signum(error);
+        if(Math.abs(error) > Constants.MANIPULATOR_MOVER_MAXIMUM_ERROR){//prevents the robot from breaking if tuned properly
+            error = Constants.MANIPULATOR_MOVER_MAXIMUM_ERROR * Math.signum(error);
         }
         deltaError = error - pastError;
         if(Math.abs(error) < integralActivationThreshold){

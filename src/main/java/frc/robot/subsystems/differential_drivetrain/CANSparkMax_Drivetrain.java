@@ -7,7 +7,7 @@
 
 package frc.robot.subsystems.differential_drivetrain;
 
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
@@ -31,8 +31,8 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     //Picks between brushed and brushless motors (ask the mechanical or electrical teams for that information)
     MotorType motorType = (isBrushless) ? MotorType.kBrushless : MotorType.kBrushed;
 
-    leftMaster = new CANSparkMax(RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN, motorType);
-    rightMaster = new CANSparkMax(RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN, motorType);
+    leftMaster = new CANSparkMax(Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN, motorType);
+    rightMaster = new CANSparkMax(Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN, motorType);
 
     leftEncoder = leftMaster.getEncoder();
     rightEncoder = rightMaster.getEncoder();
@@ -40,25 +40,25 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     leftPID = leftMaster.getPIDController();
     rightPID = rightMaster.getPIDController();
 
-    leftSlaves = new CANSparkMax[RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - 1];
-    rightSlaves = new CANSparkMax[RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - 1];
+    leftSlaves = new CANSparkMax[Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - 1];
+    rightSlaves = new CANSparkMax[Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - 1];
 
     int leftSlaveCount = 0;//this exists so that the correct address in the leftSlaves array is accessed.
-    for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
+    for(int i = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
       leftSlaves[leftSlaveCount] = new CANSparkMax(i, motorType);//makes the slaves
       leftSlaves[leftSlaveCount].follow(leftMaster);//binds the slaves to the masters
       ++leftSlaveCount;
     }
 
     int rightSlaveCount = 0;//this exists so that the correct address in the rightSlaves array is accessed.
-    for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
+    for(int i = Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1/*the +1 makes the slaves not override the master*/; i <= Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
       rightSlaves[rightSlaveCount] = new CANSparkMax(i, motorType);//makes the slaves
       rightSlaves[rightSlaveCount].follow(rightMaster);//binds the slaves to the masters
       ++rightSlaveCount;
     }
 
-    leftMaster.setInverted(RobotMap.DRIVETRAIN_INVERT_FORWARD);
-    rightMaster.setInverted(!RobotMap.DRIVETRAIN_INVERT_FORWARD);
+    leftMaster.setInverted(Constants.DRIVETRAIN_INVERT_FORWARD);
+    rightMaster.setInverted(!Constants.DRIVETRAIN_INVERT_FORWARD);
   }
 
   @Override
@@ -66,11 +66,11 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     // This method will be called once per scheduler run
     odometry.update(
       Rotation2d.fromDegrees(getHeading()),
-      leftEncoder.getPosition() * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,
-      rightEncoder.getPosition() * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+      leftEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,
+      rightEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
     );
 
-    if(RobotMap.IS_SIMULATION_RUNNING){
+    if(Constants.IS_SIMULATION_RUNNING){
       mySimulationPeriodic();
     }else{
       switch(controlMode){
@@ -213,8 +213,8 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(
-      leftEncoder.getVelocity() / 60 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI,
-      rightEncoder.getVelocity() / 60 * RobotMap.ROBOT_WHEEL_DIAMETER * Math.PI
+      leftEncoder.getVelocity() / 60 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,
+      rightEncoder.getVelocity() / 60 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
     );
   }
 

@@ -7,13 +7,13 @@
 
 package frc.robot;
 
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.ExtraMath.*;
+import frc.robot.Utility.Vector3;
 import frc.robot.Utility.PathLoader;
 import frc.robot.Utility.RamseteCommandBuilder;
 import frc.robot.subsystems.differential_drivetrain.TalonSRX_Drivetrain;
@@ -37,7 +37,7 @@ import frc.robot.commands.manipulator_mover.*;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  public static Joystick controller = new Joystick(RobotMap.CONTROLS_MAIN_CONTROLLER_ID);
+  public static Joystick controller = new Joystick(Constants.CONTROLS_MAIN_CONTROLLER_ID);
 
   TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
   //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);

@@ -8,11 +8,11 @@
 Simulation mode is not accurate for PID.
 It it only accurate for percent output.
 
-The number of motors per side is determined in RobotMap using the min and max ids for the left and right sides
+The number of motors per side is determined in Constants using the min and max ids for the left and right sides
 */
 package frc.robot.subsystems.differential_drivetrain;
 
-import frc.robot.RobotMap;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -43,18 +43,18 @@ public class Drivetrain extends SubsystemBase {
   protected ControlMode controlMode = ControlMode.PERCENT;
 
   public Drivetrain() {
-    int leftMotorCount = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1;
-    int rightMotorCount = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1;
+    int leftMotorCount = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1;
+    int rightMotorCount = Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX - Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN + 1;
 
     simulationMotors = new Talon[leftMotorCount + rightMotorCount];
     
     int createdSimulationMotors = 0;
-    for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
+    for(int i = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN; i <= Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
       simulationMotors[createdSimulationMotors] = new Talon(i);
       ++createdSimulationMotors;
     }
 
-    for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
+    for(int i = Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN; i <= Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
       simulationMotors[createdSimulationMotors] = new Talon(i);
       ++createdSimulationMotors;
     }
@@ -94,7 +94,7 @@ public class Drivetrain extends SubsystemBase {
   protected void mySimulationPeriodic(){
     int updatedMotors = 0;//this exists so that the correct address in the simulationMotors array is accessed.
     //updates the left motors
-    for(int i = RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MIN; i <= RobotMap.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
+    for(int i = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN; i <= Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX; ++i){
       switch(controlMode){
         case PERCENT:
           simulationMotors[updatedMotors].set(leftTarget);
@@ -115,7 +115,7 @@ public class Drivetrain extends SubsystemBase {
     }
 
     //updates the right motors
-    for(int i = RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN; i <= RobotMap.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
+    for(int i = Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MIN; i <= Constants.DRIVETRAIN_RIGHT_MOTOR_IDS_MAX; ++i){
       switch(controlMode){
         case PERCENT:
           simulationMotors[updatedMotors].set(rightTarget);
@@ -187,7 +187,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getHeading(){
-    return Math.IEEEremainder(Gyro.getRawAngle(), 360) * (RobotMap.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
+    return Math.IEEEremainder(Gyro.getRawAngle(), 360) * (Constants.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
   }
 
   public Pose2d getPose(){

@@ -7,7 +7,7 @@
 
 package frc.robot;
 
-import frc.robot.ExtraMath.Vector3;
+import frc.robot.Utility.Vector3;
 
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -23,7 +23,7 @@ import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
  * This is where the robot and the controller inputs are configured CAN IDs must
  * not repeat or else it will result in unexpected behaviors
  */
-public class RobotMap {
+public class Constants {
     public enum MotorType {
         PWM, CANSparkMax, TalonSRX
     };
