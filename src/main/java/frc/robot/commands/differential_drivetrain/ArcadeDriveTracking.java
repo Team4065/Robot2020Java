@@ -28,7 +28,7 @@ public class ArcadeDriveTracking extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.pastError = 0;
+    this.pastError = 0;//safety
     this.deltaError = 0;
   }
 
