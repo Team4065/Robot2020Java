@@ -187,7 +187,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getHeading(){
-    return Math.IEEEremainder(Gyro.getRawAngle(), 360) * (Constants.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
+    return Math.IEEEremainder(Gyro.getRawAngle(), 360) * (Constants.GYRO_REVERSED ? -1.0 : 1.0);
   }
 
   public Pose2d getPose(){

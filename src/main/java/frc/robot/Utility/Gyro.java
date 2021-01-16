@@ -22,7 +22,7 @@ public class Gyro {
      * @return
      */
     public static double getAngle(){
-        return gyro.getAngle() * (Constants.DRIVETRAIN_GYRO_REVERSED ? -1.0 : 1.0);
+        return gyro.getAngle() * (Constants.GYRO_REVERSED ? -1.0 : 1.0);
     }
 
     /**

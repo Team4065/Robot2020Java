@@ -25,12 +25,19 @@ import frc.robot.subsystems.manipulator_mover.ManipulatorMoverSegment;
  * not repeat or else it will result in unexpected behaviors
  */
 public class Constants {
-    //Controls
-    public static final Joystick mainController = new Joystick(0);
-
     public enum MotorType {
         PWM, CANSparkMax, TalonSRX
     };
+
+    //Controls
+    public static final Joystick mainController = new Joystick(0);
+
+    //Sensors
+    public static final boolean GYRO_REVERSED = false;
+    
+    //Program info
+    public static final double DELTA_TIME = 0.02;//The delay between updates in seconds (20ms)
+    public static final boolean IS_SIMULATION_RUNNING = false;//when simulation is on all CAN motors should get a PWM counterpart with the same ID
 
     // Robot info (in meters)
     // the Pathweaver will want some of this information
@@ -70,8 +77,7 @@ public class Constants {
         .addConstraint(RAMSETE_AUTO_VOLTAGE_CONSTRAINT);
     
 
-    //Simulation control
-    public static final boolean IS_SIMULATION_RUNNING = false;//when simulation is on all CAN motors should get a PWM counterpart with the same ID
+    
 
     //Drivetrain
     public static final boolean DRIVETRAIN_INVERT_FORWARD = false;
@@ -79,15 +85,11 @@ public class Constants {
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 2;//CAN ID
     public static final int DRIVETRAIN_RIGHT_MOTOR_IDS_MIN = 4;//CAN ID
     public static final int DRIVETRAIN_RIGHT_MOTOR_IDS_MAX = 5;//CAN ID
-    public static final boolean DRIVETRAIN_GYRO_REVERSED = false;
+    
     public static final double DRIVETRAIN_TRACKING_KP = 0;
     public static final double DRIVETRAIN_TRACKING_KD = 0;
 
 
-    
-
-    //Program info
-    public static final double DELTA_TIME = 0.02;//The delay between updates in seconds (20ms)
 
     //Manipulator Mover
     public static final double MANIPULATOR_MOVER_ACCURACY_TOLERANCE = 0.1;
