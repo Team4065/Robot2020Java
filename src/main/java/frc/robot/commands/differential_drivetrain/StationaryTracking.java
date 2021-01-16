@@ -26,6 +26,7 @@ public class StationaryTracking extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.setControlMode(Drivetrain.ControlMode.PERCENT);
     pastError = Limelight.getHorizontalOffset();
   }
 

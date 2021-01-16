@@ -13,6 +13,7 @@ import frc.robot.commands.auto.RightAuto;
 import frc.robot.commands.auto.TrenchAuto;
 import frc.robot.commands.differential_drivetrain.ArcadeDrive;
 import frc.robot.commands.differential_drivetrain.ArcadeDriveTracking;
+import frc.robot.subsystems.differential_drivetrain.CANSparkMax_Drivetrain;
 import frc.robot.subsystems.differential_drivetrain.TalonFX_Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
@@ -27,7 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final static TalonFX_Drivetrain m_drivetrain = new TalonFX_Drivetrain();
+  public final static CANSparkMax_Drivetrain m_drivetrain = new CANSparkMax_Drivetrain();
 
   private final JoystickButton m_TrackTape = new JoystickButton(Constants.mainController, 0);
 

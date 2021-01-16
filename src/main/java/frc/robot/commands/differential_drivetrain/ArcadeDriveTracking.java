@@ -28,6 +28,7 @@ public class ArcadeDriveTracking extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    drivetrain.setControlMode(Drivetrain.ControlMode.PERCENT);
     this.pastError = 0;//safety
     this.deltaError = 0;
   }

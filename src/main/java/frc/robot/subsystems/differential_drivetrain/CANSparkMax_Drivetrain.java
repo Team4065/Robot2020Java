@@ -27,6 +27,10 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
   /**
    * Creates a new CANSparkMax_Drivetrain.
    */
+  public CANSparkMax_Drivetrain(){
+    this(false);
+  }
+
   public CANSparkMax_Drivetrain(boolean isBrushless) {
     //Picks between brushed and brushless motors (ask the mechanical or electrical teams for that information)
     MotorType motorType = (isBrushless) ? MotorType.kBrushless : MotorType.kBrushed;
