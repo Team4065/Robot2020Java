@@ -51,7 +51,7 @@ public class PWM_Motor extends Motor {
     @Override
     public void set(double value, ControlMode controlMode){
         if(controlMode == ControlMode.Percent){
-            set(value);
+                set(value);
         }else{
             System.out.println("A PWM motor only accepts percent output control. Setting output to 0.");
             set(0);//safety
@@ -62,7 +62,10 @@ public class PWM_Motor extends Motor {
 
     @Override
     public void set(double value){
-        motor.setSpeed(value);
+        if(inversion)
+            motor.setSpeed(-value);
+        else
+            motor.setSpeed(value);
     }
 
     @Override
@@ -70,7 +73,10 @@ public class PWM_Motor extends Motor {
         if(encoder == null){
             return Double.NaN;
         }else{
-            return (double)encoder.get() / cpm;
+            if(inversion)
+                return -(double)encoder.get() / cpm;
+            else
+                return (double)encoder.get() / cpm;
         }
     }
 
@@ -84,7 +90,10 @@ public class PWM_Motor extends Motor {
         if(encoder == null){
             return Double.NaN;
         }else{
-            return encoder.getRate() / cpm;
+            if(inversion)
+                return -encoder.getRate() / cpm;
+            else
+                return encoder.getRate() / cpm;
         }
     }
 }

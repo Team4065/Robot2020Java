@@ -5,6 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
 package frc.robot.Utility.Motors;
 
 /**
@@ -16,6 +17,8 @@ public class Motor {
         Velocity,
         Position
     };
+
+    protected boolean inversion; 
 
     /**
      * 
@@ -49,5 +52,13 @@ public class Motor {
      */
     public double getSpeed(){
         return Double.NaN;
+    }
+
+    /**
+     * Set the inversion state of the motor.
+     * @return
+     */
+    public void setInverted(boolean value){
+        inversion = value;
     }
 }
