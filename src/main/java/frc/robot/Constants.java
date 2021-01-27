@@ -21,6 +21,23 @@ public final class Constants {
         PWM, CANSparkMax, TalonSRX
     };
 
+    //Shooter
+    public static final int SHOOTER_LEFT_MASTER_ID = 1;
+    public static final int SHOOTER_RIGHT_SLAVE_ID = 1;
+    public static final int SHOOTER_KP = 0;
+    public static final int SHOOTER_KI = 0;
+    public static final int SHOOTER_KFF = 0;
+    public static final int SHOOTER_KD = 0;
+    public static final int SPIN_UP_RPM = 0;
+
+
+    //Feeder 
+    public static final int FEEDER_MOTOR_ID = 1;
+    public static final int SERIALIZER_MOTOR_ID = 1;
+
+    //Kicker
+    public static final int KICKER_MOTOR_ID = 1;
+
     //Controls
     public static final Joystick mainController = new Joystick(0);
 
