@@ -36,8 +36,8 @@ public class ArcadeDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = -Constants.mainController.getY(Hand.kLeft);
-    double rotation = -Constants.mainController.getRawAxis(4);
+    double speed = Constants.DRIVETRAIN_MANUAL_SPEED_MODIFIER * -Constants.mainController.getY(Hand.kLeft);
+    double rotation = Constants.DRIVETRAIN_MANUAL_SPEED_MODIFIER * -Constants.mainController.getRawAxis(4);
     drivetrain.setLeftTarget(speed - rotation);
     drivetrain.setRightTarget(speed + rotation);
   }

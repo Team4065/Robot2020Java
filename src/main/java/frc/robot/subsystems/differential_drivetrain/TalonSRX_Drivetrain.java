@@ -113,6 +113,10 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public void periodic() {
     // This method will be called once per scheduler run
 
+    System.out.print(this.leftMaster.getSelectedSensorVelocity());
+    System.out.print("       ");
+    System.out.println(this.rightMaster.getSelectedSensorVelocity());
+
     odometry.update(
       Rotation2d.fromDegrees(getHeading()),
       leftMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,

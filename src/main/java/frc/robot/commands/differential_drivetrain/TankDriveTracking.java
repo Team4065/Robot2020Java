@@ -40,8 +40,8 @@ public class TankDriveTracking extends CommandBase {
     deltaError = error - pastError;
 
     double output = (Constants.DRIVETRAIN_TRACKING_KP * error) + (Constants.DRIVETRAIN_TRACKING_KD * deltaError);
-    drivetrain.setLeftTarget(output + Constants.mainController.getY(Hand.kLeft));
-    drivetrain.setRightTarget(-output + Constants.mainController.getY(Hand.kRight));
+    drivetrain.setLeftTarget(output + Constants.DRIVETRAIN_MANUAL_SPEED_MODIFIER * Constants.mainController.getY(Hand.kLeft));
+    drivetrain.setRightTarget(-output + Constants.DRIVETRAIN_MANUAL_SPEED_MODIFIER * Constants.mainController.getY(Hand.kRight));
 
     pastError = error;
   }

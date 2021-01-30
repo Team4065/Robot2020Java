@@ -80,6 +80,7 @@ public class Constants {
     
 
     //Drivetrain
+    public static final double DRIVETRAIN_MANUAL_SPEED_MODIFIER = 0.5;
     public static final boolean DRIVETRAIN_INVERT_FORWARD = false;
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MIN = 1;//CAN ID
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 2;//CAN ID
