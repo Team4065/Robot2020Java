@@ -129,4 +129,18 @@ public class TalonSRX_Motor extends PID_Motor {
     m_kFF_position = value;
     m_motor.config_kF(1, value);
   }
+
+  @Override
+  public void setInverted(boolean value){
+    inversion = value;
+    m_motor.setInverted(value);
+  }
+
+  public void follow(TalonFX_Motor master, boolean opposeMaster){
+    m_motor.follow(master.m_motor);
+    if(opposeMaster)
+      m_motor.setInverted(InvertType.OpposeMaster);
+    else
+      m_motor.setInverted(InvertType.FollowMaster);
+  }
 }

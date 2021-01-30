@@ -125,4 +125,14 @@ public class CANSparkMax_Motor extends PID_Motor {
     m_kFF_position = value;
     m_motorPID.setFF(value, 1);
   }
+
+  @Override
+  public void setInverted(boolean value){
+    inversion = value;
+    m_motor.setInverted(inversion);//Does noting if the motor is a slave
+  }
+
+  public void follow(CANSparkMax_Motor master, boolean opposeMaster){
+    m_motor.follow(master.m_motor, opposeMaster);
+  }
 }
