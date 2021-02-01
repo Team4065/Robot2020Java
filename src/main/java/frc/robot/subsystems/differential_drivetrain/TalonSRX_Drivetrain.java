@@ -171,8 +171,6 @@ public class TalonSRX_Drivetrain extends Drivetrain {
           break;
       }
     }
-    
-    odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftPosition(), getRightPosition());
   }
 
   //Sets kP_velocity and updates the motorcontrollers
@@ -312,13 +310,5 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public double getAverageEncoderDistance() {
     return ((leftMaster.getSelectedSensorPosition(0) / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI) + 
       (rightMaster.getSelectedSensorPosition(0) / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI)) / 2;
-  }
-
-  public double getLeftPosition(){
-    return leftMaster.getSelectedSensorPosition() / 4096 * 10;
-  }
-
-  public double getRightPosition(){
-    return rightMaster.getSelectedSensorPosition() / 4096 * 10;
   }
 }

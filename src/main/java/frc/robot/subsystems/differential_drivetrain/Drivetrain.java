@@ -69,7 +69,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftPosition(), getRightPosition());
+    m_odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftPosition(), getRightPosition());
   }
 
   public void setLeftTarget(double value){
