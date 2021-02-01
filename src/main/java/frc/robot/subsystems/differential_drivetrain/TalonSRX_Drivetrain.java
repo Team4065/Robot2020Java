@@ -118,9 +118,9 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    System.out.print(this.leftMaster.getSelectedSensorVelocity());
+    System.out.print(this.leftMaster.getSelectedSensorVelocity() / 4096 * 10);
     System.out.print("       ");
-    System.out.println(this.rightMaster.getSelectedSensorVelocity());
+    System.out.println(this.rightMaster.getSelectedSensorVelocity() / 4096 * 10);
 
     m_odometry.update(Gyro.getRotation2d(), leftMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI, rightMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI);
 
@@ -171,6 +171,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
           break;
       }
     }
+    
+    odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftPosition(), getRightPosition());
   }
 
   //Sets kP_velocity and updates the motorcontrollers
@@ -310,5 +312,13 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public double getAverageEncoderDistance() {
     return ((leftMaster.getSelectedSensorPosition(0) / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI) + 
       (rightMaster.getSelectedSensorPosition(0) / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI)) / 2;
+  }
+
+  public double getLeftPosition(){
+    return leftMaster.getSelectedSensorPosition() / 4096 * 10;
+  }
+
+  public double getRightPosition(){
+    return rightMaster.getSelectedSensorPosition() / 4096 * 10;
   }
 }

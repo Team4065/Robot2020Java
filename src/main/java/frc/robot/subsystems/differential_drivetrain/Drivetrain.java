@@ -69,6 +69,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftPosition(), getRightPosition());
   }
 
   public void setLeftTarget(double value){
@@ -226,5 +227,13 @@ public class Drivetrain extends SubsystemBase {
 
   public void zeroHeading() {
     Gyro.reset();
+  }
+
+  public double getLeftPosition(){
+    return 0;
+  }
+
+  public double getRightPosition(){
+    return 0;
   }
 }
