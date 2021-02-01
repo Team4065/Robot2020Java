@@ -41,11 +41,11 @@ public class Constants {
 
     // Robot info (in meters)
     // the Pathweaver will want some of this information
-    public static final double ROBOT_TRACKWIDTH = 5.2497320141628165;//Pathweaver: wheel base
-    public static final double ROBOT_WHEEL_DIAMETER = 6;
-    public static final double ROBOT_WHEEL_RADIUS = 3;
-    public static final double ROBOT_MAX_SPEED = 55.22330836388308426985115322171;// set to something below the free-floating wheel speed
-    public static final double ROBOT_MAX_ACCELERATION = 0;// not very important due to voltage limiting (but Pathweaver might not be using the voltage limiting)
+    public static final double ROBOT_TRACKWIDTH = 0.13334319315973552911;//Pathweaver: wheel base
+    public static final double ROBOT_WHEEL_DIAMETER = 0.1524;
+    public static final double ROBOT_WHEEL_RADIUS = 0.0762;
+    public static final double ROBOT_MAX_SPEED = 3;// set to something below the free-floating wheel speed
+    public static final double ROBOT_MAX_ACCELERATION = 3;// not very important due to voltage limiting (but Pathweaver might not be using the voltage limiting)
 
     // Robot Characterization 
     // info on how to find this data: https://docs.wpilib.org/en/stable/docs/software/wpilib-tools/robot-characterization/introduction.html#introduction-to-robot-characterization
