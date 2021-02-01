@@ -113,9 +113,9 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    System.out.print(this.leftMaster.getSelectedSensorVelocity());
+    System.out.print(this.leftMaster.getSelectedSensorVelocity() / 4096 * 10);
     System.out.print("       ");
-    System.out.println(this.rightMaster.getSelectedSensorVelocity());
+    System.out.println(this.rightMaster.getSelectedSensorVelocity() / 4096 * 10);
 
     odometry.update(
       Rotation2d.fromDegrees(getHeading()),
@@ -160,6 +160,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
           break;
       }
     }
+    
+    odometry.update(Rotation2d.fromDegrees(getHeading()), getLeftPosition(), getRightPosition());
   }
 
   //Sets kP_velocity and updates the motorcontrollers
@@ -284,5 +286,13 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public void tankDriveVolts(double leftVolts, double rightVolts){
     leftMaster.setVoltage(leftVolts);
     rightMaster.setVoltage(-rightVolts);
+  }
+
+  public double getLeftPosition(){
+    return leftMaster.getSelectedSensorPosition() / 4096 * 10;
+  }
+
+  public double getRightPosition(){
+    return rightMaster.getSelectedSensorPosition() / 4096 * 10;
   }
 }

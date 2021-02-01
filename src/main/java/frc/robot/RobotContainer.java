@@ -47,7 +47,7 @@ public class RobotContainer {
   
   //ManipulatorMover manipulatorMover = new ManipulatorMover();
 
-  //RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("Somewhere over the rainbow.")).getCommand();
+  RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("output/TestPath.wpilib.json")).getCommand();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -76,6 +76,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return null;
+    return drivetrainPath;
   }
 }

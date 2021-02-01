@@ -41,18 +41,18 @@ public class Constants {
 
     // Robot info (in meters)
     // the Pathweaver will want some of this information
-    public static final double ROBOT_TRACKWIDTH = 0;//Pathweaver: wheel base
-    public static final double ROBOT_WHEEL_DIAMETER = 0;
-    public static final double ROBOT_WHEEL_RADIUS = 0;
-    public static final double ROBOT_MAX_SPEED = 0;// set to something below the free-floating wheel speed
+    public static final double ROBOT_TRACKWIDTH = 5.2497320141628165;//Pathweaver: wheel base
+    public static final double ROBOT_WHEEL_DIAMETER = 6;
+    public static final double ROBOT_WHEEL_RADIUS = 3;
+    public static final double ROBOT_MAX_SPEED = 55.22330836388308426985115322171;// set to something below the free-floating wheel speed
     public static final double ROBOT_MAX_ACCELERATION = 0;// not very important due to voltage limiting (but Pathweaver might not be using the voltage limiting)
 
     // Robot Characterization 
     // info on how to find this data: https://docs.wpilib.org/en/stable/docs/software/wpilib-tools/robot-characterization/introduction.html#introduction-to-robot-characterization
-    public static final double KS_VOLTS = 0;// ks
-    public static final double KV_VOLT_SECONDS_PER_METER = 0;// kv
-    public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0;// ka
-    public static final double KP_DRIVE_VEL = 0;// kp
+    public static final double KS_VOLTS = 0.859;// ks
+    public static final double KV_VOLT_SECONDS_PER_METER = 0.0215;// kv
+    public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.00209;// ka
+    public static final double KP_DRIVE_VEL = 2.29e-71;// kp
     public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(
             ROBOT_TRACKWIDTH);
 
