@@ -13,6 +13,9 @@ The number of motors per side is determined in Constants using the min and max i
 package frc.robot.subsystems.differential_drivetrain;
 
 import frc.robot.Constants;
+
+import java.util.function.Consumer;
+
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -29,7 +32,7 @@ public class Drivetrain extends SubsystemBase {
   protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
 
 
-  protected  DifferentialDriveOdometry odometry;
+  protected  DifferentialDriveOdometry m_odometry;
 
   protected double leftTarget, rightTarget = 0;
   public Talon[] simulationMotors;
@@ -37,7 +40,8 @@ public class Drivetrain extends SubsystemBase {
   public static enum ControlMode {
     PERCENT,
     VELOCITY,
-    POSITION
+    POSITION,
+    RAMSETE
   }
 
   protected ControlMode controlMode = ControlMode.PERCENT;
@@ -59,7 +63,7 @@ public class Drivetrain extends SubsystemBase {
       ++createdSimulationMotors;
     }
 
-    odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+    m_odometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
   }
 
   @Override
@@ -180,6 +184,9 @@ public class Drivetrain extends SubsystemBase {
     kMaxAcceleration_position = value;
   }
 
+
+
+
   //Ramsete code
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
@@ -187,14 +194,37 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getHeading(){
-    return Math.IEEEremainder(Gyro.getRawAngle(), 360) * (Constants.GYRO_REVERSED ? -1.0 : 1.0);
+    return Gyro.getRotation2d().getDegrees();
+  }
+
+  public double getTurnRate() {
+    return -Gyro.getRate();
   }
 
   public Pose2d getPose(){
-    return odometry.getPoseMeters();
+    return m_odometry.getPoseMeters();
   }
 
-  public void tankDriveVolts(double leftVolts, double rightVolts){
+  
+  public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
 
+  }
+
+  public void resetEncoders(){
+
+  }
+
+  public void resetOdometry(Pose2d pose){
+    resetEncoders();
+    m_odometry.resetPosition(pose, Gyro.getRotation2d());
+  }
+
+  //In meters
+  public double getAverageEncoderDistance() {
+    return 0;
+  }
+
+  public void zeroHeading() {
+    Gyro.reset();
   }
 }

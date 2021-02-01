@@ -8,7 +8,7 @@
 package frc.robot.subsystems.differential_drivetrain;
 
 import frc.robot.Constants;
-
+import frc.robot.Utility.Gyro;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -59,16 +59,17 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
 
     leftMaster.setInverted(Constants.DRIVETRAIN_INVERT_FORWARD);
     rightMaster.setInverted(!Constants.DRIVETRAIN_INVERT_FORWARD);
+
+    leftPID.setP(Constants.KP_DRIVE_VEL, 2);
+    leftPID.setI(0, 2);
+    leftPID.setD(0, 2);
+    leftPID.setFF(0, 2);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    odometry.update(
-      Rotation2d.fromDegrees(getHeading()),
-      leftEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,
-      rightEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
-    );
+    m_odometry.update(Gyro.getRotation2d(), leftEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI, rightEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI);
 
     if(Constants.IS_SIMULATION_RUNNING){
       mySimulationPeriodic();
@@ -88,7 +89,12 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
           leftPID.setReference(leftTarget, ControlType.kPosition, 1);
           rightPID.setReference(rightTarget, ControlType.kPosition, 1);
           break;
-  
+
+        case RAMSETE:
+          leftPID.setReference(leftTarget, ControlType.kVelocity, 2);
+          rightPID.setReference(rightTarget, ControlType.kVelocity, 2);
+          break;
+
         default:
           leftMaster.set(leftTarget);
           rightMaster.set(rightTarget);
@@ -209,7 +215,9 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     return output;
   }
 
+
   //Ramsete code
+  //Everything is in meters
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(
@@ -219,8 +227,22 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
   }
 
   @Override
-  public void tankDriveVolts(double leftVolts, double rightVolts){
-    leftMaster.setVoltage(leftVolts);
-    rightMaster.setVoltage(-rightVolts);
+  public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
+    setControlMode(ControlMode.RAMSETE);
+    setLeftTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 60);//meters/second to rotations/second to rotations/minute
+    setRightTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 60);
+  }
+
+  @Override
+  public void resetEncoders(){
+    leftEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
+  }
+
+  //In meters
+  @Override
+  public double getAverageEncoderDistance() {
+    return ((leftEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI) + 
+      (rightEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI)) / 2;
   }
 }
