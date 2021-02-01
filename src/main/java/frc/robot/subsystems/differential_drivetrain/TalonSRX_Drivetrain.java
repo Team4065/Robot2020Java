@@ -102,7 +102,12 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     leftMaster.config_kP(1, Constants.KP_DRIVE_VEL);
     leftMaster.config_kI(1, 0);
     leftMaster.config_kD(1, 0);
-    leftMaster.config_kF(1, 0);
+    leftMaster.config_kF(1, 0);//Constants.KS_VOLTS//Not this
+
+    rightMaster.config_kP(1, Constants.KP_DRIVE_VEL);
+    rightMaster.config_kI(1, 0);
+    rightMaster.config_kD(1, 0);
+    rightMaster.config_kF(1, 0);
   }
   public TalonSRX_Drivetrain(){
     this(false);
@@ -288,7 +293,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
   @Override
   public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
-    System.out.println(leftMaster.getMotorOutputPercent());
+    System.out.println(leftVelocity - leftMaster.getSelectedSensorVelocity() / 4096 * 10 * Math.PI * Constants.ROBOT_WHEEL_DIAMETER);
     setControlMode(ControlMode.RAMSETE);
     setLeftTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096 / 10);//meters/second to rotations/second to units/100 milliseconds
     setRightTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096 / 10);
