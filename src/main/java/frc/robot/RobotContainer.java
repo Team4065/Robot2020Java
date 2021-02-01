@@ -75,7 +75,12 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    PathLoader path = new PathLoader("output/TestPath.wpilib.json");
+    drivetrain.resetOdometry(path.getTrajectory().getInitialPose());
     // An ExampleCommand will run in autonomous
-    return drivetrainPath.andThen(()->{drivetrain.tankDriveMeterPerSecond(0, 0);});
+    return new RamseteCommandBuilder(drivetrain, path).getCommand().andThen(()->{
+      drivetrain.tankDriveMeterPerSecond(0, 0);
+      System.out.println("done");
+    });
   }
 }

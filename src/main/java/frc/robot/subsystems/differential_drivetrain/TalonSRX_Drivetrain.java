@@ -7,21 +7,15 @@
 
 package frc.robot.subsystems.differential_drivetrain;
 
-import frc.robot.Robot;
 import frc.robot.Utility.Gyro;
 import frc.robot.Constants;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 
 /**
@@ -105,10 +99,10 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     leftMaster.setInverted(Constants.DRIVETRAIN_INVERT_FORWARD);
     rightMaster.setInverted(!Constants.DRIVETRAIN_INVERT_FORWARD);
 
-    leftMaster.config_kP(2, Constants.KP_DRIVE_VEL);
-    leftMaster.config_kI(2, 0);
-    leftMaster.config_kD(2, 0);
-    leftMaster.config_kF(2, 0);
+    leftMaster.config_kP(1, Constants.KP_DRIVE_VEL);
+    leftMaster.config_kI(1, 0);
+    leftMaster.config_kD(1, 0);
+    leftMaster.config_kF(1, 0);
   }
   public TalonSRX_Drivetrain(){
     this(false);
@@ -118,9 +112,9 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    System.out.print(this.leftMaster.getSelectedSensorVelocity() / 4096 * 10);
-    System.out.print("       ");
-    System.out.println(this.rightMaster.getSelectedSensorVelocity() / 4096 * 10);
+    //System.out.print(this.leftMaster.getSelectedSensorVelocity() / 4096 * 10);
+    //System.out.print("       ");
+    //System.out.println(this.rightMaster.getSelectedSensorVelocity() / 4096 * 10);
 
     m_odometry.update(Gyro.getRotation2d(), leftMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI, rightMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI);
 
@@ -157,8 +151,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
         case RAMSETE:
           //selects the proper PID values
-          leftMaster.selectProfileSlot(2, 0);
-          rightMaster.selectProfileSlot(2, 0);
+          leftMaster.selectProfileSlot(1, 0);
+          rightMaster.selectProfileSlot(1, 0);
 
           //Updates the PID target
           leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, leftTarget);
@@ -294,9 +288,12 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
   @Override
   public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
+    System.out.println(leftMaster.getMotorOutputPercent());
     setControlMode(ControlMode.RAMSETE);
     setLeftTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096 / 10);//meters/second to rotations/second to units/100 milliseconds
     setRightTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096 / 10);
+    //System.out.println(leftTarget);
+  
   }
 
   @Override
