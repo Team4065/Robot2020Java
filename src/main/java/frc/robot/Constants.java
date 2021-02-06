@@ -39,20 +39,26 @@ public class Constants {
     public static final double DELTA_TIME = 0.02;//The delay between updates in seconds (20ms)
     public static final boolean IS_SIMULATION_RUNNING = false;//when simulation is on all CAN motors should get a PWM counterpart with the same ID
 
+    //TEMP
+    public static String straight = "output/StraightTest.wpilib.json";
+    public static String turnLeft = "output/TestPath.wpilib.json";
+    public static final String ROBOT_PATH = straight;
+
     // Robot info (in meters)
     // the Pathweaver will want some of this information
-    public static final double ROBOT_TRACKWIDTH = 0.13334319315973552911;//Pathweaver: wheel base
+    public static final double ROBOT_TRACKWIDTH = 5.353457095791467;//Pathweaver: wheel base
     public static final double ROBOT_WHEEL_DIAMETER = 0.1524;
     public static final double ROBOT_WHEEL_RADIUS = 0.0762;
-    public static final double ROBOT_MAX_SPEED = 0.5;// set to something below the free-floating wheel speed
-    public static final double ROBOT_MAX_ACCELERATION = 1;// not very important due to voltage limiting (but Pathweaver might not be using the voltage limiting)
+    public static final double ROBOT_WHEEL_CIRCUMFRENCE = 0.478778204;
+    public static final double ROBOT_MAX_SPEED = 0.5;// set to something below the free-floating wheel speed            I dont think this is used
+    public static final double ROBOT_MAX_ACCELERATION = 1;// not very important due to voltage limiting (but Pathweaver might not be using the voltage limiting)        I dont think this is used
 
     // Robot Characterization 
     // info on how to find this data: https://docs.wpilib.org/en/stable/docs/software/wpilib-tools/robot-characterization/introduction.html#introduction-to-robot-characterization
-    public static final double KS_VOLTS = 0.855;// ks
-    public static final double KV_VOLT_SECONDS_PER_METER = 0.846;// kv
-    public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0827;// ka
-    public static final double KP_DRIVE_VEL = 0;//0.2;// kp I NEED THIS (This is not the correct value)
+    public static final double KS_VOLTS = 0.771;// ks
+    public static final double KV_VOLT_SECONDS_PER_METER = 0.795;// kv
+    public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0931;// ka
+    public static final double KP_DRIVE_VEL = 5.3e-6;//0.00337;//3.94e-6;//0.2;// kp I NEED THIS (This is not the correct value)
     public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(
             ROBOT_TRACKWIDTH);
 
@@ -61,6 +67,7 @@ public class Constants {
     public static final double RAMSETE_ZETA = 0.7;// recommended value that should work for most robots (To learn how to tune goto: https://docs.wpilib.org/en/stable/docs/software/advanced-control/trajectories/ramsete.html#constructing-the-ramsete-controller-object)
     public static final double RAMSETE_MAX_VOLTAGE = 10;//10 volts is the maximum to compensate for fluctuating voltages
     //do not touch the rest of the Ramsete variables they only implement the other variables
+    /*
     public static final DifferentialDriveVoltageConstraint RAMSETE_AUTO_VOLTAGE_CONSTRAINT = new DifferentialDriveVoltageConstraint(
             new SimpleMotorFeedforward(
             KS_VOLTS,
@@ -75,12 +82,13 @@ public class Constants {
         )
         .setKinematics(DIFFERENTIAL_DRIVE_KINEMATICS)
         .addConstraint(RAMSETE_AUTO_VOLTAGE_CONSTRAINT);
+    */
     
 
     
 
     //Drivetrain
-    public static final double DRIVETRAIN_MANUAL_SPEED_MODIFIER = 0.5;
+    public static final double DRIVETRAIN_MANUAL_SPEED_MODIFIER = 1;
     public static final boolean DRIVETRAIN_INVERT_FORWARD = false;
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MIN = 1;//CAN ID
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 2;//CAN ID

@@ -211,6 +211,10 @@ public class Drivetrain extends SubsystemBase {
 
   }
 
+  public void tankDriveVolts(double left, double right){
+
+  }
+
   public void resetEncoders(){
 
   }

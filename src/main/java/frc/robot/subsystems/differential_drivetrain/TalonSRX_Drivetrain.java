@@ -5,26 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-
-
-
-
-
-
-
-
 //Try making a ramsete command using the WPI PID controller
-
-
-
-
-
-
-
-
-
-
-
 
 package frc.robot.subsystems.differential_drivetrain;
 
@@ -32,11 +13,14 @@ import frc.robot.Utility.Gyro;
 import frc.robot.Constants;
 
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 
 /**
@@ -57,6 +41,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
   WPI_TalonSRX leftMaster, rightMaster;
   BaseMotorController[] leftSlaves, rightSlaves;
+
+  SimpleMotorFeedforward temp = new SimpleMotorFeedforward(Constants.KS_VOLTS, Constants.KV_VOLT_SECONDS_PER_METER, Constants.KA_VOLT_SECONDS_SQUARED_PER_METER);
 
   public TalonSRX_Drivetrain(boolean areSlavesVictorSPX) {
     
@@ -120,6 +106,11 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     leftMaster.setInverted(Constants.DRIVETRAIN_INVERT_FORWARD);
     rightMaster.setInverted(!Constants.DRIVETRAIN_INVERT_FORWARD);
 
+    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    leftMaster.configSelectedFeedbackCoefficient(1);
+    rightMaster.configSelectedFeedbackCoefficient(1);
+
     leftMaster.config_kP(1, Constants.KP_DRIVE_VEL);
     leftMaster.config_kI(1, 0);
     leftMaster.config_kD(1, 0);
@@ -129,6 +120,9 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     rightMaster.config_kI(1, 0);
     rightMaster.config_kD(1, 0);
     rightMaster.config_kF(1, 0);
+    m_odometry.resetPosition(new Pose2d(), Gyro.getRotation2d());
+    leftMaster.setSelectedSensorPosition(0);
+    rightMaster.setSelectedSensorPosition(0);
   }
   public TalonSRX_Drivetrain(){
     this(false);
@@ -142,7 +136,14 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     //System.out.print("       ");
     //System.out.println(this.rightMaster.getSelectedSensorVelocity() / 4096 * 10);
 
-    m_odometry.update(Gyro.getRotation2d(), leftMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI, rightMaster.getSelectedSensorPosition() / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI);
+    m_odometry.update(Gyro.getRotation2d(), -(double)leftMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE, -(double)rightMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE);
+    var translation = m_odometry.getPoseMeters().getTranslation();
+    System.out.print(getAverageEncoderDistance());
+    System.out.print("   ");
+    System.out.print(translation.getX());
+    System.out.print("   ");
+    System.out.println(translation.getY());
+
 
     //this if statement and its contents are needed to implement simulation mode
     if(Constants.IS_SIMULATION_RUNNING){
@@ -181,8 +182,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
           rightMaster.selectProfileSlot(1, 0);
 
           //Updates the PID target
-          leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, leftTarget);
-          rightMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, rightTarget);
+          //leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, leftTarget);
+          //rightMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, rightTarget);
           break;
         
         default:
@@ -307,19 +308,42 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(
-      (double)leftMaster.getSelectedSensorVelocity() / 4096 * 10 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,//the times 10 brings it from per 100ms to 1000ms
-      (double)rightMaster.getSelectedSensorVelocity() / 4096 * 10 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
+      -(double)leftMaster.getSelectedSensorVelocity() / 4096.0 * 10.0 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,//the times 10 brings it from per 100ms to 1000ms
+      -(double)rightMaster.getSelectedSensorVelocity() / 4096.0 * 10.0 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
      );
   }
 
   @Override
   public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
-    System.out.println(leftVelocity - leftMaster.getSelectedSensorVelocity() / 4096 * 10 * Math.PI * Constants.ROBOT_WHEEL_DIAMETER);
+    System.out.println(getAverageEncoderDistance());
+    //System.out.print(leftVelocity);
+    //System.out.print("    ");
+    //System.out.println(temp.calculate(leftVelocity));
+    //System.out.print("    ");
+    //System.out.println(rightMaster.getSelectedSensorVelocity());
+    //System.out.println(getWheelSpeeds().rightMetersPerSecond);
+
+    leftMaster.setVoltage(temp.calculate(leftVelocity));
+    rightMaster.setVoltage(temp.calculate(rightVelocity));
+
     setControlMode(ControlMode.RAMSETE);
-    setLeftTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096 / 10);//meters/second to rotations/second to units/100 milliseconds
-    setRightTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096 / 10);
+    setLeftTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096.0 / 10.0);//meters/second to rotations/second to units/100 milliseconds
+    setRightTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096.0 / 10.0);
     //System.out.println(leftTarget);
   
+  }
+
+  @Override
+  public void tankDriveVolts(double left, double right){
+    //System.out.print(getAverageEncoderDistance());
+    //System.out.print("   ");
+    var translation = m_odometry.getPoseMeters().getTranslation();
+    System.out.print(translation.getX());
+    System.out.print("   ");
+    System.out.println(translation.getY());
+    setControlMode(ControlMode.RAMSETE);
+    leftMaster.setVoltage(left);
+    rightMaster.setVoltage(right);
   }
 
   @Override
@@ -331,7 +355,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   //In meters
   @Override
   public double getAverageEncoderDistance() {
-    return ((leftMaster.getSelectedSensorPosition(0) / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI) + 
-      (rightMaster.getSelectedSensorPosition(0) / 4096 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI)) / 2;
+    return ((-(double)leftMaster.getSelectedSensorPosition(0) / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE) + 
+      (-(double)rightMaster.getSelectedSensorPosition(0) / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE)) / 2.0;
   }
 }
