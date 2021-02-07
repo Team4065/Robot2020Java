@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utility.Gyro;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -31,6 +32,7 @@ public class Drivetrain extends SubsystemBase {
   protected double kMaxVelocity_velocity, kMaxAcceleration_velocity = 0;
   protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
 
+  protected SimpleMotorFeedforward m_feedForward;
 
   protected  DifferentialDriveOdometry m_odometry;
 

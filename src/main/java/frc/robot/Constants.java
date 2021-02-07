@@ -55,9 +55,9 @@ public class Constants {
 
     // Robot Characterization 
     // info on how to find this data: https://docs.wpilib.org/en/stable/docs/software/wpilib-tools/robot-characterization/introduction.html#introduction-to-robot-characterization
-    public static final double KS_VOLTS = 0.771;// ks
-    public static final double KV_VOLT_SECONDS_PER_METER = 0.795;// kv
-    public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 0.0931;// ka
+    public static final double KS_VOLTS = 0.991;// ks
+    public static final double KV_VOLT_SECONDS_PER_METER = 3.27724;// kv
+    public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = 1.04051;// ka
     public static final double KP_DRIVE_VEL = 5.3e-6;//0.00337;//3.94e-6;//0.2;// kp I NEED THIS (This is not the correct value)
     public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(
             ROBOT_TRACKWIDTH);
@@ -88,7 +88,7 @@ public class Constants {
     
 
     //Drivetrain
-    public static final double DRIVETRAIN_MANUAL_SPEED_MODIFIER = 1;
+    public static final double DRIVETRAIN_MANUAL_SPEED_MODIFIER = 2;
     public static final boolean DRIVETRAIN_INVERT_FORWARD = false;
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MIN = 1;//CAN ID
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 2;//CAN ID

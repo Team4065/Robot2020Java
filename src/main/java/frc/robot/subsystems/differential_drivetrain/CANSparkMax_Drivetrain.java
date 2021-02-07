@@ -84,11 +84,6 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
           leftPID.setReference(leftTarget, ControlType.kVelocity, 0);
           rightPID.setReference(rightTarget, ControlType.kVelocity, 0);
           break;
-  
-        case POSITION:
-          leftPID.setReference(leftTarget, ControlType.kPosition, 1);
-          rightPID.setReference(rightTarget, ControlType.kPosition, 1);
-          break;
 
         case RAMSETE:
           leftPID.setReference(leftTarget, ControlType.kVelocity, 2);

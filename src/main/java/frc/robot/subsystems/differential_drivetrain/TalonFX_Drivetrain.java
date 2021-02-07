@@ -85,16 +85,6 @@ public class TalonFX_Drivetrain extends Drivetrain {
           leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, leftTarget);
           rightMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, rightTarget);
           break;
-  
-        case POSITION:
-          //selects the proper PID values
-          leftMaster.selectProfileSlot(1, 0);
-          rightMaster.selectProfileSlot(1, 0);
-  
-          //Updates the PID target
-          leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, leftTarget);
-          rightMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, rightTarget);
-          break;
         
         case RAMSETE:
           //selects the proper PID values

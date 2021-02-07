@@ -9,6 +9,7 @@
 
 package frc.robot.subsystems.differential_drivetrain;
 
+import frc.robot.Utility.Accelerometer;
 import frc.robot.Utility.Gyro;
 import frc.robot.Constants;
 
@@ -123,6 +124,8 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     m_odometry.resetPosition(new Pose2d(), Gyro.getRotation2d());
     leftMaster.setSelectedSensorPosition(0);
     rightMaster.setSelectedSensorPosition(0);
+
+    m_feedForward = new SimpleMotorFeedforward(Constants.KS_VOLTS, Constants.KV_VOLT_SECONDS_PER_METER, Constants.KA_VOLT_SECONDS_SQUARED_PER_METER);
   }
   public TalonSRX_Drivetrain(){
     this(false);
@@ -138,11 +141,11 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
     m_odometry.update(Gyro.getRotation2d(), -(double)leftMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE, -(double)rightMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE);
     var translation = m_odometry.getPoseMeters().getTranslation();
-    System.out.print(getAverageEncoderDistance());
-    System.out.print("   ");
-    System.out.print(translation.getX());
-    System.out.print("   ");
-    System.out.println(translation.getY());
+    //System.out.print(getAverageEncoderDistance());
+    //System.out.print("   ");
+    //System.out.print(translation.getX());
+    //System.out.print("   ");
+    //System.out.println(translation.getY());
 
 
     //this if statement and its contents are needed to implement simulation mode
@@ -158,22 +161,9 @@ public class TalonSRX_Drivetrain extends Drivetrain {
         
         case VELOCITY:
           //selects the proper PID values
-          leftMaster.selectProfileSlot(0, 0);
-          rightMaster.selectProfileSlot(0, 0);
-  
-          //Updates the PID target
-          leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, leftTarget);
-          rightMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, rightTarget);
-          break;
-  
-        case POSITION:
-          //selects the proper PID values
-          leftMaster.selectProfileSlot(1, 0);
-          rightMaster.selectProfileSlot(1, 0);
-  
-          //Updates the PID target
-          leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, leftTarget);
-          rightMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Position, rightTarget);
+          var wheelSpeeds = getWheelSpeeds();
+          leftMaster.setVoltage(m_feedForward.calculate(leftTarget, leftTarget - wheelSpeeds.leftMetersPerSecond));
+          rightMaster.setVoltage(m_feedForward.calculate(rightTarget, rightTarget - wheelSpeeds.rightMetersPerSecond));
           break;
 
         case RAMSETE:
@@ -338,9 +328,9 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     //System.out.print(getAverageEncoderDistance());
     //System.out.print("   ");
     var translation = m_odometry.getPoseMeters().getTranslation();
-    System.out.print(translation.getX());
-    System.out.print("   ");
-    System.out.println(translation.getY());
+    //System.out.print(translation.getX());
+    //System.out.print("   ");
+    //System.out.println(translation.getY());
     setControlMode(ControlMode.RAMSETE);
     leftMaster.setVoltage(left);
     rightMaster.setVoltage(right);

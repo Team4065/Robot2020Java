@@ -21,7 +21,7 @@ import frc.robot.subsystems.differential_drivetrain.CANSparkMax_Drivetrain;
 
 import frc.robot.commands.differential_drivetrain.TankDrive;
 import frc.robot.commands.differential_drivetrain.ArcadeDrive;
-
+import frc.robot.commands.differential_drivetrain.ArcadeDriveVelocity;
 import frc.robot.subsystems.manipulator_mover.*;
 import frc.robot.commands.manipulator_mover.*;
 
@@ -44,6 +44,7 @@ public class RobotContainer {
 
   TankDrive tankdrive = new TankDrive(drivetrain);
   ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);
+  ArcadeDriveVelocity arcadeDriveVelocity = new ArcadeDriveVelocity(drivetrain);
   
   //ManipulatorMover manipulatorMover = new ManipulatorMover();
 
@@ -53,7 +54,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(arcadedrive);
+    drivetrain.setDefaultCommand(arcadeDriveVelocity);
 
     // Configure the button bindings
     configureButtonBindings();
@@ -78,6 +79,7 @@ public class RobotContainer {
     PathLoader path = new PathLoader(Constants.ROBOT_PATH);
     drivetrain.resetOdometry(path.getTrajectory().getInitialPose());
     // An ExampleCommand will run in autonomous
+
     return new RamseteCommandBuilder(drivetrain, path).getCommand().andThen(()->{
       drivetrain.tankDriveMeterPerSecond(0, 0);
       System.out.println("done");
