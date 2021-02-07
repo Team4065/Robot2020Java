@@ -161,6 +161,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
         
         case VELOCITY:
           //selects the proper PID values
+          //Do this to the other drivetrain types
           var wheelSpeeds = getWheelSpeeds();
           leftMaster.setVoltage(m_feedForward.calculate(leftTarget, leftTarget - wheelSpeeds.leftMetersPerSecond));
           rightMaster.setVoltage(m_feedForward.calculate(rightTarget, rightTarget - wheelSpeeds.rightMetersPerSecond));
