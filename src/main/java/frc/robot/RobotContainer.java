@@ -17,6 +17,7 @@ import frc.robot.Utility.Vector3;
 import frc.robot.Utility.PathLoader;
 import frc.robot.Utility.RamseteCommandBuilder;
 import frc.robot.subsystems.differential_drivetrain.TalonSRX_Drivetrain;
+import frc.robot.subsystems.differential_drivetrain.Drivetrain.ControlMode;
 import frc.robot.subsystems.differential_drivetrain.CANSparkMax_Drivetrain;
 
 import frc.robot.commands.differential_drivetrain.TankDrive;
@@ -48,7 +49,7 @@ public class RobotContainer {
   
   //ManipulatorMover manipulatorMover = new ManipulatorMover();
 
-  RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader("output/TestPath.wpilib.json")).getCommand();
+  RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader(Constants.ROBOT_PATH)).getCommand();
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -81,7 +82,9 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
 
     return new RamseteCommandBuilder(drivetrain, path).getCommand().andThen(()->{
-      drivetrain.tankDriveMeterPerSecond(0, 0);
+      drivetrain.setControlMode(ControlMode.VELOCITY);
+      drivetrain.setLeftTarget(0);
+      drivetrain.setRightTarget(0);
       System.out.println("done");
     });
   }

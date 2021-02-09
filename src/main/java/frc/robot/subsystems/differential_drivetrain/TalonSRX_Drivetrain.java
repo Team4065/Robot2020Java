@@ -40,6 +40,9 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
  */
 public class TalonSRX_Drivetrain extends Drivetrain {
 
+  double pastVel = 0;
+  double maxAccel = 0;
+
   WPI_TalonSRX leftMaster, rightMaster;
   BaseMotorController[] leftSlaves, rightSlaves;
 
@@ -141,12 +144,13 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
     m_odometry.update(Gyro.getRotation2d(), -(double)leftMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE, -(double)rightMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE);
     var translation = m_odometry.getPoseMeters().getTranslation();
-    //System.out.print(getAverageEncoderDistance());
-    //System.out.print("   ");
-    //System.out.print(translation.getX());
-    //System.out.print("   ");
-    //System.out.println(translation.getY());
-
+    /*
+    System.out.print(getAverageEncoderDistance());
+    System.out.print("   ");
+    System.out.print(translation.getX());
+    System.out.print("   ");
+    System.out.println(translation.getY());
+    */
 
     //this if statement and its contents are needed to implement simulation mode
     if(Constants.IS_SIMULATION_RUNNING){
@@ -165,6 +169,15 @@ public class TalonSRX_Drivetrain extends Drivetrain {
           var wheelSpeeds = getWheelSpeeds();
           leftMaster.setVoltage(m_feedForward.calculate(leftTarget, leftTarget - wheelSpeeds.leftMetersPerSecond));
           rightMaster.setVoltage(m_feedForward.calculate(rightTarget, rightTarget - wheelSpeeds.rightMetersPerSecond));
+
+          var accel = wheelSpeeds.leftMetersPerSecond - pastVel;
+          if(accel > maxAccel){
+            System.out.println(accel);
+            maxAccel = accel;
+          }
+            
+
+          pastVel = wheelSpeeds.leftMetersPerSecond;
           break;
 
         case RAMSETE:
@@ -326,12 +339,6 @@ public class TalonSRX_Drivetrain extends Drivetrain {
 
   @Override
   public void tankDriveVolts(double left, double right){
-    //System.out.print(getAverageEncoderDistance());
-    //System.out.print("   ");
-    var translation = m_odometry.getPoseMeters().getTranslation();
-    //System.out.print(translation.getX());
-    //System.out.print("   ");
-    //System.out.println(translation.getY());
     setControlMode(ControlMode.RAMSETE);
     leftMaster.setVoltage(left);
     rightMaster.setVoltage(right);

@@ -41,8 +41,8 @@ public class Constants {
 
     //TEMP
     public static String straight = "output/StraightTest.wpilib.json";
-    public static String turnLeft = "output/TestPath.wpilib.json";
-    public static final String ROBOT_PATH = straight;
+    public static String turnRight = "output/TurnTest.wpilib.json";
+    public static final String ROBOT_PATH = turnRight;
 
     // Robot info (in meters)
     // the Pathweaver will want some of this information
@@ -88,7 +88,7 @@ public class Constants {
     
 
     //Drivetrain
-    public static final double DRIVETRAIN_MANUAL_SPEED_MODIFIER = 2;
+    public static final double DRIVETRAIN_MANUAL_SPEED_MODIFIER = 3;
     public static final boolean DRIVETRAIN_INVERT_FORWARD = false;
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MIN = 1;//CAN ID
     public static final int DRIVETRAIN_LEFT_MOTOR_IDS_MAX = 2;//CAN ID
