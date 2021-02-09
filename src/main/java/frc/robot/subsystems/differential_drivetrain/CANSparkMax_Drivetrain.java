@@ -156,35 +156,6 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     rightPID.setFF(value, 1);
   }
 
-  //Sets the max velocity of the motor controllers
-  @Override
-  public void SetMaxVelocity_velocity(double value){
-    kMaxVelocity_velocity = value;
-    leftPID.setSmartMotionMaxVelocity(value, 0);
-    rightPID.setSmartMotionMaxVelocity(value, 0);
-  }
-  //Sets the max acceleration of the motor controllers
-  @Override
-  public void SetMaxAcceleration_velocity(double value){
-    kMaxAcceleration_velocity = value;
-    leftPID.setSmartMotionMaxAccel(value, 0);
-    rightPID.setSmartMotionMaxAccel(value, 0);
-  }
-
-  //Sets the max velocity of the motor controllers
-  @Override
-  public void SetMaxVelocity_position(double value){
-    kMaxVelocity_position = value;
-    leftPID.setSmartMotionMaxVelocity(value, 1);
-    rightPID.setSmartMotionMaxVelocity(value, 1);
-  }
-  //Sets the max acceleration of the motor controllers
-  @Override
-  public void SetMaxAcceleration_position(double value){
-    kMaxAcceleration_position = value;
-    leftPID.setSmartMotionMaxAccel(value, 1);
-    rightPID.setSmartMotionMaxAccel(value, 1);
-  }
 
   @Override
   public double[] getLeftOutputs() {

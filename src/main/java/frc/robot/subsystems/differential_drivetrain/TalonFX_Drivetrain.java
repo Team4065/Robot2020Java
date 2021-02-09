@@ -163,32 +163,6 @@ public class TalonFX_Drivetrain extends Drivetrain {
   }
 
 
-   //Sets the max velocity of the motor controllers
-   @Override
-   public void SetMaxVelocity_velocity(double value){
-     kMaxVelocity_velocity = value;
-     throw new UnsupportedOperationException();
-   }
-   //Sets the max acceleration of the motor controllers
-   @Override
-   public void SetMaxAcceleration_velocity(double value){
-     kMaxAcceleration_velocity = value;
-     throw new UnsupportedOperationException();
-   }
- 
-   //Sets the max velocity of the motor controllers
-   @Override
-   public void SetMaxVelocity_position(double value){
-     kMaxVelocity_position = value;
-     throw new UnsupportedOperationException();
-   }
-   //Sets the max acceleration of the motor controllers
-   @Override
-   public void SetMaxAcceleration_position(double value){
-     kMaxAcceleration_position = value;
-     throw new UnsupportedOperationException();
-   }
-
    
   @Override
   public double[] getLeftOutputs() {

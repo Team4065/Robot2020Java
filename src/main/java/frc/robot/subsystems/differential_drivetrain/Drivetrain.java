@@ -169,24 +169,6 @@ public class Drivetrain extends SubsystemBase {
   //Sets kF_position and updates the motor controllers
   public void SetFF_position(double value){kFF_position = value;}
 
-  //Sets the max velocity of the motor controllers
-  public void SetMaxVelocity_velocity(double value){
-    kMaxVelocity_velocity = value;
-  }
-  //Sets the max acceleration of the motor controllers
-  public void SetMaxAcceleration_velocity(double value){
-    kMaxAcceleration_velocity = value;
-  }
-
-  //Sets the max velocity of the motor controllers
-  public void SetMaxVelocity_position(double value){
-    kMaxVelocity_position = value;
-  }
-  //Sets the max acceleration of the motor controllers
-  public void SetMaxAcceleration_position(double value){
-    kMaxAcceleration_position = value;
-  }
-
 
 
 
