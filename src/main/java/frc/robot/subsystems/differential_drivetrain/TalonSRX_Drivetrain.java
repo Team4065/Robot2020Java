@@ -43,8 +43,6 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   WPI_TalonSRX leftMaster, rightMaster;
   BaseMotorController[] leftSlaves, rightSlaves;
 
-  SimpleMotorFeedforward temp = new SimpleMotorFeedforward(Constants.KS_VOLTS, Constants.KV_VOLT_SECONDS_PER_METER, Constants.KA_VOLT_SECONDS_SQUARED_PER_METER);
-
   public TalonSRX_Drivetrain(boolean areSlavesVictorSPX) {
     
     int leftMotorCount = Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MAX - Constants.DRIVETRAIN_LEFT_MOTOR_IDS_MIN + 1;
@@ -112,15 +110,6 @@ public class TalonSRX_Drivetrain extends Drivetrain {
     leftMaster.configSelectedFeedbackCoefficient(1);
     rightMaster.configSelectedFeedbackCoefficient(1);
 
-    leftMaster.config_kP(1, Constants.KP_DRIVE_VEL);
-    leftMaster.config_kI(1, 0);
-    leftMaster.config_kD(1, 0);
-    leftMaster.config_kF(1, 0);//Constants.KS_VOLTS//Not this
-
-    rightMaster.config_kP(1, Constants.KP_DRIVE_VEL);
-    rightMaster.config_kI(1, 0);
-    rightMaster.config_kD(1, 0);
-    rightMaster.config_kF(1, 0);
     m_odometry.resetPosition(new Pose2d(), Gyro.getRotation2d());
     leftMaster.setSelectedSensorPosition(0);
     rightMaster.setSelectedSensorPosition(0);
@@ -134,18 +123,7 @@ public class TalonSRX_Drivetrain extends Drivetrain {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-    //System.out.print(this.leftMaster.getSelectedSensorVelocity() / 4096 * 10);
-    //System.out.print("       ");
-    //System.out.println(this.rightMaster.getSelectedSensorVelocity() / 4096 * 10);
-
-    m_odometry.update(Gyro.getRotation2d(), -(double)leftMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE, -(double)rightMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE);
-    var translation = m_odometry.getPoseMeters().getTranslation();
-    //System.out.print(getAverageEncoderDistance());
-    //System.out.print("   ");
-    //System.out.print(translation.getX());
-    //System.out.print("   ");
-    //System.out.println(translation.getY());
+    m_odometry.update(Gyro.getRotation2d(), ((Constants.DRIVETRAIN_INVERT_ENCODERS)? -1 : 1) * (double)leftMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE, ((Constants.DRIVETRAIN_INVERT_ENCODERS)? -1 : 1) * (double)rightMaster.getSelectedSensorPosition() / 4096.0 * Constants.ROBOT_WHEEL_CIRCUMFRENCE);
 
 
     //this if statement and its contents are needed to implement simulation mode
@@ -160,21 +138,14 @@ public class TalonSRX_Drivetrain extends Drivetrain {
           break;
         
         case VELOCITY:
-          //selects the proper PID values
-          //Do this to the other drivetrain types
           var wheelSpeeds = getWheelSpeeds();
           leftMaster.setVoltage(m_feedForward.calculate(leftTarget, leftTarget - wheelSpeeds.leftMetersPerSecond));
           rightMaster.setVoltage(m_feedForward.calculate(rightTarget, rightTarget - wheelSpeeds.rightMetersPerSecond));
           break;
 
-        case RAMSETE:
-          //selects the proper PID values
-          leftMaster.selectProfileSlot(1, 0);
-          rightMaster.selectProfileSlot(1, 0);
-
-          //Updates the PID target
-          //leftMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, leftTarget);
-          //rightMaster.set(com.ctre.phoenix.motorcontrol.ControlMode.Velocity, rightTarget);
+        case VOLTAGE:
+          leftMaster.setVoltage(leftTarget);
+          rightMaster.setVoltage(rightTarget);
           break;
         
         default:
@@ -183,90 +154,6 @@ public class TalonSRX_Drivetrain extends Drivetrain {
           break;
       }
     }
-  }
-
-  //Sets kP_velocity and updates the motorcontrollers
-  @Override
-  public void SetP_velocity(double value){
-    kP_velocity = value;
-    leftMaster.config_kP(0/*The 0 selects the PID configuration for velocity to be altered.*/, value);
-    rightMaster.config_kP(0, value);
-  }
-  //Sets kI_velocity and updates the motorcontrollers
-  @Override
-  public void SetI_velocity(double value){
-    kI_velocity = value;
-    leftMaster.config_kI(0, value);
-    rightMaster.config_kI(0, value);
-  }
-  //Sets kD_velocity and updates the motorcontrollers
-  @Override
-  public void SetD_velocity(double value){
-    kD_velocity = value;
-    leftMaster.config_kD(0, value);
-    rightMaster.config_kD(0, value);
-  }
-  //Sets kFF_velocity and updates the motorcontrollers
-  @Override
-  public void SetFF_velocity(double value){
-    kFF_velocity = value;
-    leftMaster.config_kF(0, value);
-    rightMaster.config_kF(0, value);
-  }
-
-  //Sets kP_position and updates the motorcontrollers
-   @Override
-  public void SetP_position(double value){
-    kP_position = value;
-    leftMaster.config_kP(1/*The 1 selects the PID configuration for position to be altered.*/, value);
-    rightMaster.config_kP(1, value);
-  }
-  //Sets kI_velocity and updates the motorcontrollers
-  @Override
-  public void SetI_position(double value){
-    kI_position = value;
-    leftMaster.config_kI(1, value);
-    rightMaster.config_kI(1, value);
-  }
-  //Sets kD_position and updates the motorcontrollers
-  @Override
-  public void SetD_position(double value){
-    kD_position = value;
-    leftMaster.config_kD(1, value);
-    rightMaster.config_kD(1, value);
-  }
-  //Sets kF_position and updates the motorcontrollers
-  @Override
-  public void SetFF_position(double value){
-    kFF_position = value;
-    leftMaster.config_kF(1, value);
-    rightMaster.config_kF(1, value);
-  }
-
-  //Sets the max velocity of the motor controllers
-  @Override
-  public void SetMaxVelocity_velocity(double value){
-    kMaxVelocity_velocity = value;
-    throw new UnsupportedOperationException();
-  }
-  //Sets the max acceleration of the motor controllers
-  @Override
-  public void SetMaxAcceleration_velocity(double value){
-    kMaxAcceleration_velocity = value;
-    throw new UnsupportedOperationException();
-  }
-
-  //Sets the max velocity of the motor controllers
-  @Override
-  public void SetMaxVelocity_position(double value){
-    kMaxVelocity_position = value;
-    throw new UnsupportedOperationException();
-  }
-  //Sets the max acceleration of the motor controllers
-  @Override
-  public void SetMaxAcceleration_position(double value){
-    kMaxAcceleration_position = value;
-    throw new UnsupportedOperationException();
   }
 
   @Override
@@ -302,39 +189,6 @@ public class TalonSRX_Drivetrain extends Drivetrain {
       -(double)leftMaster.getSelectedSensorVelocity() / 4096.0 * 10.0 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,//the times 10 brings it from per 100ms to 1000ms
       -(double)rightMaster.getSelectedSensorVelocity() / 4096.0 * 10.0 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
      );
-  }
-
-  @Override
-  public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
-    System.out.println(getAverageEncoderDistance());
-    //System.out.print(leftVelocity);
-    //System.out.print("    ");
-    //System.out.println(temp.calculate(leftVelocity));
-    //System.out.print("    ");
-    //System.out.println(rightMaster.getSelectedSensorVelocity());
-    //System.out.println(getWheelSpeeds().rightMetersPerSecond);
-
-    leftMaster.setVoltage(temp.calculate(leftVelocity));
-    rightMaster.setVoltage(temp.calculate(rightVelocity));
-
-    setControlMode(ControlMode.RAMSETE);
-    setLeftTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096.0 / 10.0);//meters/second to rotations/second to units/100 milliseconds
-    setRightTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 4096.0 / 10.0);
-    //System.out.println(leftTarget);
-  
-  }
-
-  @Override
-  public void tankDriveVolts(double left, double right){
-    //System.out.print(getAverageEncoderDistance());
-    //System.out.print("   ");
-    var translation = m_odometry.getPoseMeters().getTranslation();
-    //System.out.print(translation.getX());
-    //System.out.print("   ");
-    //System.out.println(translation.getY());
-    setControlMode(ControlMode.RAMSETE);
-    leftMaster.setVoltage(left);
-    rightMaster.setVoltage(right);
   }
 
   @Override
