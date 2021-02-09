@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.*;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 
@@ -60,16 +62,17 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
     leftMaster.setInverted(Constants.DRIVETRAIN_INVERT_FORWARD);
     rightMaster.setInverted(!Constants.DRIVETRAIN_INVERT_FORWARD);
 
-    leftPID.setP(Constants.KP_DRIVE_VEL, 2);
-    leftPID.setI(0, 2);
-    leftPID.setD(0, 2);
-    leftPID.setFF(0, 2);
+    leftEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
+
+    m_odometry.resetPosition(new Pose2d(), Gyro.getRotation2d());
+    m_feedForward = new SimpleMotorFeedforward(Constants.KS_VOLTS, Constants.KV_VOLT_SECONDS_PER_METER, Constants.KA_VOLT_SECONDS_SQUARED_PER_METER);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_odometry.update(Gyro.getRotation2d(), leftEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI, rightEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI);
+    m_odometry.update(Gyro.getRotation2d(), ((Constants.DRIVETRAIN_INVERT_ENCODERS)? -1 : 1) * leftEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI, ((Constants.DRIVETRAIN_INVERT_ENCODERS)? -1 : 1) * rightEncoder.getPosition() * Constants.ROBOT_WHEEL_DIAMETER * Math.PI);
 
     if(Constants.IS_SIMULATION_RUNNING){
       mySimulationPeriodic();
@@ -81,13 +84,14 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
           break;
   
         case VELOCITY:
-          leftPID.setReference(leftTarget, ControlType.kVelocity, 0);
-          rightPID.setReference(rightTarget, ControlType.kVelocity, 0);
+          var wheelSpeeds = getWheelSpeeds();
+          leftMaster.setVoltage(m_feedForward.calculate(leftTarget, leftTarget - wheelSpeeds.rightMetersPerSecond));
+          rightMaster.setVoltage(m_feedForward.calculate(rightTarget, rightTarget - wheelSpeeds.rightMetersPerSecond));
           break;
 
-        case RAMSETE:
-          leftPID.setReference(leftTarget, ControlType.kVelocity, 2);
-          rightPID.setReference(rightTarget, ControlType.kVelocity, 2);
+        case VOLTAGE:
+          leftMaster.setVoltage(leftTarget);
+          rightMaster.setVoltage(rightTarget);
           break;
 
         default:
@@ -96,64 +100,6 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
           break;
       }
     }
-  }
-
-  //Sets kP_velocity and updates the motorcontrollers
-  @Override
-  public void SetP_velocity(double value){
-    kP_velocity = value;
-    leftPID.setP(value, 0/*The 0 selects the PID configuration for velocity to be altered.*/);
-    rightPID.setP(value, 0);
-  }
-  //Sets kI_velocity and updates the motorcontrollers
-  @Override
-  public void SetI_velocity(double value){
-    kI_velocity = value;
-    leftPID.setI(value, 0);
-    rightPID.setI(value, 0);
-  }
-  //Sets kD_velocity and updates the motorcontrollers
-  @Override
-  public void SetD_velocity(double value){
-    kD_velocity = value;
-    leftPID.setD(value, 0);
-    rightPID.setD(value, 0);
-  }
-  //Sets kFF_velocity and updates the motorcontrollers
-  @Override
-  public void SetFF_velocity(double value){
-    kFF_velocity = value;
-    leftPID.setFF(value, 0);
-    rightPID.setFF(value, 0);
-  }
-
-  //Sets kP_position and updates the motorcontrollers
-  @Override
-  public void SetP_position(double value){
-    kP_position = value;
-    leftPID.setP(value, 1/*The 1 selects the PID configuration for position to be altered.*/);
-    rightPID.setP(value, 1);
-  }
-  //Sets kI_velocity and updates the motorcontrollers
-  @Override
-  public void SetI_position(double value){
-    kI_position = value;
-    leftPID.setI(value, 1);
-    rightPID.setI(value, 1);
-  }
-  //Sets kD_position and updates the motorcontrollers
-  @Override
-  public void SetD_position(double value){
-    kD_position = value;
-    leftPID.setD(value, 1);
-    rightPID.setD(value, 1);
-  }
-  //Sets kF_position and updates the motorcontrollers
-  @Override
-  public void SetFF_position(double value){
-    kFF_position = value;
-    leftPID.setFF(value, 1);
-    rightPID.setFF(value, 1);
   }
 
 
@@ -187,16 +133,9 @@ public class CANSparkMax_Drivetrain extends Drivetrain {
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(
-      leftEncoder.getVelocity() / 60 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,
+      leftEncoder.getVelocity() / 60 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI,//rpm to rps to m/s
       rightEncoder.getVelocity() / 60 * Constants.ROBOT_WHEEL_DIAMETER * Math.PI
     );
-  }
-
-  @Override
-  public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
-    setControlMode(ControlMode.RAMSETE);
-    setLeftTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 60);//meters/second to rotations/second to rotations/minute
-    setRightTarget(leftVelocity / (Math.PI * Constants.ROBOT_WHEEL_DIAMETER) * 60);
   }
 
   @Override

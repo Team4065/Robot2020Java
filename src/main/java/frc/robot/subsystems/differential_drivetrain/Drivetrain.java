@@ -26,12 +26,6 @@ import frc.robot.Utility.Gyro;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 public class Drivetrain extends SubsystemBase {
-
-  protected double kP_velocity, kI_velocity, kD_velocity, kFF_velocity = 0;
-  protected double kP_position, kI_position, kD_position, kFF_position = 0;
-  protected double kMaxVelocity_velocity, kMaxAcceleration_velocity = 0;
-  protected double kMaxVelocity_position, kMaxAcceleration_position = 0;
-
   protected SimpleMotorFeedforward m_feedForward;
 
   protected  DifferentialDriveOdometry m_odometry;
@@ -42,8 +36,7 @@ public class Drivetrain extends SubsystemBase {
   public static enum ControlMode {
     PERCENT,
     VELOCITY,
-    POSITION,
-    RAMSETE
+    VOLTAGE
   }
 
   protected ControlMode controlMode = ControlMode.PERCENT;
@@ -109,11 +102,9 @@ public class Drivetrain extends SubsystemBase {
         case VELOCITY:
           simulationMotors[updatedMotors].setSpeed(leftTarget);
           break;
-  
-        case POSITION:
-          simulationMotors[updatedMotors].setPosition(leftTarget);
+        case VOLTAGE:
+          simulationMotors[updatedMotors].setVoltage(leftTarget);
           break;
-  
         default:
          simulationMotors[updatedMotors].set(leftTarget);
           break;
@@ -131,8 +122,8 @@ public class Drivetrain extends SubsystemBase {
           simulationMotors[updatedMotors].setSpeed(rightTarget);
           break;
   
-        case POSITION:
-          simulationMotors[updatedMotors].setPosition(rightTarget);
+        case VOLTAGE:
+          simulationMotors[updatedMotors].setVoltage(rightTarget);
           break;
   
         default:
@@ -150,27 +141,6 @@ public class Drivetrain extends SubsystemBase {
   public double[] getRightOutputs(){
     return new double[]{};
   }
-
-  //Sets kP_velocity and updates the motor controllers
-  public void SetP_velocity(double value){kP_velocity = value;}
-  //Sets kD_velocity and updates the motor controllers
-  public void SetI_velocity(double value){kI_velocity = value;}
-  //Sets kD_velocity and updates the motor controllers
-  public void SetD_velocity(double value){kD_velocity = value;}
-  //Sets kFF_velocity and updates the motor controllers
-  public void SetFF_velocity(double value){kFF_velocity = value;}
-
-  //Sets kP_position and updates the motor controllers
-  public void SetP_position(double value){kP_position = value;}
-  //Sets kD_position and updates the motor controllers
-  public void SetI_position(double value){kI_position = value;}
-  //Sets kD_position and updates the motor controllers
-  public void SetD_position(double value){kD_position = value;}
-  //Sets kF_position and updates the motor controllers
-  public void SetFF_position(double value){kFF_position = value;}
-
-
-
 
   //Ramsete code
 
@@ -192,11 +162,15 @@ public class Drivetrain extends SubsystemBase {
 
   
   public void tankDriveMeterPerSecond(double leftVelocity, double rightVelocity){
-
+    setControlMode(ControlMode.VELOCITY);
+    setLeftTarget(leftVelocity);
+    setRightTarget(rightVelocity);
   }
 
   public void tankDriveVolts(double left, double right){
-
+    setControlMode(ControlMode.VOLTAGE);
+    setLeftTarget(left);
+    setRightTarget(right);
   }
 
   public void resetEncoders(){
