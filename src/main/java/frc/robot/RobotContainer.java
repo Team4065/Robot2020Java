@@ -17,6 +17,7 @@ import frc.robot.Constants;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CharacterizeRotation;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.DifferentialDrivetrain;
 import frc.robot.subsystems.TalonSRX_DifferentialDrivetrain;
 
@@ -33,16 +34,17 @@ import frc.robot.subsystems.TalonSRX_DifferentialDrivetrain;
 public class RobotContainer {
   Joystick m_controller = new Joystick(0);
 
-  DifferentialDrivetrain m_drivetrain = new TalonSRX_DifferentialDrivetrain(
-    0.154, 
-    new WPI_TalonSRX(1), new WPI_TalonSRX(4),
-    new WPI_TalonSRX[]{new WPI_TalonSRX(2)}, new WPI_TalonSRX[]{new WPI_TalonSRX(5)}
-    );
+  //DifferentialDrivetrain m_drivetrain = new TalonSRX_DifferentialDrivetrain(
+  //  0.154, 
+  //  new WPI_TalonSRX(1), new WPI_TalonSRX(4),
+  //  new WPI_TalonSRX[]{new WPI_TalonSRX(2)}, new WPI_TalonSRX[]{new WPI_TalonSRX(5)}
+  //  );
 
   public RobotContainer() {
-    m_drivetrain.configFeedforward(0.991, 3.27724, 1.04051);
-    m_drivetrain.configRotationFeedForward(0.0455661717576, 0.00660299524632, 0.0000578739909339);
-    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 2, 180));
+    //m_drivetrain.configFeedforward(0.991, 3.27724, 1.04051);
+    //m_drivetrain.configRotationFeedForward(0.0455661717576, 0.00660299524632, 0.0000578739909339);
+    //m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 2, 180));
+    //m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain, m_controller));
     configureButtonBindings();//0.145
   }
 
@@ -62,6 +64,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new CharacterizeRotation(m_drivetrain);
+    return new ExampleCommand();//new CharacterizeRotation(m_drivetrain);
   }
 }

@@ -14,6 +14,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Utility.Motor;
+import frc.robot.Utility.Motor.ControlMode;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +29,9 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+
+  Motor m_motor = new Motor(1, "TalonSRX");
+  Motor m_motor2 = new Motor(4, "TalonSRX");
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -93,7 +98,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    //HGUiIUHIUHLKI
+    
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
@@ -105,7 +110,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-
+    m_motor.set(ControlMode.PercentOutput, m_robotContainer.m_controller.getRawAxis(1));
   }
 
   @Override

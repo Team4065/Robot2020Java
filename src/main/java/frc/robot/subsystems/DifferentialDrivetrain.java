@@ -21,6 +21,8 @@ public class DifferentialDrivetrain extends SubsystemBase {
 
   protected double m_leftTarget;
   protected double m_rightTarget;
+  protected double m_theoreticalTrackWidth;
+  protected boolean m_isTheoreticalTrackWidthConfigured = false;
   protected SimpleMotorFeedforward m_leftFeedforward, m_rightFeedforward;
   protected boolean m_isFeedforwardConfigured = false;
   protected ControlMode m_controlMode = ControlMode.PercentOutput;
@@ -61,6 +63,7 @@ public class DifferentialDrivetrain extends SubsystemBase {
         setRightPercent(0);
         break;
     }
+  
   }
 
   /**
@@ -101,6 +104,12 @@ public class DifferentialDrivetrain extends SubsystemBase {
   }
 
 
+  public void configTheoreticalTrackWidth(double width){
+    m_theoreticalTrackWidth = width;
+    m_isTheoreticalTrackWidthConfigured = true;
+  }
+
+
   public void setControlMode(ControlMode mode){
     m_controlMode = mode;
   }
@@ -122,6 +131,19 @@ public class DifferentialDrivetrain extends SubsystemBase {
       double rotationVelocity = m_rotationFeedforward.calculate(rotation, acceleration);
       setLeftTarget(speed + rotationVelocity);
       setRightTarget(speed - rotationVelocity);
+    }else{
+      setLeftTarget(speed + rotation);
+      setRightTarget(speed - rotation);
+    }
+  }
+
+  public void setArcadeDrive2(double speed, double rotation){
+    if(m_isTheoreticalTrackWidthConfigured && m_controlMode == ControlMode.Velocity){
+      double leftSpeed = Math.toRadians(rotation) * (speed - m_theoreticalTrackWidth);
+      double rightSpeed = Math.toRadians(rotation) * (speed + m_theoreticalTrackWidth);
+
+      setLeftTarget(leftSpeed);
+      setRightTarget(rightSpeed);
     }else{
       setLeftTarget(speed + rotation);
       setRightTarget(speed - rotation);
