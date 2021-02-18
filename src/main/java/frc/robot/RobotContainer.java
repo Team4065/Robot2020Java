@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Utility.Motor;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.CharacterizeDrivetrain;
 import frc.robot.commands.CharacterizeRotation;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TankDrive;
@@ -50,9 +51,13 @@ public class RobotContainer {
 
   public RobotContainer() {
     m_drivetrain.configFeedforward(0.991, 3.27724, 1.04051);
-    m_drivetrain.configRotationFeedForward(0.0455661717576, 0.00660299524632, 0.0000578739909339);
-    //m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 2, 180));
-    m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain, m_controller));
+    m_drivetrain.configRotationFeedForward(0.0910536461972, 0.00629517415169, 0.0000576713721188);
+    m_drivetrain.configFeedforwardSided(
+      1.00760991292, 3.37832138739, -0.0405742345827,
+      1.00702736431, 3.25734393828, -0.0234916065671
+     );
+    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 1, 120));
+    //m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain, m_controller));
     configureButtonBindings();//0.145
   }
 
@@ -72,6 +77,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new ExampleCommand();//new CharacterizeRotation(m_drivetrain);
+    //return new CharacterizeDrivetrain(m_drivetrain);//new ExampleCommand();/
+    return new CharacterizeRotation(m_drivetrain);
   }
 }

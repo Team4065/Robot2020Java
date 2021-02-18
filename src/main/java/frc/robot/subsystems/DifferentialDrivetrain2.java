@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
-import java.util.Dictionary;
+import java.util.HashMap;
+
+import javax.script.SimpleBindings;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -26,7 +28,7 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
     Velocity
   };
 
-  Dictionary<String, NetworkTableEntry> m_spyTabs;
+  HashMap<String, NetworkTableEntry> m_spyTab = new HashMap<String, NetworkTableEntry>();
 
   Motor m_leftMaster, m_rightMaster;
   Motor[] m_leftSlaves, m_rightSlaves;
@@ -62,6 +64,10 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
 
     for(Motor slave : m_rightSlaves){
       slave.follow(m_rightMaster);
+    }
+
+    if(Constants.IS_SPY_ENABLED){
+      makeSpy();
     }
   }
 
@@ -218,53 +224,55 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
    * @return The velocity of the left side in meters per second
    */
   public double getLeftVelocity(){
-    return m_leftMaster.getVelocity() * m_wheelDiameter * Math.PI;
+    return -m_leftMaster.getVelocity() * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The velocity of the right side in meters per second
    */
   public double getRightVelocity(){
-    return m_rightMaster.getVelocity() * m_wheelDiameter * Math.PI;
+    return -m_rightMaster.getVelocity() * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the left side has traveled in meters.
    */
   public double getLeftPosition(){
-    return m_leftMaster.getPosition() * m_wheelDiameter * Math.PI;
+    return -m_leftMaster.getPosition() * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the right side has traveled in meters.
    */
   public double getRightPosition(){
-    return m_rightMaster.getPosition() * m_wheelDiameter * Math.PI;
+    return -m_rightMaster.getPosition() * m_wheelDiameter * Math.PI;
   }
 
 
   protected void makeSpy(){
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
-    m_spyTabs.put("Drivetrain Left Velocity", tab.add("Drivetrain Left Velocity", 0).getEntry());
-    m_spyTabs.put("Drivetrain Right Velocity", tab.add("Drivetrain Right Velocity", 0).getEntry());
-    m_spyTabs.put("Drivetrain X Position", tab.add("Drivetrain X Position", 0).getEntry());
-    m_spyTabs.put("Drivetrain Y Position", tab.add("Drivetrain Y Position", 0).getEntry());
-    m_spyTabs.put("Drivetrain Heading", tab.add("Drivetrain Heading", 0).getEntry());
+    m_spyTab.put("Left Velocity", tab.add("Left Velocity", 0).getEntry());
+    m_spyTab.put("Right Velocity", tab.add("Right Velocity", 0).getEntry());
+    m_spyTab.put("X Position", tab.add("X Position", 0).getEntry());
+    m_spyTab.put("Y Position", tab.add("Y Position", 0).getEntry());
+    m_spyTab.put("Heading", tab.add("Heading", 0).getEntry());
+    m_spyTab.put("Rotational Velocity", tab.add("Rotate Vel", 0).getEntry());
 
-    m_spyTabs.put("Drivetrain Left Target", tab.add("Drivetrain Left Target", 0).getEntry());
-    m_spyTabs.put("Drivetrain Right Target", tab.add("Drivetrain Right Target", 0).getEntry());
+    m_spyTab.put("Left Target", tab.add("Left Target", 0).getEntry());
+    m_spyTab.put("Right Target", tab.add("Right Target", 0).getEntry());
   }
 
   protected void reportSpy(){
-    m_spyTabs.get("Drivetrain Left Velocity").setDouble(getLeftVelocity());
-    m_spyTabs.get("Drivetrain Right Velocity").setDouble(getRightVelocity());
+    m_spyTab.get("Left Velocity").setDouble(getLeftVelocity());
+    m_spyTab.get("Right Velocity").setDouble(getRightVelocity());
 
-    m_spyTabs.get("Drivetrain X Position").setDouble(m_odometry.getPoseMeters().getX());
-    m_spyTabs.get("Drivetrain Y Position").setDouble(m_odometry.getPoseMeters().getY());
-    m_spyTabs.get("Drivetrain Heading").setDouble(m_odometry.getPoseMeters().getRotation().getDegrees());
+    m_spyTab.get("X Position").setDouble(m_odometry.getPoseMeters().getX());
+    m_spyTab.get("Y Position").setDouble(m_odometry.getPoseMeters().getY());
+    m_spyTab.get("Heading").setDouble(m_odometry.getPoseMeters().getRotation().getDegrees());
+    m_spyTab.get("Rotational Velocity").setDouble(Gyro.getRate());
 
-    m_spyTabs.get("Drivetrain Left Target").setDouble(m_leftTarget);
-    m_spyTabs.get("Drivetrain Right Target").setDouble(m_rightTarget);
+    m_spyTab.get("Left Target").setDouble(m_leftTarget);
+    m_spyTab.get("Right Target").setDouble(m_rightTarget);
   }
 
 

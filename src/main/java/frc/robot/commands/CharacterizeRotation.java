@@ -6,16 +6,16 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Utility.Gyro;
-import frc.robot.subsystems.DifferentialDrivetrain;
-import frc.robot.subsystems.DifferentialDrivetrain.ControlMode;
+import frc.robot.subsystems.DifferentialDrivetrain2;
+import frc.robot.subsystems.DifferentialDrivetrain2.ControlMode;
 
 public class CharacterizeRotation extends CommandBase {
-  DifferentialDrivetrain m_drivetrain;
+  DifferentialDrivetrain2 m_drivetrain;
   double targetVelocity = 0;
   double pastRate = 0;
 
   /** Creates a new CharacterizeRotation. */
-  public CharacterizeRotation(DifferentialDrivetrain drivetrain) {
+  public CharacterizeRotation(DifferentialDrivetrain2 drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;

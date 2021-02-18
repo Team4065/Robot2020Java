@@ -4,37 +4,49 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Utility.Motor;
 import frc.robot.subsystems.DifferentialDrivetrain2;
 import frc.robot.subsystems.DifferentialDrivetrain2.ControlMode;
 
-public class TankDrive extends CommandBase {
+public class CharacterizeDrivetrain extends CommandBase {
   DifferentialDrivetrain2 m_drivetrain;
-  Joystick m_controller;
-  /** Creates a new TankDrive. */
-  public TankDrive(DifferentialDrivetrain2 drivetrain, Joystick controller) {
+  double m_targetVoltage = 0;
+  double m_pastLeftVel = 0;
+  double m_pastRightVel = 0;
+  /** Creates a new CharacterizeDrivetrain. */
+  public CharacterizeDrivetrain(DifferentialDrivetrain2 drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;
-    m_controller = controller;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drivetrain.setControlMode(ControlMode.PercentOutput);
+    m_drivetrain.setControlMode(ControlMode.Voltage);
+    m_targetVoltage = 0;
+    m_pastLeftVel = 0;
+    m_pastRightVel = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.setLeftTarget(-m_controller.getRawAxis(1));
-    m_drivetrain.setRightTarget(-m_controller.getRawAxis(5));
+    m_drivetrain.setLeftTarget(m_targetVoltage);
+    m_drivetrain.setRightTarget(m_targetVoltage);
+    m_targetVoltage += 0.01;
+    System.out.print(m_targetVoltage);
+    System.out.print(",");
     System.out.print(m_drivetrain.getLeftVelocity());
-    System.out.print("    ");
-    System.out.println(m_drivetrain.getRightVelocity());
+    System.out.print(",");
+    System.out.print((m_drivetrain.getLeftVelocity() - m_pastLeftVel) / (20.0 / 1000.0));
+    System.out.print(",");
+    System.out.print(m_drivetrain.getRightVelocity());
+    System.out.print(",");
+    System.out.println((m_drivetrain.getRightVelocity() - m_pastRightVel) / (20.0 / 1000.0));
+
+    m_pastLeftVel = m_drivetrain.getLeftVelocity();
+    m_pastRightVel = m_drivetrain.getRightVelocity();
   }
 
   // Called once the command ends or is interrupted.

@@ -8,16 +8,16 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Utility.Gyro;
-import frc.robot.subsystems.DifferentialDrivetrain;
-import frc.robot.subsystems.DifferentialDrivetrain.ControlMode;
+import frc.robot.subsystems.DifferentialDrivetrain2;
+import frc.robot.subsystems.DifferentialDrivetrain2.ControlMode;
 
 public class ArcadeDrive extends CommandBase {
-  DifferentialDrivetrain m_drivetrain;
+  DifferentialDrivetrain2 m_drivetrain;
   Joystick m_controller;
   double m_maxSpeed, m_maxRotation;
 
   /** Creates a new ArcadeDrive. */
-  public ArcadeDrive(DifferentialDrivetrain drivetrain, Joystick controller, double maxSpeed, double maxRotation) {
+  public ArcadeDrive(DifferentialDrivetrain2 drivetrain, Joystick controller, double maxSpeed, double maxRotation) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;
