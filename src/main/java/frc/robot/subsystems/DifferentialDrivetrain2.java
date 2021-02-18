@@ -4,9 +4,14 @@
 
 package frc.robot.subsystems;
 
+import java.util.Dictionary;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,6 +25,8 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
     Voltage,
     Velocity
   };
+
+  Dictionary<String, NetworkTableEntry> m_spyTabs;
 
   Motor m_leftMaster, m_rightMaster;
   Motor[] m_leftSlaves, m_rightSlaves;
@@ -236,18 +243,28 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
   }
 
 
-  /**
-   * For later functionality with spy.
-   */
-  public void reportSpy(){
-    SmartDashboard.putNumber("Drivetrain Left Velocity", getLeftVelocity());
-    SmartDashboard.putNumber("Drivetrain Right Velocity", getRightVelocity());
-    SmartDashboard.putNumber("Drivetrain X Position", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Drivetrain Y Position", m_odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Drivetrain Heading", m_odometry.getPoseMeters().getRotation().getDegrees());
+  protected void makeSpy(){
+    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+    m_spyTabs.put("Drivetrain Left Velocity", tab.add("Drivetrain Left Velocity", 0).getEntry());
+    m_spyTabs.put("Drivetrain Right Velocity", tab.add("Drivetrain Right Velocity", 0).getEntry());
+    m_spyTabs.put("Drivetrain X Position", tab.add("Drivetrain X Position", 0).getEntry());
+    m_spyTabs.put("Drivetrain Y Position", tab.add("Drivetrain Y Position", 0).getEntry());
+    m_spyTabs.put("Drivetrain Heading", tab.add("Drivetrain Heading", 0).getEntry());
 
-    SmartDashboard.putNumber("Drivetrain Left Target", m_leftTarget);
-    SmartDashboard.putNumber("Drivetrain Right Target", m_rightTarget);
+    m_spyTabs.put("Drivetrain Left Target", tab.add("Drivetrain Left Target", 0).getEntry());
+    m_spyTabs.put("Drivetrain Right Target", tab.add("Drivetrain Right Target", 0).getEntry());
+  }
+
+  protected void reportSpy(){
+    m_spyTabs.get("Drivetrain Left Velocity").setDouble(getLeftVelocity());
+    m_spyTabs.get("Drivetrain Right Velocity").setDouble(getRightVelocity());
+
+    m_spyTabs.get("Drivetrain X Position").setDouble(m_odometry.getPoseMeters().getX());
+    m_spyTabs.get("Drivetrain Y Position").setDouble(m_odometry.getPoseMeters().getY());
+    m_spyTabs.get("Drivetrain Heading").setDouble(m_odometry.getPoseMeters().getRotation().getDegrees());
+
+    m_spyTabs.get("Drivetrain Left Target").setDouble(m_leftTarget);
+    m_spyTabs.get("Drivetrain Right Target").setDouble(m_rightTarget);
   }
 
 
