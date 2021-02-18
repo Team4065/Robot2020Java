@@ -30,8 +30,6 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
 
 
-  Motor m_motor = new Motor(1, "TalonSRX");
-  Motor m_motor2 = new Motor(4, "TalonSRX");
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -110,7 +108,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    m_motor.set(ControlMode.PercentOutput, m_robotContainer.m_controller.getRawAxis(1));
+
   }
 
   @Override

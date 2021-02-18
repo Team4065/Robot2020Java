@@ -7,14 +7,14 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Utility.Motor;
-import frc.robot.subsystems.DifferentialDrivetrain;
-import frc.robot.subsystems.DifferentialDrivetrain.ControlMode;
+import frc.robot.subsystems.DifferentialDrivetrain2;
+import frc.robot.subsystems.DifferentialDrivetrain2.ControlMode;
 
 public class TankDrive extends CommandBase {
-  DifferentialDrivetrain m_drivetrain;
+  DifferentialDrivetrain2 m_drivetrain;
   Joystick m_controller;
   /** Creates a new TankDrive. */
-  public TankDrive(DifferentialDrivetrain drivetrain, Joystick controller) {
+  public TankDrive(DifferentialDrivetrain2 drivetrain, Joystick controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;
@@ -32,6 +32,9 @@ public class TankDrive extends CommandBase {
   public void execute() {
     m_drivetrain.setLeftTarget(m_controller.getRawAxis(1));
     m_drivetrain.setRightTarget(m_controller.getRawAxis(5));
+    System.out.print(m_drivetrain.getLeftVelocity());
+    System.out.print("    ");
+    System.out.println(m_drivetrain.getRightVelocity());
   }
 
   // Called once the command ends or is interrupted.

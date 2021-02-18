@@ -168,7 +168,7 @@ public class Motor {
             boolean isMasterTalonFX = master.m_motorType == "TalonFX" || master.m_motorType == "WPI_TalonFX";
 
             var masterMotor = (isMasterTalonSRX) ? master.m_talonSRX
-                    : (isMasterTalonFX) ? master.m_talonFX : master.m_victorSPX;
+                    : ((isMasterTalonFX) ? master.m_talonFX : master.m_victorSPX);
 
             if (m_motorType == "TalonSRX" || m_motorType == "WPI_TalonSRX") {
                 m_talonSRX.follow(masterMotor);
@@ -201,6 +201,27 @@ public class Motor {
 
     public void follow(Motor master){
         follow(master, false);
+    }
+
+    public void setInverted(boolean isInverted){
+        if (m_motorType == "TalonSRX" || m_motorType == "WPI_TalonSRX") {
+            if(m_talonSRX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
+                m_talonSRX.setInverted(isInverted);
+        }
+
+        if (m_motorType == "TalonFX" || m_motorType == "WPI_TalonFX") {
+            if(m_talonSRX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
+                m_talonFX.setInverted(isInverted);
+        }
+
+        if (m_motorType == "VictorSPX" || m_motorType == "WPI_VictorSPX") {
+            if(m_talonSRX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
+                m_victorSPX.setInverted(isInverted);
+        }
+
+        if (m_motorType == "CANSparkMax") {
+            m_canSparkMax.setInverted(isInverted);
+        }
     }
 
 }
