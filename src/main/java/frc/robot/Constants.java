@@ -12,6 +12,6 @@ package frc.robot;
  * not repeat or else it will result in unexpected behaviors
  */
 public class Constants {
-    public static final boolean IS_GYRO_REVERSED = false;
+    public static final boolean IS_GYRO_REVERSED = true;
     public static final boolean IS_SPY_ENABLED = true;
 }

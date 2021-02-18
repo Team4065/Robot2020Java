@@ -4,49 +4,51 @@
 
 package frc.robot.commands;
 
-
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Utility.Gyro;
 import frc.robot.subsystems.DifferentialDrivetrain2;
 import frc.robot.subsystems.DifferentialDrivetrain2.ControlMode;
 
-public class ToPosition extends CommandBase {
+public class ToRotation extends CommandBase {
   DifferentialDrivetrain2 m_drivetrain;
-  PIDController m_PIDLeft = new PIDController(5, 0, 0);
-  PIDController m_PIDRight = new PIDController(5, 0, 0);
-  /** Creates a new ToPosition. */
-  public ToPosition(DifferentialDrivetrain2 drivetrain) {
+  PIDController m_PID = new PIDController(-5, 0, -0.6);
+  double m_target = 0;
+  /** Creates a new ToRotation. */
+  public ToRotation(DifferentialDrivetrain2 drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;
+    m_PID.setTolerance(3);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     m_drivetrain.setControlMode(ControlMode.Velocity);
-    m_drivetrain.resetEncoders();
+    m_target = Gyro.getAngle() + 90;
+    
+    //Gyro.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double left = m_PIDLeft.calculate(m_drivetrain.getLeftPosition(), 1);
-    double right = m_PIDRight.calculate(m_drivetrain.getRightPosition(), 1);
-    m_drivetrain.setLeftTarget(left);
-    m_drivetrain.setRightTarget(right);
+    double rotation = m_PID.calculate(Gyro.getAngle(), m_target);
+    if(Math.abs(rotation) >= 270)
+      rotation = Math.signum(rotation) * 270;
+    m_drivetrain.setArcadeDrive(0, rotation);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_drivetrain.setLeftTarget(0);
-    m_drivetrain.setRightTarget(0);
+    m_drivetrain.setArcadeDrive(0, 0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_PIDLeft.atSetpoint() && m_PIDRight.atSetpoint();
+    return m_PID.atSetpoint();
   }
 }

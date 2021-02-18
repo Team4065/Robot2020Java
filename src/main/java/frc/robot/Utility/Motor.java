@@ -37,11 +37,13 @@ public class Motor {
         if (m_motorType == "TalonSRX" || m_motorType == "WPI_TalonSRX") {
             m_talonSRX = new WPI_TalonSRX(id);
             m_talonSRX.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+            m_talonSRX.setSelectedSensorPosition(0);
         }
 
         if (m_motorType == "TalonFX" || m_motorType == "WPI_TalonFX") {
             m_talonFX = new WPI_TalonFX(id);
             m_talonFX.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+            m_talonSRX.setSelectedSensorPosition(0);
         }
 
         if (m_motorType == "VictorSPX" || m_motorType == "WPI_VictorSPX") {
@@ -51,6 +53,7 @@ public class Motor {
         if (m_motorType == "CANSparkMax") {
             m_canSparkMax = new CANSparkMax(id, MotorType.kBrushless);
             m_canEncoder = m_canSparkMax.getEncoder();
+            m_canEncoder.setPosition(0);
         }
     }
 
@@ -221,6 +224,20 @@ public class Motor {
 
         if (m_motorType == "CANSparkMax") {
             m_canSparkMax.setInverted(isInverted);
+        }
+    }
+
+    public void resetEncoder(){
+        if (m_motorType == "TalonSRX" || m_motorType == "WPI_TalonSRX") {
+            m_talonSRX.setSelectedSensorPosition(0);
+        }
+
+        if (m_motorType == "TalonFX" || m_motorType == "WPI_TalonFX") {
+            m_talonSRX.setSelectedSensorPosition(0);
+        }
+
+        if (m_motorType == "CANSparkMax") {
+            m_canEncoder.setPosition(0);
         }
     }
 

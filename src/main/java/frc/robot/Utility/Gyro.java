@@ -39,7 +39,15 @@ public class Gyro {
      * @return
      */
     public static double getCompassHeading(){
-        return gyro.getCompassHeading();
+        return gyro.getCompassHeading() * (Constants.IS_GYRO_REVERSED ? -1.0 : 1.0);
+    }
+
+    /**
+     * Calibrates the gyro
+     * @return
+     */
+    public static void calibrate(){
+        gyro.calibrate();
     }
 
     /**
@@ -61,6 +69,6 @@ public class Gyro {
     }
 
     public static double getRate(){
-        return Math.toDegrees(gyro.getRate());
+        return Math.toDegrees(gyro.getRate()) * (Constants.IS_GYRO_REVERSED ? -1.0 : 1.0);
     }
 }

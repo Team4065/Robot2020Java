@@ -10,6 +10,7 @@ import javax.script.SimpleBindings;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -57,6 +58,8 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
 
     m_leftMaster.setInverted(false);
     m_rightMaster.setInverted(true);
+    
+    m_odometry.resetPosition(new Pose2d(), new Rotation2d());
 
     for(Motor slave : m_leftSlaves){
       slave.follow(m_leftMaster);
@@ -248,6 +251,11 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
     return -m_rightMaster.getPosition() * m_wheelDiameter * Math.PI;
   }
 
+  public void resetEncoders(){
+    m_leftMaster.resetEncoder();
+    m_rightMaster.resetEncoder();
+  }
+
 
   protected void makeSpy(){
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -257,6 +265,9 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
     m_spyTab.put("Y Position", tab.add("Y Position", 0).getEntry());
     m_spyTab.put("Heading", tab.add("Heading", 0).getEntry());
     m_spyTab.put("Rotational Velocity", tab.add("Rotate Vel", 0).getEntry());
+
+    m_spyTab.put("Left Position", tab.add("Left Pos", 0).getEntry());
+    m_spyTab.put("Right Position", tab.add("Right Pos", 0).getEntry());
 
     m_spyTab.put("Left Target", tab.add("Left Target", 0).getEntry());
     m_spyTab.put("Right Target", tab.add("Right Target", 0).getEntry());
@@ -270,6 +281,9 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
     m_spyTab.get("Y Position").setDouble(m_odometry.getPoseMeters().getY());
     m_spyTab.get("Heading").setDouble(m_odometry.getPoseMeters().getRotation().getDegrees());
     m_spyTab.get("Rotational Velocity").setDouble(Gyro.getRate());
+
+    m_spyTab.get("Left Position").setDouble(getLeftPosition());
+    m_spyTab.get("Right Position").setDouble(getRightPosition());
 
     m_spyTab.get("Left Target").setDouble(m_leftTarget);
     m_spyTab.get("Right Target").setDouble(m_rightTarget);

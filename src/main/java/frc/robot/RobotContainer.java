@@ -13,13 +13,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
+import frc.robot.Utility.Gyro;
 import frc.robot.Utility.Motor;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.CharacterizeDrivetrain;
 import frc.robot.commands.CharacterizeRotation;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.TankDrive;
+import frc.robot.commands.ToPosition;
+import frc.robot.commands.ToRotation;
 import frc.robot.subsystems.DifferentialDrivetrain;
 import frc.robot.subsystems.DifferentialDrivetrain2;
 import frc.robot.subsystems.TalonSRX_DifferentialDrivetrain;
@@ -36,6 +40,7 @@ import frc.robot.subsystems.TalonSRX_DifferentialDrivetrain;
  */
 public class RobotContainer {
   Joystick m_controller = new Joystick(0);
+  JoystickButton turn = new JoystickButton(m_controller, 1);
 
   //DifferentialDrivetrain m_drivetrain = new TalonSRX_DifferentialDrivetrain(
   //  0.154, 
@@ -50,6 +55,8 @@ public class RobotContainer {
     );
 
   public RobotContainer() {
+    Gyro.reset();
+    Gyro.calibrate();
     m_drivetrain.configFeedforward(0.991, 3.27724, 1.04051);
     m_drivetrain.configRotationFeedForward(0.0910536461972, 0.00629517415169, 0.0000576713721188);
     m_drivetrain.configFeedforwardSided(
@@ -68,6 +75,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    turn.whenPressed(new ToRotation(m_drivetrain));
+    //turn.whileHeld(new ToRotation(m_drivetrain));
   }
 
 
@@ -78,6 +87,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     //return new CharacterizeDrivetrain(m_drivetrain);//new ExampleCommand();/
-    return new CharacterizeRotation(m_drivetrain);
+    //return new CharacterizeRotation(m_drivetrain);
+    //return new ToPosition(m_drivetrain);
+    return new ToRotation(m_drivetrain);
   }
 }
