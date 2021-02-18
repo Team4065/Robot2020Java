@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Utility.Gyro;
 import frc.robot.Utility.Motor;
 import frc.robot.Utility.Motor.ControlMode;
@@ -59,6 +61,10 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
   @Override
   public void periodic() {
     m_odometry.update(Gyro.getRotation2d(), getLeftPosition(), getRightPosition());
+
+    if(Constants.IS_SPY_ENABLED){
+      reportSpy();
+    }
 
     switch(m_controlMode){
       case PercentOutput:
@@ -234,7 +240,14 @@ public class DifferentialDrivetrain2 extends SubsystemBase {
    * For later functionality with spy.
    */
   public void reportSpy(){
+    SmartDashboard.putNumber("Drivetrain Left Velocity", getLeftVelocity());
+    SmartDashboard.putNumber("Drivetrain Right Velocity", getRightVelocity());
+    SmartDashboard.putNumber("Drivetrain X Position", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Drivetrain Y Position", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Drivetrain Heading", m_odometry.getPoseMeters().getRotation().getDegrees());
 
+    SmartDashboard.putNumber("Drivetrain Left Target", m_leftTarget);
+    SmartDashboard.putNumber("Drivetrain Right Target", m_rightTarget);
   }
 
 
