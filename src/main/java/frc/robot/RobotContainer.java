@@ -34,7 +34,7 @@ import frc.robot.subsystems.DifferentialDrivetrain;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  Joystick m_controller = new Joystick(0);
+  Joystick m_controller = new Joystick(1);
   JoystickButton turn = new JoystickButton(m_controller, 1);
 
   //DifferentialDrivetrain m_drivetrain = new TalonSRX_DifferentialDrivetrain(
