@@ -58,11 +58,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-<<<<<<< HEAD
-    //An ExampleCommand will run in autonomous
-    return m_shoot;
-=======
     return new ExampleCommand();
->>>>>>> template/master
   }
 }
