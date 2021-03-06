@@ -12,10 +12,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Utility.Motors.CANSparkMax_Motor;
+import frc.robot.Utility.Motor;
 
 public class Kicker extends SubsystemBase {
-  CANSparkMax_Motor m_kickerMotor = new CANSparkMax_Motor(Constants.KICKER_MOTOR_ID, MotorType.kBrushless);
+  Motor m_kickerMotor = new Motor(Constants.KICKER_MOTOR_ID, "CANSparkMax");
 
 
 
@@ -34,11 +34,11 @@ public class Kicker extends SubsystemBase {
 
 
   public void on() {
-    m_kickerMotor.set(1);
+    m_kickerMotor.set(Motor.ControlMode.PercentOutput, 1);
   }
 
   public void off() {
-    m_kickerMotor.set(0);
+    m_kickerMotor.set(Motor.ControlMode.PercentOutput, 0);
   }
 
 }

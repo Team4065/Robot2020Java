@@ -29,7 +29,6 @@ import frc.robot.subsystems.DifferentialDrivetrain;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.Intake;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -43,7 +42,6 @@ import frc.robot.subsystems.Shooter;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-<<<<<<< HEAD
   Joystick m_controller = new Joystick(0);
   JoystickButton turn = new JoystickButton(m_controller, 1);
 
@@ -59,16 +57,13 @@ public class RobotContainer {
     new Motor[]{new Motor(2, "TalonSRX")}, new Motor[]{new Motor(5, "TalonSRX")}
     );
 
-=======
   // The robot's subsystems and commands are defined here...
   //Subsystems
   Shooter m_shooter;
   Kicker m_kicker;
-  Intake m_intake;
   //Commands
   Shoot m_shoot;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
->>>>>>> b2fc7f5b3c007ed18c86b11b0c83395e65ff05cd
   public RobotContainer() {
     Gyro.reset();
     Gyro.calibrate();
@@ -102,14 +97,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-<<<<<<< HEAD
-    //return new CharacterizeDrivetrain(m_drivetrain);//new ExampleCommand();/
-    //return new CharacterizeRotation(m_drivetrain);
-    //return new ToPosition(m_drivetrain);
-    return new ToRotation(m_drivetrain);
-=======
     //An ExampleCommand will run in autonomous
     return m_shoot;
->>>>>>> b2fc7f5b3c007ed18c86b11b0c83395e65ff05cd
   }
 }

@@ -34,9 +34,6 @@ public class Constants {
     //Kicker
     public static final int KICKER_MOTOR_ID = 1;
 
-    //Controls
-    public static final Joystick mainController = new Joystick(0);
-
     //Ramsete
     public static final double ROBOT_TRACKWIDTH = Double.NaN;
     public static final double RAMSETE_B = Double.NaN;

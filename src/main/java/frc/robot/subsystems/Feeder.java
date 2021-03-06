@@ -11,11 +11,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Utility.Motors.CANSparkMax_Motor;
+import frc.robot.Utility.Motor;
 
 public class Feeder extends SubsystemBase {
-  CANSparkMax_Motor m_feederMotor = new CANSparkMax_Motor(Constants.FEEDER_MOTOR_ID, MotorType.kBrushless);
-  CANSparkMax_Motor m_serializerMotor = new CANSparkMax_Motor(Constants.SERIALIZER_MOTOR_ID, MotorType.kBrushless);
+  Motor m_feederMotor = new Motor(Constants.FEEDER_MOTOR_ID, "CANSparkMax");
+  Motor m_serializerMotor = new Motor(Constants.SERIALIZER_MOTOR_ID, "CANSparkMax");
   /**
    * Creates a new Feeder.
    */
@@ -29,18 +29,18 @@ public class Feeder extends SubsystemBase {
   }
 
   public void onFeeder() {
-    m_feederMotor.set(1);
+    m_feederMotor.set(Motor.ControlMode.PercentOutput, 1);
   }
 
   public void offFeeder() {
-    m_feederMotor.set(0);
+    m_feederMotor.set(Motor.ControlMode.PercentOutput, 0);
   }
 
   public void onSerializer() {
-    m_feederMotor.set(1);
+    m_serializerMotor.set(Motor.ControlMode.PercentOutput, 1);
   }
 
   public void offSerializer() {
-    m_feederMotor.set(0);
+    m_serializerMotor.set(Motor.ControlMode.PercentOutput, 0);
   }
 }
