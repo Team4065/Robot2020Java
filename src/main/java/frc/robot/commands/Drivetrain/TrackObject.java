@@ -6,7 +6,6 @@ package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Utility.Gyro;
 import frc.robot.Utility.Limelight;
 import frc.robot.subsystems.DifferentialDrivetrain;
 import frc.robot.subsystems.DifferentialDrivetrain.ControlMode;

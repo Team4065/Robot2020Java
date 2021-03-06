@@ -4,10 +4,8 @@
 
 package frc.robot.Utility;
 
-import frc.robot.Constants;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
 
 /** Add your docs here. */
 public class Accelerometer {
