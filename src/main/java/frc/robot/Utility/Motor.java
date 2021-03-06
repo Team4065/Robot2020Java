@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 
-//TODO Add coast/brake mode
 
 package frc.robot.Utility;
 

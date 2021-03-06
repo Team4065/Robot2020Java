@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import java.util.HashMap;
 
-import javax.script.SimpleBindings;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -16,12 +15,10 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utility.Gyro;
 import frc.robot.Utility.Motor;
-import frc.robot.Utility.Motor.ControlMode;
 
 public class DifferentialDrivetrain extends SubsystemBase {
   public enum ControlMode{
@@ -134,7 +131,7 @@ public class DifferentialDrivetrain extends SubsystemBase {
    */
   public void configFeedforwardSided(double left_kS, double left_kV, double left_kA, double right_kS, double right_kV, double right_kA){
     m_isFeedforwardConfigured = true;
-    
+
     m_leftFeedforward = new SimpleMotorFeedforward(left_kS, left_kV, left_kA);
     m_rightFeedforward = new SimpleMotorFeedforward(right_kS, right_kV, right_kA);
   }
