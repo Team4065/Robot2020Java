@@ -1,9 +1,6 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.Utility;
 
@@ -12,7 +9,7 @@ import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants;
-import frc.robot.subsystems.differential_drivetrain.Drivetrain;
+import frc.robot.subsystems.DifferentialDrivetrain;
 
 /**
  * Makes the Ramsete command that is to be run.
@@ -25,7 +22,7 @@ public class RamseteCommandBuilder {
      * @param drivetrain The drivetrain subsystem.
      * @param path The PathLoader with the desired Ramsete path.
      */
-    public RamseteCommandBuilder(Drivetrain drivetrain, PathLoader path){
+    public RamseteCommandBuilder(DifferentialDrivetrain drivetrain, PathLoader path){
         /*
         command = new RamseteCommand(
             path.getTrajectory(), 
@@ -45,7 +42,7 @@ public class RamseteCommandBuilder {
             drivetrain::getWheelSpeeds,
             new PIDController(Constants.KP_DRIVE_VEL, 0, 0),
             new PIDController(Constants.KP_DRIVE_VEL, 0, 0),
-            drivetrain::tankDriveVolts,
+            drivetrain::setTankDriveVolts,
             drivetrain);
             
         

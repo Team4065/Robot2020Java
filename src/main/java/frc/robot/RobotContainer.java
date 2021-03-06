@@ -7,24 +7,22 @@
 
 package frc.robot;
 
-import frc.robot.Constants;
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import frc.robot.Utility.Vector3;
-import frc.robot.Utility.PathLoader;
-import frc.robot.Utility.RamseteCommandBuilder;
-import frc.robot.subsystems.differential_drivetrain.TalonSRX_Drivetrain;
-import frc.robot.subsystems.differential_drivetrain.Drivetrain.ControlMode;
-import frc.robot.subsystems.differential_drivetrain.CANSparkMax_Drivetrain;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import frc.robot.commands.differential_drivetrain.TankDrive;
-import frc.robot.commands.differential_drivetrain.ArcadeDrive;
-import frc.robot.commands.differential_drivetrain.ArcadeDriveVelocity;
-import frc.robot.subsystems.manipulator_mover.*;
-import frc.robot.commands.manipulator_mover.*;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants;
+import frc.robot.Utility.Gyro;
+import frc.robot.Utility.Limelight;
+import frc.robot.Utility.Motor;
+import frc.robot.commands.Drivetrain.*;
+import frc.robot.commands.Drivetrain.TrackObject.WhatToTrack;
+import frc.robot.subsystems.DifferentialDrivetrain;
+
+
 
 
 
@@ -36,29 +34,34 @@ import frc.robot.commands.manipulator_mover.*;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  Joystick m_controller = new Joystick(0);
+  JoystickButton turn = new JoystickButton(m_controller, 1);
 
-  
+  //DifferentialDrivetrain m_drivetrain = new TalonSRX_DifferentialDrivetrain(
+  //  0.154, 
+  //  new WPI_TalonSRX(1), new WPI_TalonSRX(4),
+  //  new WPI_TalonSRX[]{new WPI_TalonSRX(2)}, new WPI_TalonSRX[]{new WPI_TalonSRX(5)}
+  //  );
 
-  TalonSRX_Drivetrain drivetrain = new TalonSRX_Drivetrain(false);
-  //CANSparkMax_Drivetrain drivetrain = new CANSparkMax_Drivetrain(true);
+  DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
+    0.154,
+    new Motor(1,"TalonSRX"), new Motor(4, "TalonSRX"),
+    new Motor[]{new Motor(2, "TalonSRX")}, new Motor[]{new Motor(5, "TalonSRX")}
+    );
 
-  TankDrive tankdrive = new TankDrive(drivetrain);
-  ArcadeDrive arcadedrive = new ArcadeDrive(drivetrain);
-  ArcadeDriveVelocity arcadeDriveVelocity = new ArcadeDriveVelocity(drivetrain);
-  
-  //ManipulatorMover manipulatorMover = new ManipulatorMover();
-
-  RamseteCommand drivetrainPath = new RamseteCommandBuilder(drivetrain, new PathLoader(Constants.ROBOT_PATH)).getCommand();
-
-  /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
-   */
   public RobotContainer() {
-    drivetrain.setDefaultCommand(arcadeDriveVelocity);
-
-    // Configure the button bindings
-    configureButtonBindings();
+    Gyro.reset();
+    Gyro.calibrate();
+    Limelight.setPipeline(0);
+    m_drivetrain.configFeedforward(0.991, 3.27724, 1.04051);
+    m_drivetrain.configRotationFeedForward(0.0910536461972, 0.00629517415169, 0.0000576713721188);
+    m_drivetrain.configFeedforwardSided(
+      1.00760991292, 3.37832138739, -0.0405742345827,
+      1.00702736431, 3.25734393828, -0.0234916065671
+     );
+    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 2, 270));
+    //m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain, m_controller));
+    configureButtonBindings();//0.145
   }
 
   /**
@@ -68,6 +71,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    turn.whileHeld(new TrackObject(m_drivetrain, WhatToTrack.Ball));
+    //turn.whenPressed(new ToRotation(m_drivetrain));
   }
 
 
@@ -77,15 +82,9 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    PathLoader path = new PathLoader(Constants.ROBOT_PATH);
-    drivetrain.resetOdometry(path.getTrajectory().getInitialPose());
-    // An ExampleCommand will run in autonomous
-
-    return new RamseteCommandBuilder(drivetrain, path).getCommand().andThen(()->{
-      drivetrain.setControlMode(ControlMode.VELOCITY);
-      drivetrain.setLeftTarget(0);
-      drivetrain.setRightTarget(0);
-      System.out.println("done");
-    });
+    //return new CharacterizeDrivetrain(m_drivetrain);//new ExampleCommand();/
+    //return new CharacterizeRotation(m_drivetrain);
+    //return new ToPosition(m_drivetrain);
+    return new ToRotation(m_drivetrain);
   }
 }

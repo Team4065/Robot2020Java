@@ -11,32 +11,17 @@
 
 package frc.robot;
 
-import java.util.Map;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.Utility.Limelight;
-import frc.robot.Utility.Spy;
-import frc.robot.commands.Tests.Utility.LimelightOutputTest;
-import frc.robot.commands.Tests.differential_drivetrain.DisplayDrivetrainOutputs;
-import frc.robot.commands.Tests.differential_drivetrain.DrivetrainManualControl;
-import frc.robot.commands.Tests.manipulator_mover.ManipulatorMover_OutputAngles;
-import frc.robot.commands.differential_drivetrain.ArcadeDrive;
-import frc.robot.commands.differential_drivetrain.TankDrive;
-import frc.robot.commands.manipulator_mover.RecordManipulatorMover;
-
+import frc.robot.Utility.Motor;
+import frc.robot.Utility.Motor.ControlMode;
 
 /**
- * The VM is configured to automatically run this class, and to call the functions corresponding to
- * each mode, as described in the TimedRobot documentation. If you change the name of this class or
- * the package after creating this project, you must also update the build.gradle file in the
+ * The VM is configured to automatically run this class, and to call the
+ * functions corresponding to each mode, as described in the TimedRobot
+ * documentation. If you change the name of this class or the package after
+ * creating this project, you must also update the build.gradle file in the
  * project.
  */
 public class Robot extends TimedRobot {
@@ -44,33 +29,14 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
   @Override
   public void robotInit() {
-    //FileOutput.clearFile("C:\\Users\\colli\\Desktop\\InverseKinematicsOutput.txt");
     m_robotContainer = new RobotContainer();
-
-    /*
-    ShuffleboardLayout spyCommands = Shuffleboard.getTab("Commands")
-      .getLayout("Spy", BuiltInLayouts.kList)
-      .withSize(2, 2)
-      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
-
-    spyCommands.add(new LimelightOutputTest());
-    spyCommands.add(new DisplayDrivetrainOutputs(m_robotContainer.drivetrain));
-    
-    ShuffleboardLayout drivetrainCommands = Shuffleboard.getTab("Commands")
-      .getLayout("Drivetrain", BuiltInLayouts.kList)
-      .withSize(2, 2)
-      .withProperties(Map.of("Label position", "HIDDEN")); // hide labels for commands
-
-    drivetrainCommands.add(new DrivetrainManualControl(m_robotContainer.drivetrain));
-    drivetrainCommands.add(new ArcadeDrive(m_robotContainer.drivetrain));
-    drivetrainCommands.add(new TankDrive(m_robotContainer.drivetrain));
-    */
   }
 
   /**
@@ -130,7 +96,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
 
-    //HGUiIUHIUHLKI
+    
     
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
