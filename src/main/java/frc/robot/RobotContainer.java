@@ -8,6 +8,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Utility.Motor;
+import frc.robot.Utility.Motor.MotorType;
 import frc.robot.commands.ExampleCommand;
 
 
@@ -17,6 +19,7 @@ import frc.robot.commands.ExampleCommand;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.Shoot;
+import frc.robot.subsystems.DifferentialDrivetrain;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
 
@@ -29,13 +32,14 @@ import frc.robot.subsystems.Shooter;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
+    0.154,
+    new Motor(Constants.DRIVETRAIN_FRONT_LEFT_ID, MotorType.TalonFX), new Motor(Constants.DRIVETRAIN_FRONT_RIGHT_ID, MotorType.TalonFX),
+    new Motor[]{new Motor(Constants.DRIVETRAIN_BACK_LEFT_ID, MotorType.TalonFX)}, new Motor[]{new Motor(Constants.DRIVETRAIN_BACK_RIGHT_ID, MotorType.TalonFX)}
+  );
 
-  // The robot's subsystems and commands are defined here...
-  //Subsystems
-  Shooter m_shooter;
-  Kicker m_kicker;
-  //Commands
-  Shoot m_shoot;
+  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     configureButtonBindings();
