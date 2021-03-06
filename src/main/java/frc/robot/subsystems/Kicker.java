@@ -7,15 +7,13 @@
 
 package frc.robot.subsystems;
 
-//import com.ctre.phoenix.motorcontrol.InvertType;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utility.Motor;
 
 public class Kicker extends SubsystemBase {
-  Motor m_kickerMotor = new Motor(Constants.KICKER_MOTOR_ID, "CANSparkMax");
+  Motor m_kickerMotor = new Motor(Constants.KICKER_MOTOR_ID, Motor.MotorType.CANSparkMax);
 
 
 

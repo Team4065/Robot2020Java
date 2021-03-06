@@ -24,7 +24,6 @@ import frc.robot.subsystems.DifferentialDrivetrain;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;

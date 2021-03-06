@@ -20,10 +20,9 @@ public class Constants {
     //Shooter
     public static final int SHOOTER_LEFT_MASTER_ID = 1;
     public static final int SHOOTER_RIGHT_SLAVE_ID = 1;
-    public static final int SHOOTER_KP = 0;
-    public static final int SHOOTER_KI = 0;
-    public static final int SHOOTER_KFF = 0;
-    public static final int SHOOTER_KD = 0;
+    public static final double SHOOTER_KS = 0;
+    public static final double SHOOTER_KV = 0;
+    public static final double SHOOTER_KA = 0;
     public static final int SPIN_UP_RPM = 0;
 
 

@@ -230,6 +230,11 @@ public class Motor {
         follow(master, false);
     }
 
+    /**
+     * If motor is a follower, then this does nothing.
+     * Set follower inversion from master when setting master.
+     * @param isInverted
+     */
     public void setInverted(boolean isInverted){
         if (m_motorType == MotorType.TalonSRX) {
             if(m_talonSRX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
@@ -247,7 +252,8 @@ public class Motor {
         }
 
         if (m_motorType == MotorType.CANSparkMax) {
-            m_canSparkMax.setInverted(isInverted);
+            if(!m_canSparkMax.isFollower())
+                m_canSparkMax.setInverted(isInverted);
         }
     }
 

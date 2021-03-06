@@ -7,15 +7,13 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utility.Motor;
 
 public class Feeder extends SubsystemBase {
-  Motor m_feederMotor = new Motor(Constants.FEEDER_MOTOR_ID, "CANSparkMax");
-  Motor m_serializerMotor = new Motor(Constants.SERIALIZER_MOTOR_ID, "CANSparkMax");
+  Motor m_feederMotor = new Motor(Constants.FEEDER_MOTOR_ID, Motor.MotorType.CANSparkMax);
+  Motor m_serializerMotor = new Motor(Constants.SERIALIZER_MOTOR_ID, Motor.MotorType.CANSparkMax);
   /**
    * Creates a new Feeder.
    */

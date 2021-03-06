@@ -12,35 +12,6 @@ Any new differential drive subsystems should implement this feature (view TalonS
 New differential drive subsystems will need new code for motor creation, motor configuration, motor output, and PID configuration.
 */
 
-/**
- * TODO
- * 
- * Make a shuffle board interface
- * 
- * Make more differential drivetrain commands 
- *    -arcade drive- done
- * 
- * Make manipulator Subsystem
- * 
- * Make a recording mode for the manipulator mover
- *    -test
- * 
- * 
- * Add support for max velocity and acceleration for TalonSRX_Drivetrain
- * 
- * Make a unity testing branch for github
- * 
- * Make unity testing tools
- *  -make a dedicated utility class
- * 
- * Make tests to ensure the code actually works on a robot
- * 
- * Ramsete might spin because setting the voltage might be affected by the motor controller inversion setting
- * 
- * test drivetrain commands to ensure everything is inverted properly
- * 
- */
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;
