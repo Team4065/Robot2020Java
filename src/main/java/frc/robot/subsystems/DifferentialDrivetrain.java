@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -189,6 +190,14 @@ public class DifferentialDrivetrain extends SubsystemBase {
     }
   }
 
+  public void setTankDriveVolts(double left, double right){
+    setControlMode(ControlMode.Voltage);
+    setLeftTarget(left);
+    setRightTarget(right);
+  }
+
+
+
   protected void setLeftPercent(double percent){
     m_leftMaster.set(frc.robot.Utility.Motor.ControlMode.PercentOutput, percent);
   }
@@ -256,6 +265,13 @@ public class DifferentialDrivetrain extends SubsystemBase {
     m_rightMaster.resetEncoder();
   }
 
+  public Pose2d getPose(){
+    return m_odometry.getPoseMeters();
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
+  }
 
   protected void makeSpy(){
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
