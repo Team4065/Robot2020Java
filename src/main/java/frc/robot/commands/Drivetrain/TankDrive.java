@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Utility.Motor;
-import frc.robot.subsystems.DifferentialDrivetrain2;
-import frc.robot.subsystems.DifferentialDrivetrain2.ControlMode;
+import frc.robot.subsystems.DifferentialDrivetrain;
+import frc.robot.subsystems.DifferentialDrivetrain.ControlMode;
 
 public class TankDrive extends CommandBase {
-  DifferentialDrivetrain2 m_drivetrain;
+  DifferentialDrivetrain m_drivetrain;
   Joystick m_controller;
   /** Creates a new TankDrive. */
-  public TankDrive(DifferentialDrivetrain2 drivetrain, Joystick controller) {
+  public TankDrive(DifferentialDrivetrain drivetrain, Joystick controller) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;

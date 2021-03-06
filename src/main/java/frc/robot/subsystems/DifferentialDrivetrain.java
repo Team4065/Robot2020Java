@@ -4,14 +4,23 @@
 
 package frc.robot.subsystems;
 
-import java.util.ResourceBundle.Control;
+import java.util.HashMap;
 
+import javax.script.SimpleBindings;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Utility.Gyro;
+import frc.robot.Utility.Motor;
+import frc.robot.Utility.Motor.ControlMode;
 
 public class DifferentialDrivetrain extends SubsystemBase {
   public enum ControlMode{
@@ -19,6 +28,11 @@ public class DifferentialDrivetrain extends SubsystemBase {
     Voltage,
     Velocity
   };
+
+  HashMap<String, NetworkTableEntry> m_spyTab = new HashMap<String, NetworkTableEntry>();
+
+  Motor m_leftMaster, m_rightMaster;
+  Motor[] m_leftSlaves, m_rightSlaves;
 
   protected double m_leftTarget;
   protected double m_rightTarget;
@@ -35,13 +49,38 @@ public class DifferentialDrivetrain extends SubsystemBase {
   protected double m_wheelDiameter;
 
   /** Creates a new DifferentialDrivetrain. */
-  public DifferentialDrivetrain(double wheelDiameter) {
+  public DifferentialDrivetrain(double wheelDiameter, Motor leftMaster, Motor rightMaster, Motor[] leftSlaves, Motor[] rightSlaves) {
     m_wheelDiameter = wheelDiameter;
+    m_leftMaster = leftMaster;
+    m_rightMaster = rightMaster;
+    m_leftSlaves = leftSlaves;
+    m_rightSlaves = rightSlaves;
+
+    m_leftMaster.setInverted(false);
+    m_rightMaster.setInverted(true);
+    
+    m_odometry.resetPosition(new Pose2d(), new Rotation2d());
+
+    for(Motor slave : m_leftSlaves){
+      slave.follow(m_leftMaster);
+    }
+
+    for(Motor slave : m_rightSlaves){
+      slave.follow(m_rightMaster);
+    }
+
+    if(Constants.IS_SPY_ENABLED){
+      makeSpy();
+    }
   }
 
   @Override
   public void periodic() {
     m_odometry.update(Gyro.getRotation2d(), getLeftPosition(), getRightPosition());
+
+    if(Constants.IS_SPY_ENABLED){
+      reportSpy();
+    }
 
     switch(m_controlMode){
       case PercentOutput:
@@ -67,7 +106,8 @@ public class DifferentialDrivetrain extends SubsystemBase {
   
   }
 
-  /**
+
+    /**
    * Configures the feedforward.
    * This must be done before velocity control may be used.
    * Values can be obtained from robot characterization.
@@ -98,12 +138,10 @@ public class DifferentialDrivetrain extends SubsystemBase {
     m_rightFeedforward = new SimpleMotorFeedforward(right_kS, right_kV, right_kA);
   }
 
-
   public void configRotationFeedForward(double kS, double kV, double kA){
     m_isRotationFeedforwardConfigured = true;
     m_rotationFeedforward = new SimpleMotorFeedforward(kS, kV, kA);
   }
-
 
   public void configTheoreticalTrackWidth(double width){
     m_theoreticalTrackWidth = width;
@@ -151,61 +189,106 @@ public class DifferentialDrivetrain extends SubsystemBase {
     }
   }
 
-
-  protected void setLeftPercent(double percent){}
+  protected void setLeftPercent(double percent){
+    m_leftMaster.set(frc.robot.Utility.Motor.ControlMode.PercentOutput, percent);
+  }
   
-  protected void setRightPercent(double percent){}
+  protected void setRightPercent(double percent){
+    m_rightMaster.set(frc.robot.Utility.Motor.ControlMode.PercentOutput, percent);
+  }
 
-  protected void setLeftVoltage(double voltage){}
+  protected void setLeftVoltage(double voltage){
+    m_leftMaster.set(frc.robot.Utility.Motor.ControlMode.Voltage, voltage);
+  }
 
-  protected void setRightVoltage(double voltage){}
+  protected void setRightVoltage(double voltage){
+    m_rightMaster.set(frc.robot.Utility.Motor.ControlMode.Voltage, voltage);
+  }
 
-  protected void setLeftVelocity(double velocity){}
+  protected void setLeftVelocity(double velocity){
+    if(m_isFeedforwardConfigured){
+      double voltage = m_leftFeedforward.calculate(velocity, velocity - getLeftVelocity());
+      m_leftMaster.set(frc.robot.Utility.Motor.ControlMode.Voltage, voltage);
+    }else{
+      setLeftPercent(0);
+    }
+  }
 
   protected void setRightVelocity(double velocity){
-
+    if(m_isFeedforwardConfigured){
+      double voltage = m_rightFeedforward.calculate(velocity, velocity - getRightVelocity());
+      m_rightMaster.set(frc.robot.Utility.Motor.ControlMode.Voltage, voltage);
+    }else{
+      setRightPercent(0);
+    }
   }
 
   /**
    * @return The velocity of the left side in meters per second
    */
   public double getLeftVelocity(){
-    return 0;
+    return -m_leftMaster.getVelocity() * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The velocity of the right side in meters per second
    */
   public double getRightVelocity(){
-    return 0;
+    return -m_rightMaster.getVelocity() * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the left side has traveled in meters.
    */
   public double getLeftPosition(){
-    return 0;
+    return -m_leftMaster.getPosition() * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the right side has traveled in meters.
    */
   public double getRightPosition(){
-    return 0;
+    return -m_rightMaster.getPosition() * m_wheelDiameter * Math.PI;
+  }
+
+  public void resetEncoders(){
+    m_leftMaster.resetEncoder();
+    m_rightMaster.resetEncoder();
   }
 
 
-  /**
-   * For later functionality with spy.
-   */
-  public void reportSpy(){
-    SmartDashboard.putNumber("Drivetrain Left Velocity", getLeftVelocity());
-    SmartDashboard.putNumber("Drivetrain Right Velocity", getRightVelocity());
-    SmartDashboard.putNumber("Drivetrain X Position", m_odometry.getPoseMeters().getX());
-    SmartDashboard.putNumber("Drivetrain Y Position", m_odometry.getPoseMeters().getY());
-    SmartDashboard.putNumber("Drivetrain Heading", m_odometry.getPoseMeters().getRotation().getDegrees());
+  protected void makeSpy(){
+    ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+    m_spyTab.put("Left Velocity", tab.add("Left Velocity", 0).getEntry());
+    m_spyTab.put("Right Velocity", tab.add("Right Velocity", 0).getEntry());
+    m_spyTab.put("X Position", tab.add("X Position", 0).getEntry());
+    m_spyTab.put("Y Position", tab.add("Y Position", 0).getEntry());
+    m_spyTab.put("Heading", tab.add("Heading", 0).getEntry());
+    m_spyTab.put("Rotational Velocity", tab.add("Rotate Vel", 0).getEntry());
 
-    SmartDashboard.putNumber("Drivetrain Left Target", m_leftTarget);
-    SmartDashboard.putNumber("Drivetrain Right Target", m_rightTarget);
+    m_spyTab.put("Left Position", tab.add("Left Pos", 0).getEntry());
+    m_spyTab.put("Right Position", tab.add("Right Pos", 0).getEntry());
+
+    m_spyTab.put("Left Target", tab.add("Left Target", 0).getEntry());
+    m_spyTab.put("Right Target", tab.add("Right Target", 0).getEntry());
   }
+
+  protected void reportSpy(){
+    m_spyTab.get("Left Velocity").setDouble(getLeftVelocity());
+    m_spyTab.get("Right Velocity").setDouble(getRightVelocity());
+
+    m_spyTab.get("X Position").setDouble(m_odometry.getPoseMeters().getX());
+    m_spyTab.get("Y Position").setDouble(m_odometry.getPoseMeters().getY());
+    m_spyTab.get("Heading").setDouble(m_odometry.getPoseMeters().getRotation().getDegrees());
+    m_spyTab.get("Rotational Velocity").setDouble(Gyro.getRate());
+
+    m_spyTab.get("Left Position").setDouble(getLeftPosition());
+    m_spyTab.get("Right Position").setDouble(getRightPosition());
+
+    m_spyTab.get("Left Target").setDouble(m_leftTarget);
+    m_spyTab.get("Right Target").setDouble(m_rightTarget);
+  }
+
+
+
 }

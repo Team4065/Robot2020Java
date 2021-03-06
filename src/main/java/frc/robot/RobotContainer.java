@@ -16,17 +16,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Utility.Gyro;
+import frc.robot.Utility.Limelight;
 import frc.robot.Utility.Motor;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.CharacterizeDrivetrain;
-import frc.robot.commands.CharacterizeRotation;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.TankDrive;
-import frc.robot.commands.ToPosition;
-import frc.robot.commands.ToRotation;
+import frc.robot.commands.Drivetrain.*;
+import frc.robot.commands.Drivetrain.TrackObject.WhatToTrack;
 import frc.robot.subsystems.DifferentialDrivetrain;
-import frc.robot.subsystems.DifferentialDrivetrain2;
-import frc.robot.subsystems.TalonSRX_DifferentialDrivetrain;
+
 
 
 
@@ -48,7 +43,7 @@ public class RobotContainer {
   //  new WPI_TalonSRX[]{new WPI_TalonSRX(2)}, new WPI_TalonSRX[]{new WPI_TalonSRX(5)}
   //  );
 
-  DifferentialDrivetrain2 m_drivetrain = new DifferentialDrivetrain2(
+  DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
     0.154,
     new Motor(1,"TalonSRX"), new Motor(4, "TalonSRX"),
     new Motor[]{new Motor(2, "TalonSRX")}, new Motor[]{new Motor(5, "TalonSRX")}
@@ -57,13 +52,14 @@ public class RobotContainer {
   public RobotContainer() {
     Gyro.reset();
     Gyro.calibrate();
+    Limelight.setPipeline(0);
     m_drivetrain.configFeedforward(0.991, 3.27724, 1.04051);
     m_drivetrain.configRotationFeedForward(0.0910536461972, 0.00629517415169, 0.0000576713721188);
     m_drivetrain.configFeedforwardSided(
       1.00760991292, 3.37832138739, -0.0405742345827,
       1.00702736431, 3.25734393828, -0.0234916065671
      );
-    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 1, 120));
+    m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 2, 270));
     //m_drivetrain.setDefaultCommand(new TankDrive(m_drivetrain, m_controller));
     configureButtonBindings();//0.145
   }
@@ -75,8 +71,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    turn.whenPressed(new ToRotation(m_drivetrain));
-    //turn.whileHeld(new ToRotation(m_drivetrain));
+    turn.whileHeld(new TrackObject(m_drivetrain, WhatToTrack.Ball));
+    //turn.whenPressed(new ToRotation(m_drivetrain));
   }
 
 

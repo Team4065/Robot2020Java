@@ -2,22 +2,22 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.Drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Utility.Gyro;
-import frc.robot.subsystems.DifferentialDrivetrain2;
-import frc.robot.subsystems.DifferentialDrivetrain2.ControlMode;
+import frc.robot.subsystems.DifferentialDrivetrain;
+import frc.robot.subsystems.DifferentialDrivetrain.ControlMode;
 
 public class ArcadeDrive extends CommandBase {
-  DifferentialDrivetrain2 m_drivetrain;
+  DifferentialDrivetrain m_drivetrain;
   Joystick m_controller;
   double m_maxSpeed, m_maxRotation;
 
   /** Creates a new ArcadeDrive. */
-  public ArcadeDrive(DifferentialDrivetrain2 drivetrain, Joystick controller, double maxSpeed, double maxRotation) {
+  public ArcadeDrive(DifferentialDrivetrain drivetrain, Joystick controller, double maxSpeed, double maxRotation) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     m_drivetrain = drivetrain;
@@ -30,7 +30,6 @@ public class ArcadeDrive extends CommandBase {
   @Override
   public void initialize() {
     m_drivetrain.setControlMode(ControlMode.Velocity);
-    Gyro.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
