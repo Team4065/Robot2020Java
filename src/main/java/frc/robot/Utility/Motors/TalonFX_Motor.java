@@ -130,4 +130,8 @@ public class TalonFX_Motor extends PID_Motor {
     else
       m_motor.setInverted(InvertType.FollowMaster);
   }
+
+  public void setNeutralMode(NeutralMode neutralMode){
+    m_motor.setNeutralMode(neutralMode);
+  }
 }
