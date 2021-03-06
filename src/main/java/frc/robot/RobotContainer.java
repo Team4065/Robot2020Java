@@ -18,6 +18,7 @@ import frc.robot.Constants;
 import frc.robot.Utility.Gyro;
 import frc.robot.Utility.Limelight;
 import frc.robot.Utility.Motor;
+import frc.robot.Utility.Motor.MotorType;
 import frc.robot.commands.Drivetrain.*;
 import frc.robot.commands.Drivetrain.TrackObject.WhatToTrack;
 import frc.robot.subsystems.DifferentialDrivetrain;
@@ -45,8 +46,8 @@ public class RobotContainer {
 
   DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
     0.154,
-    new Motor(1,"TalonSRX"), new Motor(4, "TalonSRX"),
-    new Motor[]{new Motor(2, "TalonSRX")}, new Motor[]{new Motor(5, "TalonSRX")}
+    new Motor(1, MotorType.TalonSRX), new Motor(4, MotorType.TalonSRX),
+    new Motor[]{new Motor(2, MotorType.TalonSRX)}, new Motor[]{new Motor(5, MotorType.TalonSRX)}
     );
 
   public RobotContainer() {
