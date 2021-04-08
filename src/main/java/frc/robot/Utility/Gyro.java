@@ -10,6 +10,7 @@ package frc.robot.Utility;
 import frc.robot.Constants;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 
 /**
  * Add your docs here.
@@ -22,7 +23,7 @@ public class Gyro {
      * @return
      */
     public static double getAngle(){
-        return gyro.getAngle() * (Constants.GYRO_REVERSED ? -1.0 : 1.0);
+        return gyro.getAngle() * (Constants.IS_GYRO_REVERSED ? -1.0 : 1.0);
     }
 
     /**
@@ -38,7 +39,15 @@ public class Gyro {
      * @return
      */
     public static double getCompassHeading(){
-        return gyro.getCompassHeading();
+        return gyro.getCompassHeading() * (Constants.IS_GYRO_REVERSED ? -1.0 : 1.0);
+    }
+
+    /**
+     * Calibrates the gyro
+     * @return
+     */
+    public static void calibrate(){
+        gyro.calibrate();
     }
 
     /**
@@ -49,5 +58,17 @@ public class Gyro {
      */
     public static double getFusedHeading(){
         return gyro.getFusedHeading();
+    }
+
+    public static Rotation2d getRotation2d(){
+        return gyro.getRotation2d();
+    }
+
+    public static void reset(){
+        gyro.reset();
+    }
+
+    public static double getRate(){
+        return Math.toDegrees(gyro.getRate()) * (Constants.IS_GYRO_REVERSED ? -1.0 : 1.0);
     }
 }

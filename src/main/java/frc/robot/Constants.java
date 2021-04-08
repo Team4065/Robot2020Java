@@ -3,31 +3,40 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 
-import edu.wpi.first.wpilibj.Joystick;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide
- * numerical or boolean constants. This class should not be used for any other
- * purpose. All constants should be declared globally (i.e. public static). Do
- * not put anything functional in this class.
- *
- * <p>
- * It is advised to statically import this class (or one of its inner classes)
- * wherever the constants are needed, to reduce verbosity.
- */
-public final class Constants {
-    public enum MotorType {
-        PWM, CANSparkMax, TalonSRX
-    };
+public class Constants {
+    public static final boolean IS_GYRO_REVERSED = true;
+    public static final boolean IS_SPY_ENABLED = true;
 
-    //Controls
-    public static final Joystick mainController = new Joystick(0);
 
-    //Sensors
-    public static final boolean GYRO_REVERSED = false;
+    //Ramsete
+    public static final double ROBOT_TRACKWIDTH = Double.NaN;
+    public static final double RAMSETE_B = Double.NaN;
+    public static final double RAMSETE_ZETA =  Double.NaN;
+    public static final double KS_VOLTS = Double.NaN;
+    public static final double KV_VOLT_SECONDS_PER_METER = Double.NaN;
+    public static final double KA_VOLT_SECONDS_SQUARED_PER_METER = Double.NaN;
+    public static final DifferentialDriveKinematics DIFFERENTIAL_DRIVE_KINEMATICS = new DifferentialDriveKinematics(ROBOT_TRACKWIDTH);
+    public static final double KP_DRIVE_VEL = Double.NaN;
 
-    //Program info
-    public static final double DELTA_TIME = 0.02;//The delay between updates in seconds (20ms)
-    public static final boolean IS_SIMULATION_RUNNING = false;//when simulation is on all CAN motors should get a PWM counterpart with the same ID
+    //Lift
+	public static final int LIFT_UP = 0;//up and down are pneumatic ids
+	public static final int LIFT_DOWN = 0;
+    public static final int LEFT_LIFT_MOTOR = 0;
+    public static final int RIGHT_LIFT_MOTOR = 0;
+    public static final double MAX_LIFT_HEIGHT = 0;//units in of rotations of motor
+    
+    //Drivetrain
+	public static final int LEFT_DRIVETRAIN_MASTER = 0;
+	public static final int RIGHT_DRIVETRAIN_MASTER = 0;
+	public static final int[] LEFT_DRIVTRAIN_SLAVES = new int[]{0};
+    public static final int[] RIGHT_DRIVETRAIN_SLAVES = new int[]{0};
+    
+    //Intake
+	public static final int INTAKE_MOTOR = 0;
+	public static final int INTAKE_DEPLOY = 0;//deploy and retract are pneumatic ids
+	public static final int INTAKE_RETRACT = 0;
+	
 }
