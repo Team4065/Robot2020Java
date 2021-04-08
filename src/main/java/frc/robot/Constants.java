@@ -1,10 +1,12 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+/* Open Source Software - may be modified and shared by FRC teams. The code   */
+/* must be accompanied by the FIRST BSD license file in the root directory of */
+/* the project.                                                               */
+/*----------------------------------------------------------------------------*/
 
 package frc.robot;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-
 
 public class Constants {
     public static final boolean IS_GYRO_REVERSED = true;
@@ -39,4 +41,19 @@ public class Constants {
 	public static final int INTAKE_DEPLOY = 0;//deploy and retract are pneumatic ids
 	public static final int INTAKE_RETRACT = 0;
 	
+    //Shooter
+    public static final int SHOOTER_LEFT_MASTER_ID = 1;
+    public static final int SHOOTER_RIGHT_SLAVE_ID = 1;
+    public static final double SHOOTER_KS = 0;
+    public static final double SHOOTER_KV = 0;
+    public static final double SHOOTER_KA = 0;
+    public static final int SPIN_UP_RPM = 0;
+
+
+    //Feeder 
+    public static final int FEEDER_MOTOR_ID = 1;
+    public static final int SERIALIZER_MOTOR_ID = 1;
+
+    //Kicker
+    public static final int KICKER_MOTOR_ID = 1;
 }

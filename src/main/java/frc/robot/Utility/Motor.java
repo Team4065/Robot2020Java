@@ -251,7 +251,8 @@ public class Motor {
         }
 
         if (m_motorType == MotorType.CANSparkMax) {
-            m_canSparkMax.setInverted(isInverted);
+            if(!m_canSparkMax.isFollower())
+                m_canSparkMax.setInverted(isInverted);
         }
     }
 
