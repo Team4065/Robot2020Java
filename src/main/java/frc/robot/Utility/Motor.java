@@ -69,7 +69,7 @@ public class Motor {
     }
 
     public void set(ControlMode controlMode, double value) {
-        if(m_isFeedforwardConfigured && controlMode == ControlMode.Velocity){
+        if(!m_isFeedforwardConfigured && controlMode == ControlMode.Velocity){
             controlMode = ControlMode.PercentOutput;
             value = 0;
             System.out.println("You must configure feedforward to use Velocity control.");
@@ -231,8 +231,7 @@ public class Motor {
     }
 
     /**
-     * If motor is a follower, then this does nothing.
-     * Set follower inversion from master when setting master.
+     * Does nothing if it is a follower
      * @param isInverted
      */
     public void setInverted(boolean isInverted){

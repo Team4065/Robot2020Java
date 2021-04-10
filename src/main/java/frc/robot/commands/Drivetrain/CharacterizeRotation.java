@@ -9,6 +9,12 @@ import frc.robot.Utility.Gyro;
 import frc.robot.subsystems.DifferentialDrivetrain;
 import frc.robot.subsystems.DifferentialDrivetrain.ControlMode;
 
+/**
+ * To use run the command.
+ * Copy the output into desmos and use regression to find the variables of the equation given at 
+ * https://docs.wpilib.org/en/stable/docs/software/wpilib-tools/robot-characterization/introduction.html
+ */
+
 public class CharacterizeRotation extends CommandBase {
   DifferentialDrivetrain m_drivetrain;
   double targetVelocity = 0;

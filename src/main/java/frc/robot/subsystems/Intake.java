@@ -4,44 +4,42 @@
 
 package frc.robot.subsystems;
 
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Utility.Motor;
 import frc.robot.Utility.Motor.ControlMode;
 import frc.robot.Utility.Motor.MotorType;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 public class Intake extends SubsystemBase {
-  Motor m_intakeMotor = new Motor(Constants.INTAKE_MOTOR_ID, MotorType.TalonSRX);
-  DoubleSolenoid m_intakeSolenoid = new DoubleSolenoid(Constants.INTAKE_DEPLOY_ID, Constants.INTAKE_RETRACT_ID);
-  
-
-  
+  private Motor m_motor = new Motor(Constants.INTAKE_MOTOR, MotorType.TalonSRX);
+  private DoubleSolenoid m_solenoid = new DoubleSolenoid(Constants.INTAKE_DEPLOY, Constants.INTAKE_RETRACT);
   /** Creates a new Intake. */
   public Intake() {}
-  
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
-  public void deploy() {
-    m_intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+  public void suck(){
+    m_motor.set(ControlMode.PercentOutput, 1);
   }
 
-  public void retract() {
-    m_intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+  public void spit(){
+    m_motor.set(ControlMode.PercentOutput, -1);
   }
 
-  public void in() {
-    m_intakeMotor.set(ControlMode.PercentOutput, 1);
+  public void hold(){
+    m_motor.set(ControlMode.PercentOutput, 0);
   }
 
-  public void out() {
-    m_intakeMotor.set(ControlMode.PercentOutput, -1);
+  public void deploy(){
+    m_solenoid.set(DoubleSolenoid.Value.kForward);
   }
 
-  public void stop() {
-    m_intakeMotor.set(ControlMode.PercentOutput, 0);
+  public void retract(){
+    m_solenoid.set(DoubleSolenoid.Value.kReverse);
   }
 }
