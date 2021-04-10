@@ -23,7 +23,9 @@ public class LiftDeploy extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_lift.deploy();
+    if(m_lift.getHeight() <= 0.02){
+      m_lift.deploy();
+    }
   }
 
   // Called once the command ends or is interrupted.

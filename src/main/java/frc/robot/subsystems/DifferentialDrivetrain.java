@@ -233,7 +233,7 @@ public class DifferentialDrivetrain extends SubsystemBase {
    * @return The velocity of the left side in meters per second
    */
   public double getLeftVelocity(){
-    return -m_leftMaster.getVelocity() * m_wheelDiameter * Math.PI;
+    return -m_leftMaster.getVelocity() /* add gear ratio */ * m_wheelDiameter * Math.PI;
   }
 
   /**

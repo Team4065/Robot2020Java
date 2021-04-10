@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    m_robotContainer.m_compressor.stop();
   }
 
   @Override
@@ -94,7 +95,9 @@ public class Robot extends TimedRobot {
     // this line or comment it out.
 
     
-    
+    m_robotContainer.m_compressor.start();
+    //m_robotContainer.
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

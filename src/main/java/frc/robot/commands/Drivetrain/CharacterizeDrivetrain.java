@@ -42,15 +42,16 @@ public class CharacterizeDrivetrain extends CommandBase {
     m_drivetrain.setLeftTarget(m_targetVoltage);
     m_drivetrain.setRightTarget(m_targetVoltage);
     m_targetVoltage += 0.01;
-    System.out.print(m_targetVoltage);
+    System.out.printf("%f", m_targetVoltage);
     System.out.print(",");
-    System.out.print(m_drivetrain.getLeftVelocity());
+    System.out.printf("%f", m_drivetrain.getLeftVelocity());
     System.out.print(",");
-    System.out.print((m_drivetrain.getLeftVelocity() - m_pastLeftVel) / (20.0 / 1000.0));
+    System.out.printf("%f", (m_drivetrain.getLeftVelocity() - m_pastLeftVel) / (20.0 / 1000.0));
     System.out.print(",");
-    System.out.print(m_drivetrain.getRightVelocity());
+    System.out.printf("%f", m_drivetrain.getRightVelocity());
     System.out.print(",");
-    System.out.println((m_drivetrain.getRightVelocity() - m_pastRightVel) / (20.0 / 1000.0));
+    System.out.printf("%f", (m_drivetrain.getRightVelocity() - m_pastRightVel) / (20.0 / 1000.0));
+    System.out.println();
 
     m_pastLeftVel = m_drivetrain.getLeftVelocity();
     m_pastRightVel = m_drivetrain.getRightVelocity();

@@ -21,13 +21,20 @@ public class Lift extends SubsystemBase {
     m_liftLeft.setInverted(false);
     m_liftLeft.resetEncoder();
     m_liftRight.follow(m_liftLeft);
-
-    //m_liftLeft.configFeedforward(kS, kV, kA); do this
+    m_liftLeft.enableBrakeMode(true);
+    m_liftRight.enableBrakeMode(true);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if(m_liftLeft.getVelocity() > 0 && this.getHeight() >= 0.9){
+      m_liftLeft.set(ControlMode.PercentOutput, 0);
+    }
+
+    if(m_liftLeft.getVelocity() < 0 && this.getHeight() <= 0.0){
+      m_liftLeft.set(ControlMode.PercentOutput, 0);
+    }
   }
 
   /**
@@ -44,15 +51,15 @@ public class Lift extends SubsystemBase {
 
   public void moveUp(){
     if(this.getHeight() < 0.9){
-      m_liftLeft.set(ControlMode.Voltage, 1);
+      m_liftLeft.set(ControlMode.PercentOutput, 1);
     }else{
       m_liftLeft.set(ControlMode.PercentOutput, 0);
     }
   }
 
   public void moveDown(){
-    if(this.getHeight() > 0.1){
-      m_liftLeft.set(ControlMode.Voltage, -1);
+    if(this.getHeight() > 0){
+      m_liftLeft.set(ControlMode.PercentOutput, -1);
     }else{
       m_liftLeft.set(ControlMode.PercentOutput, 0);
     }

@@ -7,17 +7,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
+import frc.robot.commands.Drivetrain.CharacterizeDrivetrain;
 import frc.robot.commands.Intake.IntakeDeploy;
 import frc.robot.commands.Intake.IntakeSpit;
 import frc.robot.commands.Intake.IntakeSuck;
 import frc.robot.commands.Lift.LiftDeploy;
 import frc.robot.commands.Lift.LiftDown;
 import frc.robot.commands.Lift.LiftRetract;
+import frc.robot.commands.Lift.LiftToHeight;
 import frc.robot.commands.Lift.LiftUp;
 import frc.robot.subsystems.DifferentialDrivetrain;
 import frc.robot.subsystems.Intake;
@@ -36,19 +39,13 @@ import frc.robot.Utility.Motor.MotorType;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
-    0.154,
-    new Motor(Constants.DRIVETRAIN_FRONT_LEFT_ID, MotorType.TalonFX), new Motor(Constants.DRIVETRAIN_FRONT_RIGHT_ID, MotorType.TalonFX),
-    new Motor[]{new Motor(Constants.DRIVETRAIN_BACK_LEFT_ID, MotorType.TalonFX)}, new Motor[]{new Motor(Constants.DRIVETRAIN_BACK_RIGHT_ID, MotorType.TalonFX)}
-  );
-
-  
-
+  Compressor m_compressor = new Compressor();
   Joystick m_controller = new Joystick(0);
+  Joystick m_buttonbox = new Joystick(1);
 
   // The robot's subsystems and commands are defined here...
   private final DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
-    1/*wheel diameter*/,
+    0.159/*wheel diameter*/,
     new Motor(Constants.LEFT_DRIVETRAIN_MASTER, MotorType.CANSparkMax),
     new Motor(Constants.RIGHT_DRIVETRAIN_MASTER, MotorType.CANSparkMax),
     new Motor[]{new Motor(Constants.LEFT_DRIVTRAIN_SLAVES[0], MotorType.CANSparkMax)},
@@ -62,11 +59,14 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    //m_drivetrain.configFeedforward(kS, kV, kA); Do this
-    //m_drivetrain.configRotationFeedForward(kS, kV, kA);Do this
 
+    m_drivetrain.configFeedforwardSided(
+      -0.189290699848, -0.293030735327, -0.000429988610686,
+      -0.170613477504, -0.304934237999, 0.0020575793998); 
+    //m_drivetrain.configRotationFeedForward(kS, kV, kA);Do this
+    //m_lift.setDefaultCommand(new LiftRetract(m_lift));
     m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 1, Math.PI / 2));
-    m_intake.setDefaultCommand(new IntakeDeploy(m_intake));//so it deploys on start
+    //m_intake.setDefaultCommand(new IntakeDeploy(m_intake));//so it deploys on start
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -78,13 +78,16 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_controller, 0/* button label */).whileHeld(new LiftUp(m_lift));
-    new JoystickButton(m_controller, 0/* button label */).whileHeld(new LiftDown(m_lift));
-    new JoystickButton(m_controller, 0/* button label */).whenPressed(new LiftDeploy(m_lift));
-    new JoystickButton(m_controller, 0/* button label */).whenPressed(new LiftRetract(m_lift));
-
-    new JoystickButton(m_controller, 0/* button label */).whileHeld(new IntakeSuck(m_intake));
-    new JoystickButton(m_controller, 0/* button label */).whileHeld(new IntakeSpit(m_intake));
+    
+    new JoystickButton(m_buttonbox, 3/* button label */).whileHeld(new LiftUp(m_lift));
+    new JoystickButton(m_buttonbox, 4/* button label */).whileHeld(new LiftDown(m_lift));
+    new JoystickButton(m_buttonbox, 1/* button label */).whenPressed(new LiftDeploy(m_lift));
+    new JoystickButton(m_buttonbox, 2/* button label */).whenPressed(new LiftRetract(m_lift));
+    new JoystickButton(m_buttonbox, 5).whenPressed(new LiftToHeight(m_lift, 1));
+    new JoystickButton(m_buttonbox, 6).whenPressed(new LiftToHeight(m_lift, 0));
+//
+    //new JoystickButton(m_controller, 0/* button label */).whileHeld(new IntakeSuck(m_intake));
+    //new JoystickButton(m_controller, 0/* button label */).whileHeld(new IntakeSpit(m_intake));
     
   }
 
@@ -94,6 +97,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new ExampleCommand();
+    return new CharacterizeDrivetrain(m_drivetrain);
+    //return new ExampleCommand();
   }
 }

@@ -24,36 +24,27 @@ public class Constants {
     public static final double KP_DRIVE_VEL = Double.NaN;
 
     //Lift
-	public static final int LIFT_UP = 0;//up and down are pneumatic ids
-	public static final int LIFT_DOWN = 0;
-    public static final int LEFT_LIFT_MOTOR = 0;
-    public static final int RIGHT_LIFT_MOTOR = 0;
-    public static final double MAX_LIFT_HEIGHT = 0;//units in of rotations of motor
+	public static final int LIFT_UP = 6;//up and down are pneumatic ids
+	public static final int LIFT_DOWN = 2;
+    public static final int LEFT_LIFT_MOTOR = 8;
+    public static final int RIGHT_LIFT_MOTOR = 6;
+    public static final double MAX_LIFT_HEIGHT = 549;//units in of rotations of motor
     
     //Drivetrain
-	public static final int LEFT_DRIVETRAIN_MASTER = 0;
-	public static final int RIGHT_DRIVETRAIN_MASTER = 0;
-	public static final int[] LEFT_DRIVTRAIN_SLAVES = new int[]{0};
-    public static final int[] RIGHT_DRIVETRAIN_SLAVES = new int[]{0};
+	public static final int LEFT_DRIVETRAIN_MASTER = 1;
+	public static final int RIGHT_DRIVETRAIN_MASTER = 3;
+	public static final int[] LEFT_DRIVTRAIN_SLAVES = new int[]{2};
+    public static final int[] RIGHT_DRIVETRAIN_SLAVES = new int[]{4};
     
     //Intake
 	public static final int INTAKE_MOTOR = 0;
-	public static final int INTAKE_DEPLOY = 0;//deploy and retract are pneumatic ids
-	public static final int INTAKE_RETRACT = 0;
-	
-    //Shooter
-    public static final int SHOOTER_LEFT_MASTER_ID = 0;
-    public static final int SHOOTER_RIGHT_SLAVE_ID = 0;
-    public static final double SHOOTER_KS = 0;
-    public static final double SHOOTER_KV = 0;
-    public static final double SHOOTER_KA = 0;
-    public static final int SPIN_UP_RPM = 0;
+	public static final int INTAKE_DEPLOY = 7;//deploy and retract are pneumatic ids
+    public static final int INTAKE_RETRACT = 3;
+    
+    //v belt id = 7
+    //feeder id = 9
+    //kicker id = 11
 
-
-    //Feeder 
-    public static final int FEEDER_MOTOR_ID = 0;
-    public static final int SERIALIZER_MOTOR_ID = 0;
-
-    //Kicker
-    public static final int KICKER_MOTOR_ID = 1;
+    //shooter left id = 15
+    //shooter right id = 16
 }

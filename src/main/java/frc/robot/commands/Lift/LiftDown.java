@@ -24,9 +24,6 @@ public class LiftDown extends CommandBase {
   @Override
   public void execute() {
     m_lift.moveDown();
-    System.out.print(-1/*voltage output*/);
-    System.out.print(",");
-    System.out.println(m_lift.getDeltaHeight());
   }
 
   // Called once the command ends or is interrupted.
