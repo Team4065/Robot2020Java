@@ -169,8 +169,8 @@ public class DifferentialDrivetrain extends SubsystemBase {
       setLeftTarget(speed + rotationVelocity);
       setRightTarget(speed - rotationVelocity);
     }else{
-      setLeftTarget(speed + rotation);
-      setRightTarget(speed - rotation);
+      setLeftTarget(-(speed + rotation));
+      setRightTarget(-(speed - rotation));
     }
   }
 

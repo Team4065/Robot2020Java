@@ -53,7 +53,7 @@ public class Motor {
             case TalonFX:
                 m_talonFX = new WPI_TalonFX(id);
                 m_talonFX.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-                m_talonSRX.setSelectedSensorPosition(0);
+                m_talonFX.setSelectedSensorPosition(0);
                 break;
 
             case VictorSPX:
@@ -153,7 +153,7 @@ public class Motor {
                 return (double) m_talonSRX.getSelectedSensorVelocity() / 4096.0 * 10.0;
 
             case TalonFX:
-                return (double) m_talonSRX.getSelectedSensorVelocity() / 2048.0 * 10.0;
+                return (double) m_talonFX.getSelectedSensorVelocity() / 2048.0 * 10.0;
 
             case VictorSPX:
                 return Double.NaN;
@@ -172,7 +172,7 @@ public class Motor {
                 return (double) m_talonSRX.getSelectedSensorPosition() / 4096.0;
 
             case TalonFX:
-                return (double) m_talonSRX.getSelectedSensorPosition() / 2048.0;
+                return (double) m_talonFX.getSelectedSensorPosition() / 2048.0;
 
             case VictorSPX:
                 return Double.NaN;
@@ -241,12 +241,12 @@ public class Motor {
         }
 
         if (m_motorType == MotorType.TalonFX) {
-            if(m_talonSRX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
+            if(m_talonFX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
                 m_talonFX.setInverted(isInverted);
         }
 
         if (m_motorType == MotorType.VictorSPX) {
-            if(m_talonSRX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
+            if(m_victorSPX.getControlMode() != com.ctre.phoenix.motorcontrol.ControlMode.Follower)
                 m_victorSPX.setInverted(isInverted);
         }
 
@@ -262,7 +262,7 @@ public class Motor {
         }
 
         if (m_motorType == MotorType.TalonFX) {
-            m_talonSRX.setSelectedSensorPosition(0);
+            m_talonFX.setSelectedSensorPosition(0);
         }
 
         if (m_motorType == MotorType.CANSparkMax) {

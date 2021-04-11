@@ -37,9 +37,17 @@ public class Constants {
     public static final int[] RIGHT_DRIVETRAIN_SLAVES = new int[]{4};
     
     //Intake
-	public static final int INTAKE_MOTOR = 0;
+	public static final int INTAKE_MOTOR = 20;
 	public static final int INTAKE_DEPLOY = 7;//deploy and retract are pneumatic ids
     public static final int INTAKE_RETRACT = 3;
+
+    //Flywheel
+    public static final int FLYWHEEL_LEFT = 15;
+    public static final int FLYWHEEL_RIGHT = 16;
+
+    //Feeder
+    public static final int KICKER = 11;
+    public static final int FEEDER = 9;
     
     //v belt id = 7
     //feeder id = 9

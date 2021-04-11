@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Drivetrain.CharacterizeDrivetrain;
+import frc.robot.commands.Flywheel.CharacterizeFlywheel;
+import frc.robot.commands.Flywheel.FlywheelToSpeed;
 import frc.robot.commands.Intake.IntakeDeploy;
 import frc.robot.commands.Intake.IntakeSpit;
 import frc.robot.commands.Intake.IntakeSuck;
@@ -23,6 +25,7 @@ import frc.robot.commands.Lift.LiftRetract;
 import frc.robot.commands.Lift.LiftToHeight;
 import frc.robot.commands.Lift.LiftUp;
 import frc.robot.subsystems.DifferentialDrivetrain;
+import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,6 +57,7 @@ public class RobotContainer {
 
   private final Lift m_lift = new Lift();
   private final Intake m_intake = new Intake();
+  private final Flywheel m_flywheel = new Flywheel();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand();
 
@@ -61,8 +65,8 @@ public class RobotContainer {
   public RobotContainer() {
 
     m_drivetrain.configFeedforwardSided(
-      -0.189290699848, -0.293030735327, -0.000429988610686,
-      -0.170613477504, -0.304934237999, 0.0020575793998); 
+      -0.236065840797, -1.2349960266, 0.00891040293398,
+      -0.230709327857, -1.24552774756, -0.0146211933272); 
     //m_drivetrain.configRotationFeedForward(kS, kV, kA);Do this
     //m_lift.setDefaultCommand(new LiftRetract(m_lift));
     m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 1, Math.PI / 2));
@@ -86,9 +90,10 @@ public class RobotContainer {
     new JoystickButton(m_buttonbox, 5).whenPressed(new LiftToHeight(m_lift, 1));
     new JoystickButton(m_buttonbox, 6).whenPressed(new LiftToHeight(m_lift, 0));
 //
-    //new JoystickButton(m_controller, 0/* button label */).whileHeld(new IntakeSuck(m_intake));
-    //new JoystickButton(m_controller, 0/* button label */).whileHeld(new IntakeSpit(m_intake));
-    
+    //new JoystickButton(m_buttonbox, 7/* button label */).whileHeld(new IntakeSuck(m_intake));
+    //new JoystickButton(m_buttonbox, 8/* button label */).whileHeld(new IntakeSpit(m_intake));
+    new JoystickButton(m_buttonbox, 7).whenPressed(new FlywheelToSpeed(m_flywheel, 80));
+    new JoystickButton(m_buttonbox, 8).whenPressed(new FlywheelToSpeed(m_flywheel, 0));
   }
 
   /**
@@ -97,7 +102,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new CharacterizeDrivetrain(m_drivetrain);
+    return new CharacterizeFlywheel(m_flywheel);//new CharacterizeDrivetrain(m_drivetrain);
     //return new ExampleCommand();
   }
 }
