@@ -7,26 +7,26 @@ package frc.robot.commands.Flywheel;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Flywheel;
 
-public class FlywheelToSpeed extends CommandBase {
+public class FlywheelMaintainSpeed extends CommandBase {
   Flywheel m_flywheel;
   double m_speed;
-  /** Creates a new FlywheelToSpeed. */
-  public FlywheelToSpeed(Flywheel flywheel, double speed) {
+  /** Creates a new FlywheelMaintainSpeed. */
+  public FlywheelMaintainSpeed(Flywheel flywheel) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(flywheel);
     m_flywheel = flywheel;
-    m_speed = speed;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_speed = m_flywheel.getVelocity();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     m_flywheel.setVelocity(m_speed);
-    //System.out.println(m_flywheel.getVelocity());
   }
 
   // Called once the command ends or is interrupted.
@@ -36,6 +36,6 @@ public class FlywheelToSpeed extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(m_flywheel.getVelocity() - m_speed) < 5;
+    return Math.abs(m_flywheel.getVelocity() - m_speed) > 10;
   }
 }

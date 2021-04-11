@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.Shoot;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Drivetrain.CharacterizeDrivetrain;
 import frc.robot.commands.Flywheel.CharacterizeFlywheel;
@@ -25,6 +26,7 @@ import frc.robot.commands.Lift.LiftRetract;
 import frc.robot.commands.Lift.LiftToHeight;
 import frc.robot.commands.Lift.LiftUp;
 import frc.robot.subsystems.DifferentialDrivetrain;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Lift;
@@ -58,6 +60,7 @@ public class RobotContainer {
   private final Lift m_lift = new Lift();
   private final Intake m_intake = new Intake();
   private final Flywheel m_flywheel = new Flywheel();
+  private final Feeder m_feeder = new Feeder();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand();
 
@@ -92,8 +95,8 @@ public class RobotContainer {
 //
     //new JoystickButton(m_buttonbox, 7/* button label */).whileHeld(new IntakeSuck(m_intake));
     //new JoystickButton(m_buttonbox, 8/* button label */).whileHeld(new IntakeSpit(m_intake));
-    new JoystickButton(m_buttonbox, 7).whenPressed(new FlywheelToSpeed(m_flywheel, 80));
-    new JoystickButton(m_buttonbox, 8).whenPressed(new FlywheelToSpeed(m_flywheel, 0));
+    new JoystickButton(m_buttonbox, 7).whileHeld(new Shoot(m_flywheel, m_feeder)).whenReleased(new FlywheelToSpeed(m_flywheel, 0));
+    //new JoystickButton(m_buttonbox, 8).whenPressed(new FlywheelToSpeed(m_flywheel, 0));
   }
 
   /**
