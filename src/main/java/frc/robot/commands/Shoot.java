@@ -19,11 +19,13 @@ import frc.robot.subsystems.Flywheel;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Shoot extends SequentialCommandGroup {
   /** Creates a new Shoot. */
-  public Shoot(Flywheel flywheel, Feeder feeder) {
+  public Shoot(Flywheel flywheel, Feeder feeder, double speed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ParallelRaceGroup(new FlywheelToSpeed(flywheel, 80), new PrepareAmmo(feeder)),
+      //new FlywheelToSpeed(flywheel, 80),
+      //new FlywheelMaintainSpeed(flywheel)
+      new ParallelRaceGroup(new FlywheelToSpeed(flywheel, speed), new PrepareAmmo(feeder)),
       new ParallelRaceGroup(new FlywheelMaintainSpeed(flywheel), new FeedAmmo(feeder))
     );
   }

@@ -15,7 +15,10 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Drivetrain.CharacterizeDrivetrain;
+import frc.robot.commands.Feeder.FeedAmmo;
+import frc.robot.commands.Feeder.PrepareAmmo;
 import frc.robot.commands.Flywheel.CharacterizeFlywheel;
+import frc.robot.commands.Flywheel.FlywheelMaintainSpeed;
 import frc.robot.commands.Flywheel.FlywheelToSpeed;
 import frc.robot.commands.Intake.IntakeDeploy;
 import frc.robot.commands.Intake.IntakeSpit;
@@ -49,7 +52,7 @@ public class RobotContainer {
   Joystick m_buttonbox = new Joystick(1);
 
   // The robot's subsystems and commands are defined here...
-  private final DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
+  final DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
     0.159/*wheel diameter*/,
     new Motor(Constants.LEFT_DRIVETRAIN_MASTER, MotorType.CANSparkMax),
     new Motor(Constants.RIGHT_DRIVETRAIN_MASTER, MotorType.CANSparkMax),
@@ -57,10 +60,10 @@ public class RobotContainer {
     new Motor[]{new Motor(Constants.RIGHT_DRIVETRAIN_SLAVES[0], MotorType.CANSparkMax)}
   );
 
-  private final Lift m_lift = new Lift();
-  private final Intake m_intake = new Intake();
-  private final Flywheel m_flywheel = new Flywheel();
-  private final Feeder m_feeder = new Feeder();
+  final Lift m_lift = new Lift();
+  final Intake m_intake = new Intake();
+  final Flywheel m_flywheel = new Flywheel();
+  final Feeder m_feeder = new Feeder();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand();
 
@@ -92,11 +95,10 @@ public class RobotContainer {
     new JoystickButton(m_buttonbox, 2/* button label */).whenPressed(new LiftRetract(m_lift));
     new JoystickButton(m_buttonbox, 5).whenPressed(new LiftToHeight(m_lift, 1));
     new JoystickButton(m_buttonbox, 6).whenPressed(new LiftToHeight(m_lift, 0));
-//
-    //new JoystickButton(m_buttonbox, 7/* button label */).whileHeld(new IntakeSuck(m_intake));
-    //new JoystickButton(m_buttonbox, 8/* button label */).whileHeld(new IntakeSpit(m_intake));
-    new JoystickButton(m_buttonbox, 7).whileHeld(new Shoot(m_flywheel, m_feeder)).whenReleased(new FlywheelToSpeed(m_flywheel, 0));
-    //new JoystickButton(m_buttonbox, 8).whenPressed(new FlywheelToSpeed(m_flywheel, 0));
+
+    new JoystickButton(m_buttonbox, 7).whileHeld(new Shoot(m_flywheel, m_feeder, 80)).whenReleased(new FlywheelToSpeed(m_flywheel, 0));
+    //new JoystickButton(m_buttonbox, 7).whenPressed(new PrepareAmmo(m_feeder));
+    //new JoystickButton(m_buttonbox, 8).whenPressed(new FeedAmmo(m_feeder));
   }
 
   /**
