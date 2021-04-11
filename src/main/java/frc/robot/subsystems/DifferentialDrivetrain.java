@@ -233,28 +233,29 @@ public class DifferentialDrivetrain extends SubsystemBase {
    * @return The velocity of the left side in meters per second
    */
   public double getLeftVelocity(){
-    return -m_leftMaster.getVelocity() /* add gear ratio */ * m_wheelDiameter * Math.PI;
+    //the hard coded term is the gear ratio
+    return -m_leftMaster.getVelocity() * (2 / 9.47) * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The velocity of the right side in meters per second
    */
   public double getRightVelocity(){
-    return -m_rightMaster.getVelocity() * m_wheelDiameter * Math.PI;
+    return -m_rightMaster.getVelocity() * (2 / 9.47) * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the left side has traveled in meters.
    */
   public double getLeftPosition(){
-    return -m_leftMaster.getPosition() * m_wheelDiameter * Math.PI;
+    return -m_leftMaster.getPosition() * (2 / 9.47) * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the right side has traveled in meters.
    */
   public double getRightPosition(){
-    return -m_rightMaster.getPosition() * m_wheelDiameter * Math.PI;
+    return -m_rightMaster.getPosition() * (2 / 9.47) * m_wheelDiameter * Math.PI;
   }
 
   public void resetEncoders(){
