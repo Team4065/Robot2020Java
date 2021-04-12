@@ -21,6 +21,7 @@ import frc.robot.commands.Flywheel.CharacterizeFlywheel;
 import frc.robot.commands.Flywheel.FlywheelMaintainSpeed;
 import frc.robot.commands.Flywheel.FlywheelToSpeed;
 import frc.robot.commands.Intake.IntakeDeploy;
+import frc.robot.commands.Intake.IntakeRetract;
 import frc.robot.commands.Intake.IntakeSpit;
 import frc.robot.commands.Intake.IntakeSuck;
 import frc.robot.commands.Lift.LiftDeploy;
@@ -28,6 +29,7 @@ import frc.robot.commands.Lift.LiftDown;
 import frc.robot.commands.Lift.LiftRetract;
 import frc.robot.commands.Lift.LiftToHeight;
 import frc.robot.commands.Lift.LiftUp;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.DifferentialDrivetrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Flywheel;
@@ -64,6 +66,7 @@ public class RobotContainer {
   final Intake m_intake = new Intake();
   final Flywheel m_flywheel = new Flywheel();
   final Feeder m_feeder = new Feeder();
+  final Conveyor m_conveyor = new Conveyor();
 
   private final ExampleCommand m_autoCommand = new ExampleCommand();
 
@@ -96,9 +99,13 @@ public class RobotContainer {
     new JoystickButton(m_buttonbox, 5).whenPressed(new LiftToHeight(m_lift, 1));
     new JoystickButton(m_buttonbox, 6).whenPressed(new LiftToHeight(m_lift, 0));
 
-    new JoystickButton(m_buttonbox, 7).whileHeld(new Shoot(m_flywheel, m_feeder, 80)).whenReleased(new FlywheelToSpeed(m_flywheel, 0));
+    new JoystickButton(m_buttonbox, 7).whileHeld(new Shoot(m_flywheel, m_feeder, m_conveyor, 80)).whenReleased(new FlywheelToSpeed(m_flywheel, 0));
     //new JoystickButton(m_buttonbox, 7).whenPressed(new PrepareAmmo(m_feeder));
     //new JoystickButton(m_buttonbox, 8).whenPressed(new FeedAmmo(m_feeder));
+    new JoystickButton(m_controller, 1).whenPressed(new IntakeDeploy(m_intake));
+    new JoystickButton(m_controller, 2).whenPressed(new IntakeRetract(m_intake));
+    new JoystickButton(m_controller, 3).whileHeld(new IntakeSuck(m_intake));
+    new JoystickButton(m_controller, 4).whileHeld(new IntakeSpit(m_intake));
   }
 
   /**
@@ -107,7 +114,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new CharacterizeFlywheel(m_flywheel);//new CharacterizeDrivetrain(m_drivetrain);
+    //return new CharacterizeFlywheel(m_flywheel);
+    return new CharacterizeDrivetrain(m_drivetrain);
     //return new ExampleCommand();
   }
 }

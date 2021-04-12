@@ -7,10 +7,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.commands.Conveyor.ConveyorIn;
 import frc.robot.commands.Feeder.FeedAmmo;
 import frc.robot.commands.Feeder.PrepareAmmo;
 import frc.robot.commands.Flywheel.FlywheelMaintainSpeed;
 import frc.robot.commands.Flywheel.FlywheelToSpeed;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Flywheel;
 
@@ -19,14 +21,14 @@ import frc.robot.subsystems.Flywheel;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Shoot extends SequentialCommandGroup {
   /** Creates a new Shoot. */
-  public Shoot(Flywheel flywheel, Feeder feeder, double speed) {
+  public Shoot(Flywheel flywheel, Feeder feeder, Conveyor conveyor, double speed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       //new FlywheelToSpeed(flywheel, 80),
       //new FlywheelMaintainSpeed(flywheel)
-      new ParallelRaceGroup(new FlywheelToSpeed(flywheel, speed), new PrepareAmmo(feeder)),
-      new ParallelRaceGroup(new FlywheelMaintainSpeed(flywheel), new FeedAmmo(feeder))
+      new ParallelRaceGroup(new FlywheelToSpeed(flywheel, speed), new PrepareAmmo(feeder), new ConveyorIn(conveyor)),
+      new ParallelRaceGroup(new FlywheelMaintainSpeed(flywheel), new FeedAmmo(feeder), new ConveyorIn(conveyor))
     );
   }
 }

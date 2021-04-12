@@ -48,6 +48,9 @@ public class Constants {
     //Feeder
     public static final int KICKER = 11;
     public static final int FEEDER = 9;
+
+    //Conveyor
+    public static final int CONVEYOR = 7;
     
     //v belt id = 7
     //feeder id = 9
