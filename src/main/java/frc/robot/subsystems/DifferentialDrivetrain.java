@@ -46,6 +46,11 @@ public class DifferentialDrivetrain extends SubsystemBase {
   protected DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(new Rotation2d());
   protected double m_wheelDiameter;
 
+  private double m_pastLeftVelocity = 0;
+  private double m_pastRightVelocity = 0;
+  private double m_leftAccel = 0;
+  private double m_rightAccel = 0;
+
   /** Creates a new DifferentialDrivetrain. */
   public DifferentialDrivetrain(double wheelDiameter, Motor leftMaster, Motor rightMaster, Motor[] leftSlaves, Motor[] rightSlaves) {
     m_wheelDiameter = wheelDiameter;
@@ -102,6 +107,11 @@ public class DifferentialDrivetrain extends SubsystemBase {
         break;
     }
   
+    m_leftAccel = (getLeftVelocity() - m_pastLeftVelocity) / (20. / 1000.);
+    m_rightAccel = (getRightVelocity() - m_pastRightVelocity) / (20. / 1000.);
+
+    m_pastLeftVelocity = getLeftVelocity();
+    m_pastRightVelocity = getRightVelocity();
   }
 
 
@@ -257,6 +267,16 @@ public class DifferentialDrivetrain extends SubsystemBase {
   public double getRightPosition(){
     return -m_rightMaster.getPosition() * (2 / 9.47) * m_wheelDiameter * Math.PI;
   }
+
+
+  public double getLeftAcceleration(){
+    return m_leftAccel;
+  }
+
+  public double getRightAcceleration(){
+    return m_rightAccel;
+  }
+
 
   public void resetEncoders(){
     m_leftMaster.resetEncoder();

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.FindFeedForwardGainsForVelocity;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.Drivetrain.ArcadeDrive;
 import frc.robot.commands.Drivetrain.CharacterizeDrivetrain;
@@ -38,6 +39,7 @@ import frc.robot.subsystems.Lift;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Utility.Motor;
+import frc.robot.Utility.Motor.ControlMode;
 import frc.robot.Utility.Motor.MotorType;
 
 //TODO configure motor feedforwards
@@ -115,7 +117,21 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     //return new CharacterizeFlywheel(m_flywheel);
-    return new CharacterizeDrivetrain(m_drivetrain);
+    //return new CharacterizeDrivetrain(m_drivetrain);
+    return new FindFeedForwardGainsForVelocity(m_drivetrain,
+      (Double voltage)->{
+        m_drivetrain.setControlMode(frc.robot.subsystems.DifferentialDrivetrain.ControlMode.Voltage);
+        m_drivetrain.setLeftTarget(voltage);
+        m_drivetrain.setRightTarget(voltage);
+      },
+      ()->{
+        return m_drivetrain.getLeftVelocity();
+      },
+      ()->{
+        return m_drivetrain.getLeftAcceleration();
+      },
+      0.01
+    );
     //return new ExampleCommand();
   }
 }
