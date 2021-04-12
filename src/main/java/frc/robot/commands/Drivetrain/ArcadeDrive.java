@@ -44,7 +44,7 @@ public class ArcadeDrive extends CommandBase {
     speed *= m_maxSpeed;
     rotation *= m_maxRotation;
 
-    m_drivetrain.setArcadeDrive(-speed, rotation);
+    m_drivetrain.setArcadeDrive(-speed, -rotation);
   }
 
   // Called once the command ends or is interrupted.

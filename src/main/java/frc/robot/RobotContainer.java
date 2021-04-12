@@ -77,7 +77,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_drivetrain.configFeedforward(0.45682532146418686, 2.8207938356301114, 0.03512928023526242); 
+    m_drivetrain.configFeedforwardSided(
+      0.5319812402757178, 2.83098038352017, 0.06669021995516602,
+      0.5148996120213958, 2.8125908259961605, 0.07363291020991329);
     m_drivetrain.enableBrakeMode(true);
     m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 1, Math.PI / 2));
     //m_intake.setDefaultCommand(new IntakeDeploy(m_intake));//so it deploys on start
@@ -117,6 +119,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     //return new CharacterizeFlywheel(m_flywheel);
     //return new CharacterizeDrivetrain(m_drivetrain);
+    /*
     return new FindFeedForwardGainsForVelocity(m_drivetrain,
       (Double voltage)->{
         m_drivetrain.setControlMode(frc.robot.subsystems.DifferentialDrivetrain.ControlMode.Voltage);
@@ -131,6 +134,8 @@ public class RobotContainer {
       },
       0.01
     );
+    */
+    return m_drivetrain.findFeedForwardGainsLeft;
     //return new ExampleCommand();
   }
 }
