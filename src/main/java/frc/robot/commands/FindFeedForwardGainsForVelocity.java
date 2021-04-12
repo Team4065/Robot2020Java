@@ -46,7 +46,6 @@ public class FindFeedForwardGainsForVelocity extends CommandBase {
     m_values.add(m_value);
     m_velocities.add(m_getVelocity.get());
     m_accelerations.add(m_getAcceleration.get());
-
     m_value += m_incrementSize;
   }
 
@@ -54,6 +53,7 @@ public class FindFeedForwardGainsForVelocity extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_set.accept(0.0);
+    
     Double[] values = Regression.findFeedForwardGainsForVelocity(m_values, m_velocities, m_accelerations);
     System.out.println("#");
     System.out.println("#");

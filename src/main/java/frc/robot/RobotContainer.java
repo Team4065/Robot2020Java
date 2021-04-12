@@ -58,6 +58,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   final DifferentialDrivetrain m_drivetrain = new DifferentialDrivetrain(
     0.159/*wheel diameter*/,
+    1 / 9.54, 
+    false,
+    false,
     new Motor(Constants.LEFT_DRIVETRAIN_MASTER, MotorType.CANSparkMax),
     new Motor(Constants.RIGHT_DRIVETRAIN_MASTER, MotorType.CANSparkMax),
     new Motor[]{new Motor(Constants.LEFT_DRIVTRAIN_SLAVES[0], MotorType.CANSparkMax)},
@@ -74,12 +77,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    m_drivetrain.configFeedforwardSided(
-      -0.236065840797, -1.2349960266, 0.00891040293398,
-      -0.230709327857, -1.24552774756, -0.0146211933272); 
-    //m_drivetrain.configRotationFeedForward(kS, kV, kA);Do this
-    //m_lift.setDefaultCommand(new LiftRetract(m_lift));
+    m_drivetrain.configFeedforward(0.45682532146418686, 2.8207938356301114, 0.03512928023526242); 
+    m_drivetrain.enableBrakeMode(true);
     m_drivetrain.setDefaultCommand(new ArcadeDrive(m_drivetrain, m_controller, 1, Math.PI / 2));
     //m_intake.setDefaultCommand(new IntakeDeploy(m_intake));//so it deploys on start
     // Configure the button bindings

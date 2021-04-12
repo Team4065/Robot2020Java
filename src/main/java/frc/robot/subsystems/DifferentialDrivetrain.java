@@ -39,28 +39,40 @@ public class DifferentialDrivetrain extends SubsystemBase {
   protected SimpleMotorFeedforward m_leftFeedforward, m_rightFeedforward;
   protected boolean m_isFeedforwardConfigured = false;
   protected ControlMode m_controlMode = ControlMode.PercentOutput;
+  protected boolean m_isInverted = false;
 
   protected SimpleMotorFeedforward m_rotationFeedforward;
   protected boolean m_isRotationFeedforwardConfigured = false;
 
   protected DifferentialDriveOdometry m_odometry = new DifferentialDriveOdometry(new Rotation2d());
   protected double m_wheelDiameter;
+  protected double m_gearRatio;//1 rotation of wheel / spins of encoder
+  protected boolean m_areEncodersInverted;
 
-  private double m_pastLeftVelocity = 0;
-  private double m_pastRightVelocity = 0;
-  private double m_leftAccel = 0;
-  private double m_rightAccel = 0;
-
-  /** Creates a new DifferentialDrivetrain. */
-  public DifferentialDrivetrain(double wheelDiameter, Motor leftMaster, Motor rightMaster, Motor[] leftSlaves, Motor[] rightSlaves) {
+  /**
+   * Creates a new Differential Drivetrain
+   * @param wheelDiameter
+   * @param gearRatio 1 spin of wheel / spins of encoder
+   * @param isInverted Is the direction of the drivetrain backwards?
+   * @param areEncodcersInverted Do the encoders need to be inverted to that forward reads as positive? (Inverting the direction of the drivetrain will not solve this issue.)
+   * @param leftMaster
+   * @param rightMaster
+   * @param leftSlaves
+   * @param rightSlaves
+   */
+  public DifferentialDrivetrain(double wheelDiameter, double gearRatio, boolean isInverted, boolean areEncodersInverted, Motor leftMaster, Motor rightMaster, Motor[] leftSlaves, Motor[] rightSlaves) {
     m_wheelDiameter = wheelDiameter;
+    m_gearRatio  = gearRatio;
+
     m_leftMaster = leftMaster;
     m_rightMaster = rightMaster;
     m_leftSlaves = leftSlaves;
     m_rightSlaves = rightSlaves;
 
-    m_leftMaster.setInverted(false);
-    m_rightMaster.setInverted(true);
+    enableBrakeMode(true);
+
+    setInversion(isInverted);
+    m_areEncodersInverted = areEncodersInverted;
     
     m_odometry.resetPosition(new Pose2d(), new Rotation2d());
 
@@ -80,6 +92,8 @@ public class DifferentialDrivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     m_odometry.update(Gyro.getRotation2d(), getLeftPosition(), getRightPosition());
+
+    //System.out.println(m_leftMaster.getPosition());
 
     if(Constants.IS_SPY_ENABLED){
       reportSpy();
@@ -107,11 +121,6 @@ public class DifferentialDrivetrain extends SubsystemBase {
         break;
     }
   
-    m_leftAccel = (getLeftVelocity() - m_pastLeftVelocity) / (20. / 1000.);
-    m_rightAccel = (getRightVelocity() - m_pastRightVelocity) / (20. / 1000.);
-
-    m_pastLeftVelocity = getLeftVelocity();
-    m_pastRightVelocity = getRightVelocity();
   }
 
 
@@ -179,8 +188,8 @@ public class DifferentialDrivetrain extends SubsystemBase {
       setLeftTarget(speed + rotationVelocity);
       setRightTarget(speed - rotationVelocity);
     }else{
-      setLeftTarget(-(speed + rotation));
-      setRightTarget(-(speed - rotation));
+      setLeftTarget(speed + rotation);
+      setRightTarget(speed - rotation);
     }
   }
 
@@ -240,43 +249,48 @@ public class DifferentialDrivetrain extends SubsystemBase {
   }
 
   /**
+   * 
+   * @return The acceleration of the left side in meters per second squared
+   */
+  public double getLeftAcceleration(){
+    return ((m_areEncodersInverted) ? -1 : 1) * m_leftMaster.getAcceleration() * m_gearRatio * m_wheelDiameter * Math.PI;
+  }
+
+  /**
+   * 
+   * @return The acceleration of the right side in meters per second squared
+   */
+  public double getRightAcceleration(){
+    return ((m_areEncodersInverted) ? -1 : 1) * m_rightMaster.getAcceleration() * m_gearRatio * m_wheelDiameter * Math.PI;
+  }
+
+  /**
    * @return The velocity of the left side in meters per second
    */
   public double getLeftVelocity(){
-    //the hard coded term is the gear ratio
-    return -m_leftMaster.getVelocity() * (2 / 9.47) * m_wheelDiameter * Math.PI;
+    return ((m_areEncodersInverted) ? -1 : 1) * m_leftMaster.getVelocity() * m_gearRatio * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The velocity of the right side in meters per second
    */
   public double getRightVelocity(){
-    return -m_rightMaster.getVelocity() * (2 / 9.47) * m_wheelDiameter * Math.PI;
+    return ((m_areEncodersInverted) ? -1 : 1) * m_rightMaster.getVelocity() * m_gearRatio * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the left side has traveled in meters.
    */
   public double getLeftPosition(){
-    return -m_leftMaster.getPosition() * (2 / 9.47) * m_wheelDiameter * Math.PI;
+    return ((m_areEncodersInverted) ? -1 : 1) * m_leftMaster.getPosition() * m_gearRatio * m_wheelDiameter * Math.PI;
   }
 
   /**
    * @return The distance the right side has traveled in meters.
    */
   public double getRightPosition(){
-    return -m_rightMaster.getPosition() * (2 / 9.47) * m_wheelDiameter * Math.PI;
+    return ((m_areEncodersInverted) ? -1 : 1) * m_rightMaster.getPosition() * m_gearRatio * m_wheelDiameter * Math.PI;
   }
-
-
-  public double getLeftAcceleration(){
-    return m_leftAccel;
-  }
-
-  public double getRightAcceleration(){
-    return m_rightAccel;
-  }
-
 
   public void resetEncoders(){
     m_leftMaster.resetEncoder();
@@ -290,6 +304,18 @@ public class DifferentialDrivetrain extends SubsystemBase {
   public DifferentialDriveWheelSpeeds getWheelSpeeds(){
     return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
   }
+
+  public void setInversion(boolean isInverted){
+    m_leftMaster.setInverted(isInverted);
+    m_rightMaster.setInverted(!isInverted);
+  }
+  
+  public void enableBrakeMode(boolean value){
+    m_leftMaster.enableBrakeMode(value);
+    m_rightMaster.enableBrakeMode(value);
+  }
+
+
 
   protected void makeSpy(){
     ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -322,7 +348,4 @@ public class DifferentialDrivetrain extends SubsystemBase {
     m_spyTab.get("Left Target").setDouble(m_leftTarget);
     m_spyTab.get("Right Target").setDouble(m_rightTarget);
   }
-
-
-
 }
